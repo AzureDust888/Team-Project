@@ -24,6 +24,9 @@ namespace Team_Project
         {
             InitializeComponent();
             MessageBox.Show("Hello");
+            MessageBox.Show("Hello");
+            MessageBox.Show("Hello");
+
         }
     }
 }
