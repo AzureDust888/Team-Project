@@ -22,7 +22,7 @@ namespace Team_Project
     {
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();  
 
             MessageBox.Show("b9fbu9eqfb9ubfq");
 
