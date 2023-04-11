@@ -23,8 +23,11 @@ namespace Team_Project
         public MainWindow()
         {
             InitializeComponent();
-            MessageBox.Show("Hello333");
 
+            MessageBox.Show("Hel");
+
+            MessageBox.Show("Hello333");
+            MessageBox.Show("Hel");
 
 
 
