@@ -121,13 +121,13 @@ namespace Team_Project
             canvas_enemy.Children.Add(en1.border);
 
 
-            //BitmapImage img = new BitmapImage();
+            BitmapImage img = new BitmapImage();
 
-            //img.BeginInit();
-            //img.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\ddd.jpg"));
-            //img.EndInit();
+            img.BeginInit();
+            img.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\ddd.jpg"));
+            img.EndInit();
 
-            //Player.Background = new ImageBrush(img);
+            Player.Background = new ImageBrush(img);
 
         }
 
@@ -144,39 +144,45 @@ namespace Team_Project
             
             storyboard.Stop();
             ThicknessAnimation thicknessAnimation;
+            ThicknessAnimation thicknessAnimation2;
 
+            //right
             if (BT.Margin.Left <= (BT.Width / 2) * -1)
             {
                 thicknessAnimation = ThicknessAnimation(0, BT.Margin.Top + y, 0);
+                thicknessAnimation2 = ThicknessAnimation2(BT.Width / 2.0514, b.Margin.Top, 0);
             }
             else if (BT.Margin.Top >= (BT.Height / 2))
             {
                 thicknessAnimation = ThicknessAnimation(BT.Margin.Left, 0, 0);
+                thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left , BT.Width / 2, 0);
             }
             else if (BT.Margin.Left >= (BT.Width / 2))
             {
                 thicknessAnimation = ThicknessAnimation(0, BT.Margin.Top + y, 0);
+                thicknessAnimation2 = ThicknessAnimation2(BT.Width / 2.0514, b.Margin.Top, 0);
             }
             else if (BT.Margin.Top <= (BT.Height / 2) * -1)
             {
                 thicknessAnimation = ThicknessAnimation(BT.Margin.Left, 0, 0);
+                thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left, BT.Width / 2, 0);
             }
             else
             {
                 thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top + y, 0.6);
+                thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left - x, b.Margin.Top - y, 0.6);
             }
             
             Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
             storyboard.Children.Add(thicknessAnimation);
             storyboard.Begin(BT);
 
-            var r = new Storyboard();
-            thicknessAnimation = ThicknessAnimation2(b.Margin.Left - x, b.Margin.Top - y, 0.6);
-            Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
-            r.Children.Add(thicknessAnimation);
+            var r = new Storyboard();         
+            Storyboard.SetTargetProperty(thicknessAnimation2, new PropertyPath(FrameworkElement.MarginProperty));
+            r.Children.Add(thicknessAnimation2);
             r.Begin(b);
 
-            Title = Math.Round(b.Margin.Left).ToString();
+            Title = Math.Round(b.Margin.Left).ToString() +" bt: " + BT.Margin.Left.ToString() + " math: " + BT.Width / 2.0514;
 
 
         }
