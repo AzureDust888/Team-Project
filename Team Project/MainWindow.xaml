@@ -19,11 +19,11 @@
                 Canvas.Left="-1600" Canvas.Top="-1783"
                 x:Name="BT"
                 >
-            <Border.Background>
+            <!--<Border.Background>
                 <ImageBrush ImageSource="Resources\ddd.jpg">
 
                 </ImageBrush>
-            </Border.Background>
+            </Border.Background>-->
             <Canvas Width="4000"
                 Height="4000"
                     x:Name="canvas_enemy">

@@ -65,10 +65,10 @@ namespace Team_Project
             bool isc = true;
             ThicknessAnimation thicknessAnimation;
             Point cord = new Point();
-            public EnemyClass()
+            public EnemyClass(double hptmp,double mptmp)
             {
-                Hp = 100;
-                Mp = 100;
+                Hp = hptmp;
+                Mp = mptmp;
                 border.Width = 100;
                 border.Height = 100;
                 border.Background = Brushes.Black;
@@ -136,7 +136,7 @@ namespace Team_Project
                 storyboard.Children.Add(thicknessAnimation);
                 storyboard.Begin(border);
 
-                Thread t = new Thread(() =>
+                Task.Factory.StartNew(() =>
                 {
                     while (true)
                     {
@@ -215,10 +215,9 @@ namespace Team_Project
                             }
 
                         }));
-                        Thread.Sleep(300);
+                        Thread.Sleep(500);
                     }
                 });
-                t.Start();
 
             }
 
@@ -249,6 +248,7 @@ namespace Team_Project
                 storyboard.Stop();
             }
         }
+
         public static Border b = new Border();
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -266,7 +266,7 @@ namespace Team_Project
             canvas_enemy.Children.Add(b);
             for (int i = 0; i < 10; i++)
             {
-                EnemyClass en = new EnemyClass();
+                EnemyClass en = new EnemyClass(100,100);
                 canvas_enemy.Children.Add(en.border);
             }
             
