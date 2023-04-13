@@ -12,18 +12,20 @@
         Loaded="Window_Loaded"
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
         MouseLeftButtonUp="Window_MouseLeftButtonUp"
-        Background="SandyBrown">
+        Background="SandyBrown"
+        KeyDown="Window_KeyDown"
+        KeyUp="Window_KeyUp">
     <Canvas x:Name="MainCanvas">
         <Border Width="4000"
                 Height="4000"
                 Canvas.Left="-1600" Canvas.Top="-1783"
                 x:Name="BT"
                 >
-            <!--<Border.Background>
+            <Border.Background>
                 <ImageBrush ImageSource="Resources\ddd.jpg">
 
                 </ImageBrush>
-            </Border.Background>-->
+            </Border.Background>
             <Canvas Width="4000"
                 Height="4000"
                     x:Name="canvas_enemy">

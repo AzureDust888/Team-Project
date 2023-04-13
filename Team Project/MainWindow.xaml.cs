@@ -143,15 +143,15 @@ namespace Team_Project
                         
                         Dispatcher.Invoke(new Action(() =>
                         {
-                         
-                           
 
-                            if(Math.Abs(border.Margin.Left - MainWindow.b.Margin.Left) <= 250 && Math.Abs(border.Margin.Top - MainWindow.b.Margin.Top) <= 250 && isc)
+                          
+
+                            if (Math.Abs(border.Margin.Left - MainWindow.b.Margin.Left) <= 250 && Math.Abs(border.Margin.Top - MainWindow.b.Margin.Top) <= 250 && isc)
                             {
                                 storyboard.Pause();
                                 thicknessAnimation = new ThicknessAnimation
                                 {
-
+                                    
                                     From = new Thickness(border.Margin.Left, border.Margin.Top, 0, 0),
                                     To = new Thickness(MainWindow.b.Margin.Left, MainWindow.b.Margin.Top, 0, 0),
 
@@ -214,6 +214,15 @@ namespace Team_Project
                                 isc = false;
                             }
 
+                            if (Math.Abs(border.Margin.Left - MainWindow.weapon.Margin.Left) <= 120 && Math.Abs(border.Margin.Top - MainWindow.weapon.Margin.Top) <= 120 && isc)
+                            {
+
+                                border.Background = Brushes.Red;
+                                hp.Value -= 7;
+
+
+                            }
+
                         }));
                         Thread.Sleep(500);
                     }
@@ -250,10 +259,13 @@ namespace Team_Project
         }
 
         public static Border b = new Border();
+        public static Border weapon = new Border();
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-           
-            
+
+            weapon.Width = 60;
+            weapon.Height = 120;
+            weapon.Background = Brushes.Lime;
             b.Width = 100;
             b.Height = 100;
             b.Background = Brushes.White;
@@ -264,14 +276,21 @@ namespace Team_Project
             
            
             canvas_enemy.Children.Add(b);
+           
             for (int i = 0; i < 10; i++)
             {
                 EnemyClass en = new EnemyClass(100,100);
                 canvas_enemy.Children.Add(en.border);
             }
-            
-        
 
+
+            BitmapImage img2 = new BitmapImage();
+
+            img2.BeginInit();
+            img2.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\Weapon_34.png"));
+            img2.EndInit();
+
+            weapon.Background = new ImageBrush(img2);
 
             BitmapImage img = new BitmapImage();
 
@@ -281,7 +300,6 @@ namespace Team_Project
 
             Player.Background = new ImageBrush(img);
 
-            //MessageBox.Show(Math.Round(b.Margin.Left).ToString() + " " + Math.Round(b.Margin.Top).ToString() + "||" + Math.Round(BT.Margin.Left).ToString() + " " + Math.Round(BT.Margin.Top).ToString());
 
         }
 
@@ -412,6 +430,35 @@ namespace Team_Project
                 Mp = mp;
                 Lvl = lvl;
                 Exp = exp;
+            }
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Q)
+            {
+                 canvas_enemy.Children.Remove(weapon);
+                canvas_enemy.Children.Add(weapon);
+                weapon.Margin = b.Margin;
+                for (int i = 0; i < 10; i++)
+                {
+                    RotateTransform rotateTransform1 =
+                   new RotateTransform(i);
+                    weapon.RenderTransform = rotateTransform1;
+                }
+               
+                weapon.Visibility = Visibility.Visible;
+                weapon.Margin = new Thickness(weapon.Margin.Left + 150, weapon.Margin.Top -10, weapon.Margin.Right, weapon.Margin.Bottom);
+            }
+         
+        }
+
+        private void Window_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Q)
+            {
+                canvas_enemy.Children.Remove(weapon);
+                weapon.Visibility = Visibility.Hidden;
             }
         }
     }
