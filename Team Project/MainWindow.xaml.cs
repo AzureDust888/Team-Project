@@ -73,12 +73,36 @@ namespace Team_Project
 
 
                 };
-                mn.Title = "Uwu";
+                
                 Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
                 storyboard.Children.Add(thicknessAnimation);
                 storyboard.Begin(border);
 
-                
+                Thread t = new Thread(() =>
+                {
+                    while (true)
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            Rect rect1 = new Rect(border.Margin.Left, border.Margin.Top, ENT.Width, ENT.Height);
+                            Rect rect2 = new Rect(b.Margin.Left, b.Margin.Top, b.Width, b.Height);
+
+                            if (rect1.IntersectsWith(rect2))
+                            {
+                                MessageBox.Show("alo");
+                            }
+
+                        });
+                        Thread.Sleep(500);
+                        //Dispatcher.Invoke(() =>
+                        //{
+                        //    Title = Player.Margin + " " + Player2.Margin + "map: " + BT.Margin;
+                        //});
+                    }
+                });
+                t.SetApartmentState(ApartmentState.STA);
+                t.Start();
+
             }
         }
         Border b = new Border();
@@ -99,36 +123,38 @@ namespace Team_Project
             canvas_enemy.Children.Add(en.border);
 
 
-            //Thread t = new Thread(() =>
-            //{
-               
-            //        Dispatcher.Invoke(() =>
-            //        {
-            //        while (true)
-            //        {
-            //            Rect rect1 = new Rect(ENT.Margin.Left, ENT.Margin.Top, ENT.Width, ENT.Height);
-            //            Rect rect2 = new Rect(b.Margin.Left, b.Margin.Top, b.Width, b.Height);
+            Thread t = new Thread(() =>
+            {
+                while (true)
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        Rect rect1 = new Rect(ENT.Margin.Left, ENT.Margin.Top, ENT.Width, ENT.Height);
+                        Rect rect2 = new Rect(b.Margin.Left, b.Margin.Top, b.Width, b.Height);
 
-            //            if (rect1.IntersectsWith(rect2))
-            //            {
-            //                MessageBox.Show("alo");
-                            
-            //            }
-            //                Thread.Sleep(1000);
-            //        }
-            //        });
-               
-            //});
-            //t.SetApartmentState(ApartmentState.STA);
-            //t.Start();
+                        if (rect1.IntersectsWith(rect2))
+                        {
+                            MessageBox.Show("alo");
+                        }
 
-            BitmapImage img = new BitmapImage();
+                    });
+                    Thread.Sleep(500);
+                    //Dispatcher.Invoke(() =>
+                    //{
+                    //    Title = Player.Margin + " " + Player2.Margin + "map: " + BT.Margin;
+                    //});
+                }
+            });
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
 
-            img.BeginInit();
-            img.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\ddd.jpg"));
-            img.EndInit();
+            //BitmapImage img = new BitmapImage();
 
-            Player.Background = new ImageBrush(img);
+            //img.BeginInit();
+            //img.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\ddd.jpg"));
+            //img.EndInit();
+
+            //Player.Background = new ImageBrush(img);
 
         }
 
@@ -143,8 +169,6 @@ namespace Team_Project
             double y = (Player.Margin.Top + 50) - p.Y;
 
             
-
-            //this.Title = BT.Margin.Left + " " + BT.Margin.Top + " ";
             storyboard.Stop();
             ThicknessAnimation thicknessAnimation;
 
@@ -172,7 +196,12 @@ namespace Team_Project
             Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
             storyboard.Children.Add(thicknessAnimation);
             storyboard.Begin(BT);
-            storyboard.Begin(b);
+
+            var r = new Storyboard();
+            thicknessAnimation = ThicknessAnimation2(b.Margin.Left - x, b.Margin.Top - y, 0.6);
+            Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
+            r.Children.Add(thicknessAnimation);
+            r.Begin(b);
 
             Title = b.Margin.ToString() + "\n " + BT.Margin.ToString();
 
@@ -193,6 +222,19 @@ namespace Team_Project
             return thicknessAnimation;
         }
 
+        ThicknessAnimation ThicknessAnimation2(double toLeft, double toTop, double speed)
+        {
+            var thicknessAnimation = new ThicknessAnimation
+            {
+
+                From = new Thickness(b.Margin.Left, b.Margin.Top, b.Margin.Right, b.Margin.Bottom),
+                To = new Thickness(toLeft, toTop, 0, 0),
+
+                Duration = TimeSpan.FromSeconds(speed),
+                AutoReverse = false,
+            };
+            return thicknessAnimation;
+        }
 
     }
 }
