@@ -5,10 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Team_Project"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800"
+        Title="MainWindow" Height="1080" Width="1920"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
         Loaded="Window_Loaded"
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
-        MouseLeftButtonUp="Window_MouseLeftButtonUp">
+        MouseLeftButtonUp="Window_MouseLeftButtonUp"
+        Background="SandyBrown">
     <Canvas x:Name="MainCanvas">
         <Border Width="4000"
                 Height="4000"
@@ -23,17 +27,15 @@
             <Canvas Width="4000"
                 Height="4000"
                     x:Name="canvas_enemy">
-              
             </Canvas>
         </Border>
 
         <Border Width="100"
                 Height="100"
                 x:Name="Player"
-                
-                Margin="350,250"
-                >
-        </Border>
+                Margin="910, 482"
+                Background="Yellow"
+                />
 
 
 
