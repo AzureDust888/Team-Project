@@ -5,8 +5,46 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Team_Project"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="600" Width="800"
+        Loaded="Window_Loaded"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown">
+    <Canvas x:Name="MainCanvas">
+        <Border Width="4000"
+                Height="4000"
+                Canvas.Left="-1600" Canvas.Top="-1783"
+                x:Name="BT"
+                >
+            <Border.Background>
+                <ImageBrush ImageSource="Resources\ddd.jpg">
 
-    </Grid>
+                </ImageBrush>
+            </Border.Background>
+            <Canvas Width="4000"
+                Height="4000"
+                    x:Name="canvas_enemy">
+                <Border Width="100"
+                Height="100"
+                Background="Yellow"
+                        x:Name="ENT"
+                        Margin="1550, 2033"
+                
+                />
+            </Canvas>
+        </Border>
+
+        <Border Width="100"
+                Height="100"
+                x:Name="Player"
+                
+                Margin="350,250"
+                >
+            <!--<Border.Background>
+                <ImageBrush ImageSource="Resources\image.png">
+                </ImageBrush>
+            </Border.Background>-->
+        </Border>
+
+
+
+    </Canvas>
 </Window>
