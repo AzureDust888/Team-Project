@@ -8,7 +8,7 @@
         Title="MainWindow" Height="600" Width="800"
         Loaded="Window_Loaded"
         MouseLeftButtonDown="Window_MouseLeftButtonDown">
-    <Canvas>
+    <Canvas x:Name="MainCanvas">
         <Border Width="4000"
                 Height="4000"
                 Canvas.Left="-1600" Canvas.Top="-1783"
@@ -16,9 +16,17 @@
                 >
             <Border.Background>
                 <ImageBrush ImageSource="C:\Users\Azure\Desktop\ddd.jpg">
-                    
+
                 </ImageBrush>
             </Border.Background>
+            <Canvas Width="4000"
+                Height="4000">
+                <Border Width="100"
+                Height="100"
+                Background="Yellow"
+                x:Name="Enemy" Canvas.Left="755" Canvas.Top="1275"
+                />
+            </Canvas>
         </Border>
 
         <Border Width="100"
@@ -27,7 +35,10 @@
                 Background="Aquamarine"
                 Margin="350,250"
                 >
-            
+
         </Border>
+
+
+
     </Canvas>
 </Window>
