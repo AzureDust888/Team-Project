@@ -15,7 +15,7 @@
                 x:Name="BT"
                 >
             <Border.Background>
-                <ImageBrush ImageSource="C:\Users\Azure\Desktop\ddd.jpg">
+                <ImageBrush ImageSource="Resources\ddd.jpg">
 
                 </ImageBrush>
             </Border.Background>
