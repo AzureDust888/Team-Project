@@ -56,7 +56,7 @@ namespace Team_Project
                 border.Width = 100;
                 border.Height = 100;
                 border.Background = Brushes.Black;
-                border.Margin = new Thickness(100);
+                border.Margin = new Thickness(new Random().Next(1000), new Random().Next(1000), 0, 0);
 
                
                 
@@ -82,30 +82,26 @@ namespace Team_Project
                 {
                     while (true)
                     {
-                        Dispatcher.Invoke(() =>
+                        Dispatcher.Invoke(new Action(() =>
                         {
-                            Rect rect1 = new Rect(border.Margin.Left, border.Margin.Top, ENT.Width, ENT.Height);
-                            Rect rect2 = new Rect(b.Margin.Left, b.Margin.Top, b.Width, b.Height);
-
-                            if (rect1.IntersectsWith(rect2))
+                         
+                            if(Math.Abs(border.Margin.Left - MainWindow.b.Margin.Left) <= 150 && Math.Abs(border.Margin.Top - MainWindow.b.Margin.Top) <= 150)
                             {
-                                MessageBox.Show("alo");
+                                border.Background = Brushes.Yellow;
                             }
-
-                        });
-                        Thread.Sleep(500);
-                        //Dispatcher.Invoke(() =>
-                        //{
-                        //    Title = Player.Margin + " " + Player2.Margin + "map: " + BT.Margin;
-                        //});
+                            else
+                            {
+                                border.Background = Brushes.Black;
+                            }
+                        }));
+                        Thread.Sleep(100);
                     }
                 });
-                t.SetApartmentState(ApartmentState.STA);
                 t.Start();
 
             }
         }
-        Border b = new Border();
+        public static Border b = new Border();
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
            
@@ -118,35 +114,12 @@ namespace Team_Project
             Rectangle rectangle = new Rectangle();
             
             EnemyClass en = new EnemyClass();
+            EnemyClass en1 = new EnemyClass();
             canvas_enemy.Children.Add(b);
            
             canvas_enemy.Children.Add(en.border);
+            canvas_enemy.Children.Add(en1.border);
 
-
-            Thread t = new Thread(() =>
-            {
-                while (true)
-                {
-                    Dispatcher.Invoke(() =>
-                    {
-                        Rect rect1 = new Rect(ENT.Margin.Left, ENT.Margin.Top, ENT.Width, ENT.Height);
-                        Rect rect2 = new Rect(b.Margin.Left, b.Margin.Top, b.Width, b.Height);
-
-                        if (rect1.IntersectsWith(rect2))
-                        {
-                            MessageBox.Show("alo");
-                        }
-
-                    });
-                    Thread.Sleep(500);
-                    //Dispatcher.Invoke(() =>
-                    //{
-                    //    Title = Player.Margin + " " + Player2.Margin + "map: " + BT.Margin;
-                    //});
-                }
-            });
-            t.SetApartmentState(ApartmentState.STA);
-            t.Start();
 
             //BitmapImage img = new BitmapImage();
 
@@ -203,7 +176,7 @@ namespace Team_Project
             r.Children.Add(thicknessAnimation);
             r.Begin(b);
 
-            Title = b.Margin.ToString() + "\n " + BT.Margin.ToString();
+            Title = Math.Round(b.Margin.Left).ToString();
 
 
         }
