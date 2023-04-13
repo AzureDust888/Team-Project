@@ -5,8 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Team_Project"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="600" Width="800"
+        Loaded="Window_Loaded"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown">
+    <Canvas>
+        <Border Width="4000"
+                Height="4000"
+                Canvas.Left="-1600" Canvas.Top="-1783"
+                x:Name="BT"
+                >
+            <Border.Background>
+                <ImageBrush ImageSource="C:\Users\Azure\Desktop\ddd.jpg">
+                    
+                </ImageBrush>
+            </Border.Background>
+        </Border>
 
-    </Grid>
+        <Border Width="100"
+                Height="100"
+                x:Name="Player"
+                Background="Aquamarine"
+                Margin="350,250"
+                >
+            
+        </Border>
+    </Canvas>
 </Window>
