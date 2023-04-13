@@ -433,22 +433,39 @@ namespace Team_Project
             }
         }
 
+        bool isattack = false;
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Q)
+            if(e.Key == Key.Q && !isattack)
             {
-                 canvas_enemy.Children.Remove(weapon);
+                canvas_enemy.Children.Remove(weapon);
                 canvas_enemy.Children.Add(weapon);
                 weapon.Margin = b.Margin;
-                for (int i = 0; i < 10; i++)
-                {
-                    RotateTransform rotateTransform1 =
-                   new RotateTransform(i);
-                    weapon.RenderTransform = rotateTransform1;
-                }
-               
+
+                RotateTransform rotateTransform = new RotateTransform();
+
+                rotateTransform.CenterX = weapon.Width / 2;
+                rotateTransform.CenterY = weapon.Height / 2;
+
+                weapon.RenderTransform = rotateTransform;
+
+                DoubleAnimation rotationAnimation = new DoubleAnimation();
+                rotationAnimation.From = 0;
+                rotationAnimation.To = 360;
+                rotationAnimation.Duration = TimeSpan.FromSeconds(0.3);
+                
+
+                Storyboard storyboard = new Storyboard();
+                storyboard.Children.Add(rotationAnimation);
+
+                Storyboard.SetTargetProperty(rotationAnimation, new PropertyPath("(UIElement.RenderTransform).(RotateTransform.Angle)"));
+                Storyboard.SetTarget(storyboard, weapon);
+                storyboard.Completed += (sender, e) => { isattack = false; };
+                storyboard.Begin();
+
                 weapon.Visibility = Visibility.Visible;
                 weapon.Margin = new Thickness(weapon.Margin.Left + 150, weapon.Margin.Top -10, weapon.Margin.Right, weapon.Margin.Bottom);
+                isattack = true;
             }
          
         }
@@ -459,6 +476,8 @@ namespace Team_Project
             {
                 canvas_enemy.Children.Remove(weapon);
                 weapon.Visibility = Visibility.Hidden;
+
+                isattack = false;
             }
         }
     }
