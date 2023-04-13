@@ -26,7 +26,8 @@
                 Height="100"
                 Background="Yellow"
                         x:Name="ENT"
-                 Canvas.Left="1550" Canvas.Top="2033" HorizontalAlignment="Center" VerticalAlignment="Top"
+                        Margin="1550, 2033"
+                
                 />
             </Canvas>
         </Border>
@@ -37,10 +38,10 @@
                 
                 Margin="350,250"
                 >
-            <Border.Background>
+            <!--<Border.Background>
                 <ImageBrush ImageSource="Resources\image.png">
                 </ImageBrush>
-            </Border.Background>
+            </Border.Background>-->
         </Border>
 
 
