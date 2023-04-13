@@ -218,8 +218,14 @@ namespace Team_Project
                             {
 
                                 border.Background = Brushes.Red;
-                                hp.Value -= 7;
-
+                                Hp -= 7;
+                                hp.Value = Hp;
+                                hplabel.Content = Hp.ToString();
+                                if(Hp <= 0)
+                                {
+                                    ((MainWindow)System.Windows.Application.Current.MainWindow).canvas_enemy.Children.Remove(border);
+                                }
+                        
 
                             }
 
@@ -309,72 +315,7 @@ namespace Team_Project
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            p = Mouse.GetPosition(this);
-            double x = (Player.Margin.Left + 50) - p.X;
-            double y = (Player.Margin.Top + 50) - p.Y;
-
-            this.WindowState = WindowState.Maximized;
-            storyboard.Stop();
-            ThicknessAnimation thicknessAnimation;
-            ThicknessAnimation thicknessAnimation2;
-            if (b.Margin.Left <= 100)
-            {
-                thicknessAnimation = ThicknessAnimation(0, BT.Margin.Top, 0);
-            }
-            else if (b.Margin.Top <= 100)
-            {
-                thicknessAnimation = ThicknessAnimation(BT.Margin.Left, 0, 0);
-                thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left , BT.Width / 2, 0);
-            }
-            else if (b.Margin.Left >= 3800)
-            {
-                thicknessAnimation = ThicknessAnimation(0, BT.Margin.Top, 0);
-            }
-            else if (b.Margin.Top >= 3800)
-            {
-                thicknessAnimation = ThicknessAnimation(BT.Margin.Left, 0, 0);
-                thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left, BT.Width / 2, 0);
-            }
-            else
-            {
-                thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top + y, 0.6);
-                thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left - x, b.Margin.Top - y, 0.6);
-            }
             
-
-            Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
-            storyboard.Children.Add(thicknessAnimation);
-            storyboard.Begin(BT);
-
-
-            if (b.Margin.Top <= 100)//2512, 2266
-            {
-                thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left, 2265, 0);
-            }
-            else if(b.Margin.Top >= 3800)
-            {
-                thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left, 2265, 0);
-            }
-            else if(b.Margin.Left >= 3800)
-            {
-                thicknessAnimation2 = ThicknessAnimation2(2510, b.Margin.Top, 0);
-            }
-            else if(b.Margin.Left <= 100)
-            {
-                thicknessAnimation2 = ThicknessAnimation2(2510, b.Margin.Top, 0);
-            }
-            else
-            {
-                thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left - x, b.Margin.Top - y, 0.6);
-            }
-            var r = new Storyboard();
-            
-            Storyboard.SetTargetProperty(thicknessAnimation2, new PropertyPath(FrameworkElement.MarginProperty));
-            r.Children.Add(thicknessAnimation2);
-            r.Begin(b);
-
-            Title = Math.Round(b.Margin.Left).ToString() + " " + Math.Round(b.Margin.Top).ToString();
-
         }
 
         ThicknessAnimation ThicknessAnimation(double toLeft, double toTop, double speed)
@@ -479,6 +420,76 @@ namespace Team_Project
 
                 isattack = false;
             }
+        }
+
+        private void Window_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            p = Mouse.GetPosition(this);
+            double x = (Player.Margin.Left + 50) - p.X;
+            double y = (Player.Margin.Top + 50) - p.Y;
+
+            this.WindowState = WindowState.Maximized;
+            storyboard.Stop();
+            ThicknessAnimation thicknessAnimation;
+            ThicknessAnimation thicknessAnimation2;
+            if (b.Margin.Left <= 100)
+            {
+                thicknessAnimation = ThicknessAnimation(0, BT.Margin.Top, 0);
+            }
+            else if (b.Margin.Top <= 100)
+            {
+                thicknessAnimation = ThicknessAnimation(BT.Margin.Left, 0, 0);
+                thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left, BT.Width / 2, 0);
+            }
+            else if (b.Margin.Left >= 3800)
+            {
+                thicknessAnimation = ThicknessAnimation(0, BT.Margin.Top, 0);
+            }
+            else if (b.Margin.Top >= 3800)
+            {
+                thicknessAnimation = ThicknessAnimation(BT.Margin.Left, 0, 0);
+                thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left, BT.Width / 2, 0);
+            }
+            else
+            {
+                thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top + y, 0.6);
+                thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left - x, b.Margin.Top - y, 0.6);
+            }
+
+
+            Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
+            storyboard.Children.Add(thicknessAnimation);
+            storyboard.Begin(BT);
+
+
+            if (b.Margin.Top <= 100)//2512, 2266
+            {
+                thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left, 2265, 0);
+            }
+            else if (b.Margin.Top >= 3800)
+            {
+                thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left, 2265, 0);
+            }
+            else if (b.Margin.Left >= 3800)
+            {
+                thicknessAnimation2 = ThicknessAnimation2(2510, b.Margin.Top, 0);
+            }
+            else if (b.Margin.Left <= 100)
+            {
+                thicknessAnimation2 = ThicknessAnimation2(2510, b.Margin.Top, 0);
+            }
+            else
+            {
+                thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left - x, b.Margin.Top - y, 0.6);
+            }
+            var r = new Storyboard();
+
+            Storyboard.SetTargetProperty(thicknessAnimation2, new PropertyPath(FrameworkElement.MarginProperty));
+            r.Children.Add(thicknessAnimation2);
+            r.Begin(b);
+
+            Title = Math.Round(b.Margin.Left).ToString() + " " + Math.Round(b.Margin.Top).ToString();
+
         }
     }
 }
