@@ -48,6 +48,12 @@ namespace Team_Project
 
         public class EnemyClass : MainWindow
         {
+            public string Name { get; set; }
+            public double Hp { get; set; }
+            public double Mp { get; set; }
+            public int Lvl { get; set; }
+            public double Exp { get; set; }
+
             public Border border = new Border();
             Storyboard storyboard = new Storyboard();
             Storyboard storyboard2 = new Storyboard();
@@ -61,11 +67,52 @@ namespace Team_Project
             Point cord = new Point();
             public EnemyClass()
             {
-                
+                Hp = 100;
+                Mp = 100;
                 border.Width = 100;
                 border.Height = 100;
                 border.Background = Brushes.Black;
                 border.Margin = new Thickness(new Random().Next(4000), new Random().Next(4000), 0, 0);
+
+                ProgressBar hp = new ProgressBar()
+                {
+                    BorderThickness = new Thickness(0),
+                    Foreground = Brushes.Tomato,
+                    Maximum = 150,
+                    Value = Hp,
+                    Width = 100,
+                    Height = 20,
+                    Margin = new Thickness(0, -80, 0, 0),
+                    Background = Brushes.Transparent,
+                };
+                ProgressBar mp = new ProgressBar()
+                {
+                    BorderThickness = new Thickness(0),
+                    Foreground = Brushes.Blue,
+                    Maximum = 150,
+                    Value = Mp,
+                    Width = 100,
+                    Height = 20,
+                    Margin = new Thickness(0, -50, 0, 0),
+                    Background = Brushes.Transparent,
+                };
+                Label hplabel = new Label()
+                {
+                    Content = Hp,
+                    Margin = new Thickness(90, -70, 0, 0),
+                };
+                Label mplabel = new Label()
+                {
+                    Content = Mp,
+                    Margin = new Thickness(90, -40, 0, 0),
+                };
+                Canvas ca = new Canvas();
+                ca.Children.Add(hplabel);
+                ca.Children.Add(mplabel);
+                ca.Children.Add(mp);
+                ca.Children.Add(hp);
+
+                border.Child = ca;
 
                 cord.X = border.Margin.Left;
                 cord.Y = border.Margin.Top;
@@ -344,6 +391,28 @@ namespace Team_Project
         {
 
             //MessageBox.Show(Math.Round(b.Margin.Left).ToString() + " " + Math.Round(b.Margin.Top).ToString() + "||" + Math.Round(BT.Margin.Left).ToString() + " " + Math.Round(BT.Margin.Top).ToString());
+        }
+
+
+        class Chelovek
+        {
+            public string Name { get; set; }
+            public double Hp { get; set; }
+            public double Mp { get; set; }
+            public int Lvl { get; set; }
+            public double Exp { get; set; }
+            public Chelovek()
+            {
+
+            }
+            public Chelovek(string name, double hp, double mp, int lvl, double exp)
+            {
+                Name = name;
+                Hp = hp;
+                Mp = mp;
+                Lvl = lvl;
+                Exp = exp;
+            }
         }
     }
 }
