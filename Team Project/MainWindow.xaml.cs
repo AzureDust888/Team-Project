@@ -72,7 +72,7 @@ namespace Team_Project
                 border.Width = 100;
                 border.Height = 100;
                 border.Background = Brushes.Black;
-                border.Margin = new Thickness(new Random().Next(4000), new Random().Next(4000), 0, 0);
+                border.Margin = new Thickness(new Random().Next(3500), new Random().Next(3500), 0, 0);
 
                 ProgressBar hp = new ProgressBar()
                 {
@@ -82,7 +82,7 @@ namespace Team_Project
                     Value = Hp,
                     Width = 100,
                     Height = 20,
-                    Margin = new Thickness(0, -80, 0, 0),
+                    Margin = new Thickness(0, -30, 0, 0),
                     Background = Brushes.Transparent,
                 };
                 ProgressBar mp = new ProgressBar()
@@ -93,20 +93,21 @@ namespace Team_Project
                     Value = Mp,
                     Width = 100,
                     Height = 20,
-                    Margin = new Thickness(0, -50, 0, 0),
+                    Margin = new Thickness(0, 0, 0, 0),
                     Background = Brushes.Transparent,
                 };
                 Label hplabel = new Label()
                 {
                     Content = Hp,
-                    Margin = new Thickness(90, -70, 0, 0),
+                    Margin = new Thickness(90, -20, 0, 0),
                 };
                 Label mplabel = new Label()
                 {
                     Content = Mp,
-                    Margin = new Thickness(90, -40, 0, 0),
+                    Margin = new Thickness(90, 0, 0, 0),
                 };
                 Canvas ca = new Canvas();
+                ca.Margin = new Thickness(0, -40, 0, 0);
                 ca.Children.Add(hplabel);
                 ca.Children.Add(mplabel);
                 ca.Children.Add(mp);
@@ -149,11 +150,16 @@ namespace Team_Project
                             if (Math.Abs(border.Margin.Left - MainWindow.b.Margin.Left) <= 250 && Math.Abs(border.Margin.Top - MainWindow.b.Margin.Top) <= 250 && isc)
                             {
                                 storyboard.Pause();
+                                double tmpLeft = 0;
+                                double tmpTop = 0;
+                                if (border.Margin.Left > MainWindow.b.Margin.Left) tmpLeft = MainWindow.b.Margin.Left + 90;
+                                else tmpLeft = MainWindow.b.Margin.Left - 90;
+
                                 thicknessAnimation = new ThicknessAnimation
                                 {
                                     
                                     From = new Thickness(border.Margin.Left, border.Margin.Top, 0, 0),
-                                    To = new Thickness(MainWindow.b.Margin.Left, MainWindow.b.Margin.Top, 0, 0),
+                                    To = new Thickness(tmpLeft, MainWindow.b.Margin.Top, 0, 0),
 
                                     Duration = TimeSpan.FromSeconds(0.7),
 
