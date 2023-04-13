@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="800"
         Loaded="Window_Loaded"
-        MouseLeftButtonDown="Window_MouseLeftButtonDown">
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        MouseLeftButtonUp="Window_MouseLeftButtonUp">
     <Canvas x:Name="MainCanvas">
         <Border Width="4000"
                 Height="4000"
@@ -22,13 +23,7 @@
             <Canvas Width="4000"
                 Height="4000"
                     x:Name="canvas_enemy">
-                <Border Width="100"
-                Height="100"
-                Background="Yellow"
-                        x:Name="ENT"
-                        Margin="1550, 2033"
-                
-                />
+              
             </Canvas>
         </Border>
 
@@ -38,10 +33,6 @@
                 
                 Margin="350,250"
                 >
-            <!--<Border.Background>
-                <ImageBrush ImageSource="Resources\image.png">
-                </ImageBrush>
-            </Border.Background>-->
         </Border>
 
 
