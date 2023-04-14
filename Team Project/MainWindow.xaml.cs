@@ -297,7 +297,7 @@ namespace Team_Project
             weapon.Background = Brushes.Lime;
             b.Width = 100;
             b.Height = 100;
-            b.Background = Brushes.White;
+            b.Background = Brushes.Transparent;
             b.Margin = new Thickness(2510, 2265, 0, 0);
 
             Rectangle rectangle = new Rectangle();
@@ -321,14 +321,16 @@ namespace Team_Project
 
             weapon.Background = new ImageBrush(img2);
 
-            BitmapImage img = new BitmapImage();
-            img.BeginInit();
-            img.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\PLAYER_SHEET.png"));
-            img.EndInit();
-
-            Int32Rect cropRect = new Int32Rect(50, 50, 100, 100);
+            BitmapImage img = new BitmapImage(new Uri(dir.FullName + "\\Resources\\dragon.png"));
+            /*img.BeginInit();
+            img.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\pngegg (3).png"));
+            img.EndInit();*/
+            
+            //кусок картинки
+            Int32Rect cropRect = new Int32Rect(0, 0, 200, 200);
             CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
-
+            //
+            Image imgPlayer = new Image();
             Player.Background = new ImageBrush(croppedBitmap);
         }
 

@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="Resources\ddd.jpg" />
+    <None Remove="Resources\dragon.png" />
     <None Remove="Resources\ground1.PNG" />
     <None Remove="Resources\ground2.PNG" />
     <None Remove="Resources\ground3.PNG" />
@@ -17,6 +18,7 @@
     <None Remove="Resources\ground5.PNG" />
     <None Remove="Resources\image.png" />
     <None Remove="Resources\PLAYER_SHEET.png" />
+    <None Remove="Resources\pngegg %283%29.png" />
     <None Remove="Resources\rock-2d.jpg" />
     <None Remove="Resources\Weapon_34.png" />
   </ItemGroup>
@@ -28,6 +30,7 @@
 
   <ItemGroup>
     <Resource Include="Resources\ddd.jpg" />
+    <Resource Include="Resources\dragon.png" />
     <Resource Include="Resources\ground1.PNG" />
     <Resource Include="Resources\ground2.PNG" />
     <Resource Include="Resources\ground3.PNG" />
@@ -35,6 +38,7 @@
     <Resource Include="Resources\ground5.PNG" />
     <Resource Include="Resources\image.png" />
     <Resource Include="Resources\PLAYER_SHEET.png" />
+    <Resource Include="Resources\pngegg (3).png" />
     <Resource Include="Resources\rock-2d.jpg" />
     <Resource Include="Resources\Weapon_34.png" />
   </ItemGroup>
