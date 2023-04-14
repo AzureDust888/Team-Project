@@ -44,6 +44,7 @@ namespace Team_Project
             mn = this;
 
             TestMap();
+            Map_addObjects();
         }
         DirectoryInfo? dir = new DirectoryInfo(Directory.GetCurrentDirectory());
 
@@ -67,8 +68,9 @@ namespace Team_Project
             bool isc = true;
             ThicknessAnimation thicknessAnimation;
             Point cord = new Point();
-            public EnemyClass(double hptmp, double mptmp)
+            public EnemyClass(double hptmp, double mptmp,string nametmp)
             {
+                Name = nametmp;
                 Hp = hptmp;
                 Mp = mptmp;
                 border.Width = 100;
@@ -112,10 +114,19 @@ namespace Team_Project
                     Foreground = Brushes.DarkBlue,
                     Margin = new Thickness(100, 20, 0, 0),
                 };
+                Label namelabel = new Label()
+                {
+                    Content = Name,
+                    FontWeight = FontWeights.Bold,
+                    Foreground = Brushes.Gold,
+                    Margin = new Thickness(0, -30, 0, 0),
+                };
                 Canvas ca = new Canvas();
                 ca.Margin = new Thickness(0, -50, 0, 0);
+
                 ca.Children.Add(hplabel);
                 ca.Children.Add(mplabel);
+                ca.Children.Add(namelabel);
                 ca.Children.Add(mp);
                 ca.Children.Add(hp);
 
@@ -297,7 +308,7 @@ namespace Team_Project
 
             for (int i = 0; i < 10; i++)
             {
-                EnemyClass en = new EnemyClass(100, 100);
+                EnemyClass en = new EnemyClass(100, 100,$"Enemy {i+1}");
                 canvas_enemy.Children.Add(en.border);
             }
 
@@ -311,14 +322,14 @@ namespace Team_Project
             weapon.Background = new ImageBrush(img2);
 
             BitmapImage img = new BitmapImage();
-
             img.BeginInit();
-            img.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\image.png"));
+            img.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\PLAYER_SHEET.png"));
             img.EndInit();
 
-            Player.Background = new ImageBrush(img);
+            Int32Rect cropRect = new Int32Rect(50, 50, 100, 100);
+            CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
 
-
+            Player.Background = new ImageBrush(croppedBitmap);
         }
 
 
@@ -424,6 +435,11 @@ namespace Team_Project
                 isattack = true;
             }
 
+            if (e.Key == Key.Escape)
+            {
+                if(Menu_border.Visibility == Visibility.Visible) Menu_border.Visibility = Visibility.Hidden;
+                else Menu_border.Visibility = Visibility.Visible;               
+            }
         }
 
         private void Window_KeyUp(object sender, KeyEventArgs e)
@@ -442,11 +458,11 @@ namespace Team_Project
             p = Mouse.GetPosition(this);
             double x = (Player.Margin.Left + 50) - p.X;
             double y = (Player.Margin.Top + 50) - p.Y;
-            int velocity = 200;
-            if (x > velocity) x = velocity;
-            else if (x < -velocity) x = -velocity;
-            if (y > velocity) y = velocity;
-            else if (y < -velocity) y = -velocity;
+            int maxSpeed = 200;
+            if (x > maxSpeed) x = maxSpeed;
+            else if (x < -maxSpeed) x = -maxSpeed;
+            if (y > maxSpeed) y = maxSpeed;
+            else if (y < -maxSpeed) y = -maxSpeed;
 
             this.WindowState = WindowState.Maximized;
             storyboard.Stop();
@@ -512,38 +528,12 @@ namespace Team_Project
 
         }
 
-        void TestMap()
+        int cellWidth = 256; // ширина ячейки сетки
+        int cellHeight = 256; // высота ячейки сетки
+        const int rows = 20; // количество строк
+        const int cols = 20; // количество столбцов
+        async void TestMap()
         {
-            int cellWidth = 256; // ширина ячейки сетки
-            int cellHeight = 256; // высота ячейки сетки
-            const int rows = 20; // количество строк
-            const int cols = 20; // количество столбцов
-
-            //int[,] map = new int[rows, cols]
-            //{
-            //    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-            //    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-            //    {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-            //    {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-            //    {0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-            //    {0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-            //    {0,0,0,0,0,1,0,0,0,0,0,0,1,1,1,1,0,0,0,0 },
-            //    {0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0 },
-            //    {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0 },
-            //    {0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0 },
-            //    {0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0 },
-            //    {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0 },
-            //    {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0 },
-            //    {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0 },
-            //    {0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0 },
-            //    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0 },
-            //    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-            //    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-            //    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-            //    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },             
-            //};
-
-
             BitmapImage img0 = new BitmapImage();
             img0.BeginInit();
             img0.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\ground2.png"));
@@ -558,26 +548,73 @@ namespace Team_Project
                 for (int col = 0; col < cols; col++)
                 {
                     Image image = new Image();
-                    /*switch(map[col,row])
-                    {
-                        case 0: 
-                            image.Source = img0;
-                            break;
-                        case 1: 
-                            image.Source = img1;
-                            break;
-                    }*/
                     image.Source = img0;
                     image.Width = cellWidth;
                     image.Height = cellHeight;
-                    Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);
+                    Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
                     Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
-
                     
                     Map_canvas.Children.Add(image);
                 }
             }
 
+        }
+
+        async void Map_addObjects()
+        {
+            BitmapImage img = new BitmapImage();
+            img.BeginInit();
+            img.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\rock-2d.jpg"));
+            img.EndInit();
+
+            int[,] map = new int[rows, cols]
+            {
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,0,1,0,0,0,0,0,0,1,1,1,1,0,0,0,0 },
+                {0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0 },
+                {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0 },
+                {0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0 },
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0 },
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+            };
+
+            for (int row = 0; row < rows; row++)
+            {
+                for (int col = 0; col < cols; col++)
+                {                   
+                    switch (map[col, row])
+                    {
+                        case 1:
+                            Image image = new Image();
+                            image.Source = img;
+                            image.Width = cellWidth;
+                            image.Height = cellHeight;
+                            Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
+                            Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
+
+                            Map_canvas.Children.Add(image);
+                            break;
+                    }  
+                }
+            }
+        }
+
+        private void Exit(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }
