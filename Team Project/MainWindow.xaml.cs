@@ -79,37 +79,41 @@ namespace Team_Project
                 ProgressBar hp = new ProgressBar()
                 {
                     BorderThickness = new Thickness(0),
-                    Foreground = Brushes.Tomato,
-                    Maximum = 150,
+                    Foreground = new SolidColorBrush(Color.FromArgb(200, 108, 167, 28)),
+                    Maximum = Hp,
                     Value = Hp,
-                    Width = 100,
-                    Height = 20,
-                    Margin = new Thickness(0, -30, 0, 0),
-                    Background = Brushes.Transparent,
-                };
-                ProgressBar mp = new ProgressBar()
-                {
-                    BorderThickness = new Thickness(0),
-                    Foreground = Brushes.Blue,
-                    Maximum = 150,
-                    Value = Mp,
                     Width = 100,
                     Height = 20,
                     Margin = new Thickness(0, 0, 0, 0),
                     Background = Brushes.Transparent,
                 };
+                ProgressBar mp = new ProgressBar()
+                {
+                    BorderThickness = new Thickness(0),
+                    Foreground = new SolidColorBrush(Color.FromArgb(150, 7, 85, 145)),
+                    Maximum = Hp,
+                    Value = Mp,
+                    Width = 100,
+                    Height = 20,
+                    Margin = new Thickness(0, 20, 0, 0),
+                    Background = Brushes.Transparent,
+                };
                 Label hplabel = new Label()
                 {
                     Content = Hp,
-                    Margin = new Thickness(90, -20, 0, 0),
+                    FontWeight = FontWeights.Bold,
+                    Foreground = Brushes.LightGreen,
+                    Margin = new Thickness(100, 0, 0, 0),
                 };
                 Label mplabel = new Label()
                 {
                     Content = Mp,
-                    Margin = new Thickness(90, 0, 0, 0),
+                    FontWeight = FontWeights.Bold,
+                    Foreground = Brushes.DarkBlue,
+                    Margin = new Thickness(100, 20, 0, 0),
                 };
                 Canvas ca = new Canvas();
-                ca.Margin = new Thickness(0, -40, 0, 0);
+                ca.Margin = new Thickness(0, -50, 0, 0);
                 ca.Children.Add(hplabel);
                 ca.Children.Add(mplabel);
                 ca.Children.Add(mp);
@@ -356,7 +360,10 @@ namespace Team_Project
 
         private void Window_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-
+            p = Mouse.GetPosition(this);
+            double x = (Player.Margin.Left + 50) - p.X;
+            double y = (Player.Margin.Top + 50) - p.Y;
+            MessageBox.Show($"x: {x} y: {y}");
             //MessageBox.Show(Math.Round(b.Margin.Left).ToString() + " " + Math.Round(b.Margin.Top).ToString() + "||" + Math.Round(BT.Margin.Left).ToString() + " " + Math.Round(BT.Margin.Top).ToString());
         }
 
@@ -394,7 +401,7 @@ namespace Team_Project
                 RotateTransform rotateTransform = new RotateTransform();
 
                 rotateTransform.CenterX = weapon.Width / 2;
-                rotateTransform.CenterY = weapon.Height / 2;
+                rotateTransform.CenterY = weapon.Height;
 
                 weapon.RenderTransform = rotateTransform;
 
@@ -435,6 +442,11 @@ namespace Team_Project
             p = Mouse.GetPosition(this);
             double x = (Player.Margin.Left + 50) - p.X;
             double y = (Player.Margin.Top + 50) - p.Y;
+            int velocity = 200;
+            if (x > velocity) x = velocity;
+            else if (x < -velocity) x = -velocity;
+            if (y > velocity) y = velocity;
+            else if (y < -velocity) y = -velocity;
 
             this.WindowState = WindowState.Maximized;
             storyboard.Stop();
@@ -449,11 +461,11 @@ namespace Team_Project
                 thicknessAnimation = ThicknessAnimation(BT.Margin.Left, 0, 0);
                 thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left, BT.Width / 2, 0);
             }
-            else if (b.Margin.Left >= 3800)
+            else if (b.Margin.Left >= BT.Width - 200)
             {
                 thicknessAnimation = ThicknessAnimation(0, BT.Margin.Top, 0);
             }
-            else if (b.Margin.Top >= 3800)
+            else if (b.Margin.Top >= BT.Width - 200)
             {
                 thicknessAnimation = ThicknessAnimation(BT.Margin.Left, 0, 0);
                 thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left, BT.Width / 2, 0);
@@ -474,11 +486,11 @@ namespace Team_Project
             {
                 thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left, 2265, 0);
             }
-            else if (b.Margin.Top >= 3800)
+            else if (b.Margin.Top >= BT.Width - 200)
             {
                 thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left, 2265, 0);
             }
-            else if (b.Margin.Left >= 3800)
+            else if (b.Margin.Left >= BT.Width - 200)
             {
                 thicknessAnimation2 = ThicknessAnimation2(2510, b.Margin.Top, 0);
             }
@@ -507,29 +519,29 @@ namespace Team_Project
             const int rows = 20; // количество строк
             const int cols = 20; // количество столбцов
 
-            int[,] map = new int[rows, cols]
-            {
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,0,1,0,0,0,0,0,0,1,1,1,1,0,0,0,0 },
-                {0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0 },
-                {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0 },
-                {0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0 },
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0 },
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },             
-            };
+            //int[,] map = new int[rows, cols]
+            //{
+            //    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+            //    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+            //    {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+            //    {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+            //    {0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+            //    {0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+            //    {0,0,0,0,0,1,0,0,0,0,0,0,1,1,1,1,0,0,0,0 },
+            //    {0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0 },
+            //    {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0 },
+            //    {0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0 },
+            //    {0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0 },
+            //    {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0 },
+            //    {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0 },
+            //    {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0 },
+            //    {0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0 },
+            //    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0 },
+            //    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+            //    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+            //    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+            //    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },             
+            //};
 
 
             BitmapImage img0 = new BitmapImage();
