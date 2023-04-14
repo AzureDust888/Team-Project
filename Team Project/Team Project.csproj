@@ -10,7 +10,14 @@
 
   <ItemGroup>
     <None Remove="Resources\ddd.jpg" />
+    <None Remove="Resources\ground1.PNG" />
+    <None Remove="Resources\ground2.PNG" />
+    <None Remove="Resources\ground3.PNG" />
+    <None Remove="Resources\ground4.PNG" />
+    <None Remove="Resources\ground5.PNG" />
     <None Remove="Resources\image.png" />
+    <None Remove="Resources\PLAYER_SHEET.png" />
+    <None Remove="Resources\rock-2d.jpg" />
     <None Remove="Resources\Weapon_34.png" />
   </ItemGroup>
 
@@ -21,7 +28,14 @@
 
   <ItemGroup>
     <Resource Include="Resources\ddd.jpg" />
+    <Resource Include="Resources\ground1.PNG" />
+    <Resource Include="Resources\ground2.PNG" />
+    <Resource Include="Resources\ground3.PNG" />
+    <Resource Include="Resources\ground4.PNG" />
+    <Resource Include="Resources\ground5.PNG" />
     <Resource Include="Resources\image.png" />
+    <Resource Include="Resources\PLAYER_SHEET.png" />
+    <Resource Include="Resources\rock-2d.jpg" />
     <Resource Include="Resources\Weapon_34.png" />
   </ItemGroup>
 
