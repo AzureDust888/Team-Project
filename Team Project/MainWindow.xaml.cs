@@ -43,7 +43,6 @@ namespace Team_Project
             dir = dir.Parent?.Parent?.Parent;
             mn = this;
 
-            //DrawIsometricGrid(); 
             TestMap();
         }
         DirectoryInfo? dir = new DirectoryInfo(Directory.GetCurrentDirectory());
@@ -501,71 +500,66 @@ namespace Team_Project
 
         }
 
-        private void DrawIsometricGrid()
-        {
-            double cellWidth = 256; // ширина ячейки сетки
-            double cellHeight = 128; // высота ячейки сетки
-            double rows = 20; // количество строк
-            double cols = 20; // количество столбцов
-
-            // Рисуем горизонтальные линии
-            for (int row = 0; row <= rows; row++)
-            {
-                double startX = (cols - row) * cellWidth / 2;
-                double startY = row * cellHeight / 2;
-
-                double endX = startX + cols * cellWidth / 2;
-                double endY = startY + cols * cellHeight / 2;
-
-                Polyline polyline = new Polyline();
-                polyline.Points.Add(new Point(startX, startY));
-                polyline.Points.Add(new Point(endX, endY));
-                polyline.Stroke = Brushes.Black;
-
-                Map_canvas.Children.Add(polyline);
-            }
-
-            // Рисуем вертикальные линии
-            for (int col = 0; col <= cols; col++)
-            {
-                double startX = col * cellWidth / 2;
-                double startY = (col + rows) * cellHeight / 2;
-
-                double endX = startX + rows * cellWidth / 2;
-                double endY = startY - rows * cellHeight / 2;
-
-                Polyline polyline = new Polyline();
-                polyline.Points.Add(new Point(startX, startY));
-                polyline.Points.Add(new Point(endX, endY));
-                polyline.Stroke = Brushes.AliceBlue;
-
-                Map_canvas.Children.Add(polyline);
-            }
-        }
-
         void TestMap()
         {
             int cellWidth = 256; // ширина ячейки сетки
             int cellHeight = 256; // высота ячейки сетки
-            int rows = 20; // количество строк
-            int cols = 20; // количество столбцов
+            const int rows = 20; // количество строк
+            const int cols = 20; // количество столбцов
 
-            BitmapImage img2 = new BitmapImage();
-            img2.BeginInit();
-            img2.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\ground1.png"));
-            img2.EndInit();
+            int[,] map = new int[rows, cols]
+            {
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,0,1,0,0,0,0,0,0,1,1,1,1,0,0,0,0 },
+                {0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0 },
+                {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0 },
+                {0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0 },
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0 },
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },             
+            };
+
+
+            BitmapImage img0 = new BitmapImage();
+            img0.BeginInit();
+            img0.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\ground2.png"));
+            img0.EndInit();
+            BitmapImage img1 = new BitmapImage();
+            img1.BeginInit();
+            img1.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\ground5.png"));
+            img1.EndInit();
 
             for (int row = 0; row < rows; row++)
             {
                 for (int col = 0; col < cols; col++)
                 {
                     Image image = new Image();
-                    image.Source = img2;
-
+                    /*switch(map[col,row])
+                    {
+                        case 0: 
+                            image.Source = img0;
+                            break;
+                        case 1: 
+                            image.Source = img1;
+                            break;
+                    }*/
+                    image.Source = img0;
                     image.Width = cellWidth;
                     image.Height = cellHeight;
-                    Canvas.SetLeft(image, col * cellWidth / 2 + row * cellWidth / 2);
-                    Canvas.SetTop(image, row * cellHeight / 2 - col * cellHeight / 2);
+                    Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);
+                    Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
 
                     
                     Map_canvas.Children.Add(image);
