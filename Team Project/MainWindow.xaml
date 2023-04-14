@@ -19,7 +19,9 @@
     <Canvas x:Name="MainCanvas" Background="Transparent">
         <Border x:Name="Map_border">
             <Canvas x:Name="Map_canvas" Height="{Binding ElementName=BT, Path=ActualHeight}" Width="{Binding ElementName=BT, Path=ActualWidth}"
-                    Margin="{Binding ElementName=BT,Path=Margin}"></Canvas>
+                    Margin="{Binding ElementName=BT,Path=Margin}">
+
+            </Canvas>
         </Border>
         <Border Width="4000"
                 Height="4000"
@@ -36,6 +38,7 @@
             <Canvas Width="4000"
                 Height="4000"
                     x:Name="canvas_enemy">
+
             </Canvas>
         </Border>
 
@@ -48,12 +51,28 @@
                 <ImageBrush Stretch="None"/>
             </Border.Background>
         </Border>
-
+        <!--<Border x:Name="NIghtBorder"
+                        Width="4000"
+                        Height="4000" d:IsHidden="True"
+                        >
+        </Border>
+        <Border x:Name="NIghtBorder2" 
+                        Width="2500"
+                        Height="2500"
+                        CornerRadius="100000"
+                        Canvas.Left="-280" Canvas.Top="-710"
+                        BorderThickness="800"
+                        BorderBrush="Black" d:IsHidden="True"
+                
+                        >
+        </Border>-->
+        
 
         <Border x:Name="Menu_border" Background="Black" Width="400" Height="400" Canvas.Left="760" Canvas.Top="340" Visibility="Hidden">
             <Grid>
                 <Button Content="Exit" Click="Exit" Width="100" Height="40" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="White" FontSize="20" />
             </Grid>
         </Border>
+       
     </Canvas>
 </Window>
