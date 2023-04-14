@@ -4,12 +4,14 @@ using Nest;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -297,7 +299,7 @@ namespace Team_Project
             weapon.Background = Brushes.Lime;
             b.Width = 100;
             b.Height = 100;
-            b.Background = Brushes.White;
+            b.Background = Brushes.Transparent;
             b.Margin = new Thickness(2510, 2265, 0, 0);
 
             Rectangle rectangle = new Rectangle();
@@ -321,14 +323,16 @@ namespace Team_Project
 
             weapon.Background = new ImageBrush(img2);
 
-            BitmapImage img = new BitmapImage();
-            img.BeginInit();
-            img.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\PLAYER_SHEET.png"));
-            img.EndInit();
-
-            Int32Rect cropRect = new Int32Rect(50, 50, 100, 100);
+            BitmapImage img = new BitmapImage(new Uri(dir.FullName + "\\Resources\\player_topchik.png"));
+            /*img.BeginInit();
+            img.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\pngegg (3).png"));
+            img.EndInit();*/
+            
+            //кусок картинки
+            Int32Rect cropRect = new Int32Rect(0, 0, 120, 180);
             CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
-
+            //
+            Image imgPlayer = new Image();
             Player.Background = new ImageBrush(croppedBitmap);
         }
 
@@ -458,7 +462,7 @@ namespace Team_Project
             p = Mouse.GetPosition(this);
             double x = (Player.Margin.Left + 50) - p.X;
             double y = (Player.Margin.Top + 50) - p.Y;
-            int maxSpeed = 200;
+            int maxSpeed = 100;
             if (x > maxSpeed) x = maxSpeed;
             else if (x < -maxSpeed) x = -maxSpeed;
             if (y > maxSpeed) y = maxSpeed;
@@ -560,33 +564,39 @@ namespace Team_Project
 
         }
 
-        async void Map_addObjects()
+        void Map_addObjects()
         {
-            BitmapImage img = new BitmapImage();
-            img.BeginInit();
-            img.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\rock-2d.jpg"));
-            img.EndInit();
+
+            ObservableCollection<BitmapImage> imgs = new ObservableCollection<BitmapImage>();
+            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\grass.png")));
+            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree.png")));
+            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree2.png")));
+            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree3.png")));
+            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree4.png")));
+            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree5.png")));
+            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree6.png")));
+
 
             int[,] map = new int[rows, cols]
             {
+                {2,2,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0 },
                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,0,1,0,0,0,0,0,0,1,1,1,1,0,0,0,0 },
-                {0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0 },
-                {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0 },
-                {0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0 },
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0 },
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,1,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0 },
+                {0,0,0,1,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0 },
+                {0,0,0,1,2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1 },
+                {0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2 },
+                {0,0,0,0,0,1,0,0,0,0,0,0,1,1,1,1,0,0,0,1 },
+                {0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,1 },
+                {0,0,0,0,0,0,2,0,0,0,1,0,0,0,0,0,0,0,0,2 },
+                {0,0,0,0,0,0,2,0,0,1,0,2,2,0,0,0,0,0,0,2 },
+                {0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,2 },
+                {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,2 },
+                {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,2 },
+                {0,0,0,0,0,0,1,0,0,3,0,0,0,0,0,0,1,0,0,0 },
+                {2,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0 },
+                {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0 },
+                {0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                {2,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
             };
@@ -594,22 +604,50 @@ namespace Team_Project
             for (int row = 0; row < rows; row++)
             {
                 for (int col = 0; col < cols; col++)
-                {                   
+                {
                     switch (map[col, row])
                     {
                         case 1:
-                            Image image = new Image();
-                            image.Source = img;
-                            image.Width = cellWidth;
-                            image.Height = cellHeight;
-                            Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
-                            Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
+                            {
+                                Image image = new Image();
+                                image.Source = imgs[6];
+                                image.Width = cellWidth;
+                                image.Height = cellHeight;
+                                Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
+                                Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
 
-                            Map_canvas.Children.Add(image);
+                                Map_canvas.Children.Add(image);
+                            }
+
                             break;
-                    }  
+                        case 2:
+                            {
+                                Image image = new Image();
+                                image.Source = imgs[1];
+                                image.Width = cellWidth;
+                                image.Height = cellHeight;
+                                Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
+                                Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
+
+                                Map_canvas.Children.Add(image);
+                            }
+                            break;
+                        case 3:
+                            {
+                                Image image = new Image();
+                                image.Source = imgs[0];
+                                image.Width = cellWidth;
+                                image.Height = cellHeight;
+                                Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
+                                Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
+
+                                Map_canvas.Children.Add(image);
+                            }
+                            break;
+                    }
                 }
             }
+
         }
 
         private void Exit(object sender, RoutedEventArgs e)
