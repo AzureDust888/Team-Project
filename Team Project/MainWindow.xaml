@@ -17,16 +17,22 @@
         KeyDown="Window_KeyDown"
         KeyUp="Window_KeyUp">
     <Canvas x:Name="MainCanvas">
+        <Border x:Name="Map_border">
+            <Canvas x:Name="Map_canvas" Height="{Binding ElementName=BT, Path=ActualHeight}" Width="{Binding ElementName=BT, Path=ActualWidth}"
+                    Margin="{Binding ElementName=BT,Path=Margin}"></Canvas>
+        </Border>
         <Border Width="4000"
                 Height="4000"
                 Canvas.Left="-1600" Canvas.Top="-1783"
                 x:Name="BT"
                 >
-            <Border.Background>
+            
+            <!--<Border.Background>
                 <ImageBrush ImageSource="Resources\ddd.jpg">
 
                 </ImageBrush>
-            </Border.Background>
+            </Border.Background>-->
+            
             <Canvas Width="4000"
                 Height="4000"
                     x:Name="canvas_enemy">

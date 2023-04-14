@@ -42,6 +42,9 @@ namespace Team_Project
             InitializeComponent();
             dir = dir.Parent?.Parent?.Parent;
             mn = this;
+
+            //DrawIsometricGrid(); 
+            TestMap();
         }
         DirectoryInfo? dir = new DirectoryInfo(Directory.GetCurrentDirectory());
 
@@ -65,7 +68,7 @@ namespace Team_Project
             bool isc = true;
             ThicknessAnimation thicknessAnimation;
             Point cord = new Point();
-            public EnemyClass(double hptmp,double mptmp)
+            public EnemyClass(double hptmp, double mptmp)
             {
                 Hp = hptmp;
                 Mp = mptmp;
@@ -132,7 +135,7 @@ namespace Team_Project
                     RepeatBehavior = RepeatBehavior.Forever
 
                 };
-                
+
                 Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
                 storyboard.Children.Add(thicknessAnimation);
                 storyboard.Begin(border);
@@ -141,11 +144,11 @@ namespace Team_Project
                 {
                     while (true)
                     {
-                        
+
                         Dispatcher.Invoke(new Action(() =>
                         {
 
-                          
+
 
                             if (Math.Abs(border.Margin.Left - MainWindow.b.Margin.Left) <= 250 && Math.Abs(border.Margin.Top - MainWindow.b.Margin.Top) <= 250 && isc)
                             {
@@ -157,7 +160,7 @@ namespace Team_Project
 
                                 thicknessAnimation = new ThicknessAnimation
                                 {
-                                    
+
                                     From = new Thickness(border.Margin.Left, border.Margin.Top, 0, 0),
                                     To = new Thickness(tmpLeft, MainWindow.b.Margin.Top, 0, 0),
 
@@ -176,9 +179,9 @@ namespace Team_Project
                             }
                             else
                             {
-                                if(isrunning)
+                                if (isrunning)
                                 {
-                                   
+
                                     thicknessAnimation = new ThicknessAnimation
                                     {
 
@@ -196,9 +199,9 @@ namespace Team_Project
                                     isrunning = false;
                                     isc = false;
                                 }
-                              
-                                
-                                
+
+
+
 
                             }
                             if (Math.Abs(border.Margin.Left - cord.X) >= 500 || Math.Abs(border.Margin.Top - cord.Y) >= 500)
@@ -227,11 +230,11 @@ namespace Team_Project
                                 Hp -= 7;
                                 hp.Value = Hp;
                                 hplabel.Content = Hp.ToString();
-                                if(Hp <= 0)
+                                if (Hp <= 0)
                                 {
                                     ((MainWindow)System.Windows.Application.Current.MainWindow).canvas_enemy.Children.Remove(border);
                                 }
-                        
+
 
                             }
 
@@ -281,17 +284,17 @@ namespace Team_Project
             b.Width = 100;
             b.Height = 100;
             b.Background = Brushes.White;
-            b.Margin = new Thickness(2510, 2265, 0,0);
+            b.Margin = new Thickness(2510, 2265, 0, 0);
 
             Rectangle rectangle = new Rectangle();
-            
-            
-           
+
+
+
             canvas_enemy.Children.Add(b);
-           
+
             for (int i = 0; i < 10; i++)
             {
-                EnemyClass en = new EnemyClass(100,100);
+                EnemyClass en = new EnemyClass(100, 100);
                 canvas_enemy.Children.Add(en.border);
             }
 
@@ -321,7 +324,7 @@ namespace Team_Project
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            
+
         }
 
         ThicknessAnimation ThicknessAnimation(double toLeft, double toTop, double speed)
@@ -383,7 +386,7 @@ namespace Team_Project
         bool isattack = false;
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Q && !isattack)
+            if (e.Key == Key.Q && !isattack)
             {
                 canvas_enemy.Children.Remove(weapon);
                 canvas_enemy.Children.Add(weapon);
@@ -400,7 +403,7 @@ namespace Team_Project
                 rotationAnimation.From = 0;
                 rotationAnimation.To = 360;
                 rotationAnimation.Duration = TimeSpan.FromSeconds(0.3);
-                
+
 
                 Storyboard storyboard = new Storyboard();
                 storyboard.Children.Add(rotationAnimation);
@@ -411,10 +414,10 @@ namespace Team_Project
                 storyboard.Begin();
 
                 weapon.Visibility = Visibility.Visible;
-                weapon.Margin = new Thickness(weapon.Margin.Left + 150, weapon.Margin.Top -10, weapon.Margin.Right, weapon.Margin.Bottom);
+                weapon.Margin = new Thickness(weapon.Margin.Left + 150, weapon.Margin.Top - 10, weapon.Margin.Right, weapon.Margin.Bottom);
                 isattack = true;
             }
-         
+
         }
 
         private void Window_KeyUp(object sender, KeyEventArgs e)
@@ -495,6 +498,79 @@ namespace Team_Project
             r.Begin(b);
 
             Title = Math.Round(b.Margin.Left).ToString() + " " + Math.Round(b.Margin.Top).ToString();
+
+        }
+
+        private void DrawIsometricGrid()
+        {
+            double cellWidth = 256; // ширина ячейки сетки
+            double cellHeight = 128; // высота ячейки сетки
+            double rows = 20; // количество строк
+            double cols = 20; // количество столбцов
+
+            // Рисуем горизонтальные линии
+            for (int row = 0; row <= rows; row++)
+            {
+                double startX = (cols - row) * cellWidth / 2;
+                double startY = row * cellHeight / 2;
+
+                double endX = startX + cols * cellWidth / 2;
+                double endY = startY + cols * cellHeight / 2;
+
+                Polyline polyline = new Polyline();
+                polyline.Points.Add(new Point(startX, startY));
+                polyline.Points.Add(new Point(endX, endY));
+                polyline.Stroke = Brushes.Black;
+
+                Map_canvas.Children.Add(polyline);
+            }
+
+            // Рисуем вертикальные линии
+            for (int col = 0; col <= cols; col++)
+            {
+                double startX = col * cellWidth / 2;
+                double startY = (col + rows) * cellHeight / 2;
+
+                double endX = startX + rows * cellWidth / 2;
+                double endY = startY - rows * cellHeight / 2;
+
+                Polyline polyline = new Polyline();
+                polyline.Points.Add(new Point(startX, startY));
+                polyline.Points.Add(new Point(endX, endY));
+                polyline.Stroke = Brushes.AliceBlue;
+
+                Map_canvas.Children.Add(polyline);
+            }
+        }
+
+        void TestMap()
+        {
+            int cellWidth = 256; // ширина ячейки сетки
+            int cellHeight = 256; // высота ячейки сетки
+            int rows = 20; // количество строк
+            int cols = 20; // количество столбцов
+
+            BitmapImage img2 = new BitmapImage();
+            img2.BeginInit();
+            img2.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\ground1.png"));
+            img2.EndInit();
+
+            for (int row = 0; row < rows; row++)
+            {
+                for (int col = 0; col < cols; col++)
+                {
+                    Image image = new Image();
+                    image.Source = img2;
+
+                    image.Width = cellWidth;
+                    image.Height = cellHeight;
+                    Canvas.SetLeft(image, col * cellWidth / 2 + row * cellWidth / 2);
+                    Canvas.SetTop(image, row * cellHeight / 2 - col * cellHeight / 2);
+
+                    
+                    Map_canvas.Children.Add(image);
+                }
+            }
 
         }
     }
