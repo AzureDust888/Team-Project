@@ -39,12 +39,15 @@
             </Canvas>
         </Border>
 
-        <Border Width="200"
-                Height="200"
+        <Border Width="120"
+                Height="180"
                 x:Name="Player"
                 Margin="910, 482"
-                Background="Transparent"
-                />
+                >
+            <Border.Background>
+                <ImageBrush Stretch="None"/>
+            </Border.Background>
+        </Border>
 
 
         <Border x:Name="Menu_border" Background="Black" Width="400" Height="400" Canvas.Left="760" Canvas.Top="340" Visibility="Hidden">
