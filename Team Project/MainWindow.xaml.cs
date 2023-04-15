@@ -319,11 +319,12 @@ namespace Team_Project
             double y = (player.PLayer_Front_Border.Margin.Top + 50) - p.Y;
             TimerX = x;
             TImerY = y;
-            int maxSpeed = 130;
-            if (x > maxSpeed) x = maxSpeed;
-            else if (x < -maxSpeed) x = -maxSpeed;
-            if (y > maxSpeed) y = maxSpeed;
-            else if (y < -maxSpeed) y = -maxSpeed;
+            double sumXY = Math.Abs(x) + Math.Abs(y);
+            double maxSpeed; 
+            if(sumXY > 400) maxSpeed = sumXY / 333;
+            else maxSpeed = sumXY / 222;
+
+            lab.Content = $"x: {x} y: {y}";
             timer.Stop();
 
             storyboard.Stop();
@@ -347,7 +348,7 @@ namespace Team_Project
             }
             else
             {
-                thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top + y, 0.6);
+                thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top + y, maxSpeed);
             }
 
 
@@ -376,7 +377,7 @@ namespace Team_Project
             }
             else
             {
-                thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left - x, player.Player_Back_Border.Margin.Top - y, 0.6);
+                thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left - x, player.Player_Back_Border.Margin.Top - y, maxSpeed);
             }
             var r = new Storyboard();
 
