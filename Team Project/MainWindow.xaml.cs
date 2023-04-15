@@ -102,70 +102,78 @@ namespace Team_Project
         //
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-
-            canvas_enemy.Children.Remove(weapon);
-            canvas_enemy.Children.Add(weapon);
-            weapon.Margin = player.Player_Back_Border.Margin;
-
-            RotateTransform rotateTransform = new RotateTransform();
-
-            rotateTransform.CenterX = weapon.Width / 2;
-            rotateTransform.CenterY = weapon.Height;
-
-            weapon.RenderTransform = rotateTransform;
-
-            DoubleAnimation rotationAnimation = new DoubleAnimation();
-            rotationAnimation.From = 0;
-            rotationAnimation.To = 120;
-            rotationAnimation.Duration = TimeSpan.FromSeconds(0.1);
-
-
-            Storyboard storyboard = new Storyboard();
-            storyboard.Children.Add(rotationAnimation);
-
-            Storyboard.SetTargetProperty(rotationAnimation, new PropertyPath("(UIElement.RenderTransform).(RotateTransform.Angle)"));
-            Storyboard.SetTarget(storyboard, weapon);
-            storyboard.Completed += (sender, e) => { isattack = false; };
-            storyboard.Begin();
-            storyboard.Completed += delegate { timer.Stop(); };
-            timer.Start();
-            weapon.Visibility = Visibility.Visible;
-
-            p = Mouse.GetPosition(this);
-            double x = (player.PLayer_Front_Border.Margin.Left + 50) - p.X;
-            double y = (player.PLayer_Front_Border.Margin.Top + 50) - p.Y;
-
-            TimerX = x;
-            TImerY = y;
-            if (y > 100)
+            if (!isattack)
             {
-                y = 100;
+                weapon.IsEnabled = true;
+                canvas_enemy.Children.Add(weapon);
+                weapon.Margin = player.Player_Back_Border.Margin;
+
+                RotateTransform rotateTransform = new RotateTransform();
+
+                rotateTransform.CenterX = weapon.Width / 2;
+                rotateTransform.CenterY = weapon.Height;
+
+                weapon.RenderTransform = rotateTransform;
+
+                DoubleAnimation rotationAnimation = new DoubleAnimation();
+                rotationAnimation.From = 0;
+                rotationAnimation.To = 120;
+                rotationAnimation.Duration = TimeSpan.FromSeconds(0.15);
+
+
+                Storyboard storyboard = new Storyboard();
+                storyboard.Children.Add(rotationAnimation);
+
+                Storyboard.SetTargetProperty(rotationAnimation, new PropertyPath("(UIElement.RenderTransform).(RotateTransform.Angle)"));
+                Storyboard.SetTarget(storyboard, weapon);
+                storyboard.Completed += delegate
+                {
+                    timer.Stop();
+                    isattack = false;
+                    weapon.IsEnabled = false;
+                    canvas_enemy.Children.Remove(weapon);
+                };
+                storyboard.Begin();
+                timer.Start();
+                isattack = true;
+
+                p = Mouse.GetPosition(this);
+                double x = (player.PLayer_Front_Border.Margin.Left + 50) - p.X;
+                double y = (player.PLayer_Front_Border.Margin.Top + 50) - p.Y;
+
+                TimerX = x;
+                TImerY = y;
+                if (y > 100)
+                {
+                    y = 100;
+                }
+                else if (y < -100)
+                {
+                    y = -100;
+                }
+
+                if (x > 100)
+                {
+                    x = 100;
+                }
+                else if (x < -100)
+                {
+                    x = -100;
+                }
+
+                weapon.Margin = new Thickness(weapon.Margin.Left - x, weapon.Margin.Top - y, 0, 0);
+
+
+
+
+                //Left top x+ y+
+                //Right top x- y+
+                //Right bottom x- y-
+                //Left bottom x+ y-
+
+
             }
-            else if (y < -100)
-            {
-                y = -100;
-            }
 
-            if (x > 100)
-            {
-                x = 100;
-            }
-            else if (x < -100)
-            {
-                x = -100;
-            }
-
-            weapon.Margin = new Thickness(weapon.Margin.Left - x, weapon.Margin.Top - y, 0, 0);
-
-
-
-
-            //Left top x+ y+
-            //Right top x- y+
-            //Right bottom x- y-
-            //Left bottom x+ y-
-
-            isattack = true;
         }
 
         private void Storyboard_Completed(object? sender, EventArgs e)
@@ -273,10 +281,10 @@ namespace Team_Project
 
         private void Window_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            canvas_enemy.Children.Remove(weapon);
+            /*canvas_enemy.Children.Remove(weapon);
             weapon.Visibility = Visibility.Hidden;
 
-            isattack = false;
+            isattack = false;*/
         }
 
 
