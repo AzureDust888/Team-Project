@@ -38,27 +38,39 @@ namespace Team_Project
         Storyboard storyboards = new Storyboard();
         Storyboard storyboard = new Storyboard();
         public static MainWindow mn = new MainWindow();
+        public static Player player;
+        public static string dirname = "";
+        public DirectoryInfo? dir;
         public MainWindow()
         {
 
             this.DataContext = this;
+           
+           
             InitializeComponent();
+            dir = new DirectoryInfo(Directory.GetCurrentDirectory());
             dir = dir.Parent?.Parent?.Parent;
-            mn = this;
+            dirname = dir.FullName;
 
+            player = new Player("p1", 100, 100, 1, 0);
+            PlayerHp.DataContext = player;
+            mn = this;
+           
             TestMap();
             Map_addObjects();
 
             
         }
-        DirectoryInfo? dir = new DirectoryInfo(Directory.GetCurrentDirectory());
+        
 
-
+       
         public class EnemyClass : MainWindow
         {
             public string Name { get; set; }
             public double Hp { get; set; }
+            public double MaxHp { get; set; }
             public double Mp { get; set; }
+            public double MaxMp { get; set; }
             public int Lvl { get; set; }
             public double Exp { get; set; }
 
@@ -180,19 +192,19 @@ namespace Team_Project
 
                         
 
-                                if (Math.Abs(border.Margin.Left - MainWindow.b.Margin.Left) <= 250 && Math.Abs(border.Margin.Top - MainWindow.b.Margin.Top) <= 250 && isc)
+                                if (Math.Abs(border.Margin.Left - MainWindow.player.Player_Back_Border.Margin.Left) <= 250 && Math.Abs(border.Margin.Top - MainWindow.player.Player_Back_Border.Margin.Top) <= 250 && isc)
                             {
                                 storyboard.Pause();
                                 double tmpLeft = 0;
                                 double tmpTop = 0;
-                                if (border.Margin.Left > MainWindow.b.Margin.Left) tmpLeft = MainWindow.b.Margin.Left + 90;
-                                else tmpLeft = MainWindow.b.Margin.Left - 90;
+                                if (border.Margin.Left > MainWindow.player.Player_Back_Border.Margin.Left) tmpLeft = MainWindow.player.Player_Back_Border.Margin.Left + 90;
+                                else tmpLeft = MainWindow.player.Player_Back_Border.Margin.Left - 90;
 
                                 thicknessAnimation = new ThicknessAnimation
                                 {
 
                                     From = new Thickness(border.Margin.Left, border.Margin.Top, 0, 0),
-                                    To = new Thickness(tmpLeft, MainWindow.b.Margin.Top, 0, 0),
+                                    To = new Thickness(tmpLeft, MainWindow.player.Player_Back_Border.Margin.Top, 0, 0),
 
                                     Duration = TimeSpan.FromSeconds(0.7),
 
@@ -287,7 +299,7 @@ namespace Team_Project
 
                             }
 
-                            if (Math.Abs(border.Margin.Left - MainWindow.b.Margin.Left) <= 120 && Math.Abs(border.Margin.Top - MainWindow.b.Margin.Top) <= 10 && isc) // Mob attack
+                            if (Math.Abs(border.Margin.Left - MainWindow.player.Player_Back_Border.Margin.Left) <= 120 && Math.Abs(border.Margin.Top - MainWindow.player.Player_Back_Border.Margin.Top) <= 10 && isc) // Mob attack
                             {
                                 //MessageBox.Show("Hit");
                             }
@@ -328,10 +340,12 @@ namespace Team_Project
             }
         }
 
-        public static Border b = new Border();
+        
         public static Border weapon = new Border();
+       
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            
             timer.Interval = TimeSpan.FromSeconds(0.08);
             timer.Tick += Timer_Event_on_Tick;
            
@@ -340,18 +354,13 @@ namespace Team_Project
             weapon.Width = 60;
             weapon.Height = 120;
             weapon.Background = Brushes.Lime;
-            b.Width = 100;
-            b.Height = 100;
-            b.Background = Brushes.Transparent;
-            b.Margin = new Thickness(2510, 2265, 0, 0);
 
-            Rectangle rectangle = new Rectangle();
             //NIghtBorder.Visibility = Visibility.Hidden;
             //NIghtBorder2.Visibility = Visibility.Hidden;
             //NIghtBorder.Background = new SolidColorBrush(Color.FromArgb(100,0,0,0));
             //NIghtBorder2.BorderBrush = new SolidColorBrush(Color.FromArgb(200, 0, 0, 0));
-            canvas_enemy.Children.Add(b);
-
+            canvas_enemy.Children.Add(player.Player_Back_Border);
+            MainCanvas.Children.Add(player.PLayer_Front_Border);
             for (int i = 0; i < 10; i++)
             {
                 EnemyClass en = new EnemyClass(100, 100,$"Cerberus");
@@ -367,15 +376,6 @@ namespace Team_Project
 
             weapon.Background = new ImageBrush(img2);
 
-            BitmapImage img = new BitmapImage(new Uri(dir.FullName + "\\Resources\\player_topchik.png"));
-
-            //кусок картинки
-            Int32Rect cropRect = new Int32Rect(0, 0, 120, 180);
-            CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
-            //
-            Player.Background = new ImageBrush(croppedBitmap);
-
-            Collision_objects();
         }
 
 
@@ -387,7 +387,7 @@ namespace Team_Project
           
             canvas_enemy.Children.Remove(weapon);
             canvas_enemy.Children.Add(weapon);
-            weapon.Margin = b.Margin;
+            weapon.Margin = player.Player_Back_Border.Margin;
 
             RotateTransform rotateTransform = new RotateTransform();
 
@@ -414,8 +414,8 @@ namespace Team_Project
             weapon.Visibility = Visibility.Visible;
 
             p = Mouse.GetPosition(this);
-            double x = (Player.Margin.Left + 50) - p.X;
-            double y = (Player.Margin.Top + 50) - p.Y;
+            double x = (player.PLayer_Front_Border.Margin.Left + 50) - p.X;
+            double y = (player.PLayer_Front_Border.Margin.Top + 50) - p.Y;
 
             TimerX = x;
             TImerY = y;
@@ -512,7 +512,7 @@ namespace Team_Project
 
                     CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
 
-                    Player.Background = new ImageBrush(croppedBitmap);
+                    player.PLayer_Front_Border.Background = new ImageBrush(croppedBitmap);
 
                     ux += 137;
                    
@@ -544,7 +544,7 @@ namespace Team_Project
             var thicknessAnimation = new ThicknessAnimation
             {
 
-                From = new Thickness(b.Margin.Left, b.Margin.Top, b.Margin.Right, b.Margin.Bottom),
+                From = new Thickness(player.Player_Back_Border.Margin.Left, player.Player_Back_Border.Margin.Top, player.Player_Back_Border.Margin.Right, player.Player_Back_Border.Margin.Bottom),
                 To = new Thickness(toLeft, toTop, 0, 0),
 
                 Duration = TimeSpan.FromSeconds(speed),
@@ -562,27 +562,7 @@ namespace Team_Project
         }
 
 
-        class Chelovek
-        {
-            public string Name { get; set; }
-            public double Hp { get; set; }
-            public double Mp { get; set; }
-            public int Lvl { get; set; }
-            public double Exp { get; set; }
-            public Chelovek()
-            {
-
-            }
-            public Chelovek(string name, double hp, double mp, int lvl, double exp)
-            {
-                Name = name;
-                Hp = hp;
-                Mp = mp;
-                Lvl = lvl;
-                Exp = exp;
-            }
-        }
-
+       
         bool isattack = false;
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
@@ -609,8 +589,8 @@ namespace Team_Project
         private void Window_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             p = Mouse.GetPosition(this);
-            double x = (Player.Margin.Left + 50) - p.X;
-            double y = (Player.Margin.Top + 50) - p.Y;
+            double x = (player.PLayer_Front_Border.Margin.Left + 50) - p.X;
+            double y = (player.PLayer_Front_Border.Margin.Top + 50) - p.Y;
             TimerX = x;
             TImerY = y;
             int maxSpeed = 130;
@@ -623,19 +603,19 @@ namespace Team_Project
             storyboard.Stop();
             ThicknessAnimation thicknessAnimation;
             ThicknessAnimation thicknessAnimation2;
-            if (b.Margin.Left <= 100)
+            if (player.Player_Back_Border.Margin.Left <= 100)
             {
                 thicknessAnimation = ThicknessAnimation(0, BT.Margin.Top, 0);
             }
-            else if (b.Margin.Top <= 100)
+            else if (player.Player_Back_Border.Margin.Top <= 100)
             {
                 thicknessAnimation = ThicknessAnimation(BT.Margin.Left, 0, 0);
             }
-            else if (b.Margin.Left >= BT.Width - 200)
+            else if (player.Player_Back_Border.Margin.Left >= BT.Width - 200)
             {
                 thicknessAnimation = ThicknessAnimation(0, BT.Margin.Top, 0);
             }
-            else if (b.Margin.Top >= BT.Width - 200)
+            else if (player.Player_Back_Border.Margin.Top >= BT.Width - 200)
             {
                 thicknessAnimation = ThicknessAnimation(BT.Margin.Left, 0, 0);
             }
@@ -645,39 +625,40 @@ namespace Team_Project
             }
 
 
+            
             Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
             storyboard.Children.Add(thicknessAnimation);
             storyboard.Begin(BT);
 
             storyboard.Completed += delegate { timer.Stop(); };
 
-            if (b.Margin.Top <= 100)//2512, 2266
+            if (player.Player_Back_Border.Margin.Top <= 100)//2512, 2266
             {
-                thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left, 2265, 0);
+                thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left, 2265, 0);
             }
-            else if (b.Margin.Top >= BT.Width - 200)
+            else if (player.Player_Back_Border.Margin.Top >= BT.Width - 200)
             {
-                thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left, 2265, 0);
+                thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left, 2265, 0);
             }
-            else if (b.Margin.Left >= BT.Width - 200)
+            else if (player.Player_Back_Border.Margin.Left >= BT.Width - 200)
             {
-                thicknessAnimation2 = ThicknessAnimation2(2510, b.Margin.Top, 0);
+                thicknessAnimation2 = ThicknessAnimation2(2510, player.Player_Back_Border.Margin.Top, 0);
             }
-            else if (b.Margin.Left <= 100)
+            else if (player.Player_Back_Border.Margin.Left <= 100)
             {
-                thicknessAnimation2 = ThicknessAnimation2(2510, b.Margin.Top, 0);
+                thicknessAnimation2 = ThicknessAnimation2(2510, player.Player_Back_Border.Margin.Top, 0);
             }
             else
             {
-                thicknessAnimation2 = ThicknessAnimation2(b.Margin.Left - x, b.Margin.Top - y, 0.6);
+                thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left - x, player.Player_Back_Border.Margin.Top - y, 0.6);
             }
             var r = new Storyboard();
 
             Storyboard.SetTargetProperty(thicknessAnimation2, new PropertyPath(FrameworkElement.MarginProperty));
             r.Children.Add(thicknessAnimation2);
-            r.Begin(b);
+            r.Begin(player.Player_Back_Border);
             timer.Start();
-            Title = Math.Round(b.Margin.Left).ToString() + " " + Math.Round(b.Margin.Top).ToString();
+            Title = Math.Round(player.Player_Back_Border.Margin.Left).ToString() + " " + Math.Round(player.Player_Back_Border.Margin.Top).ToString();
         }
 
         int cellWidth = 256; // ширина ячейки сетки
@@ -765,6 +746,7 @@ namespace Team_Project
                                 Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
 
                                 MapItems_canvas.Children.Add(image);
+
                             }
 
                             break;

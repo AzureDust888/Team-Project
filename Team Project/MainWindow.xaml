@@ -17,7 +17,7 @@
         KeyDown="Window_KeyDown"
         KeyUp="Window_KeyUp">
     <Window.Resources>
-        
+
     </Window.Resources>
     <Canvas x:Name="MainCanvas" Background="Transparent">
         <Border x:Name="Map_border">
@@ -45,15 +45,15 @@
             </Canvas>
         </Border>
 
-        <Border Width="120"
+        <!--<Border Width="120"
                 Height="180"
-                x:Name="Player"
+                x:Name="Playerp"
                 Margin="910, 482"
                 >
             <Border.Background>
                 <ImageBrush Stretch="None"/>
             </Border.Background>
-        </Border>
+        </Border>-->
         <!--<Border x:Name="NIghtBorder"
                         Width="4000"
                         Height="4000" d:IsHidden="True"
@@ -79,6 +79,29 @@
                 <Label x:Name="lab" Height="200" Width="100" Foreground="White" ></Label>
             </Grid>
         </Border>
-       
+
+        <Border Width="1200"
+                Height="200"
+                Background="MediumAquamarine" Canvas.Left="360"
+                Canvas.Top="880"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                CornerRadius="400,400,0,0">
+            <Canvas Width="1200"
+                    Height="200"
+                    >
+                <ProgressBar x:Name="PlayerHp" Value="{Binding Hp}" 
+                             Maximum="{Binding MaxHp}"
+                             Height="50"
+                             Width="600"
+                             >
+                    <ProgressBar.Style>
+                        <Style TargetType="{x:Type ProgressBar}">
+                            
+                        </Style>
+                    </ProgressBar.Style>
+                </ProgressBar>
+            </Canvas>
+        </Border>
     </Canvas>
 </Window>
