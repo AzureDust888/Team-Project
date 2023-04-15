@@ -374,10 +374,10 @@ namespace Team_Project
 
         }
 
-
+        //
         double x_cord = 0;
         double y_cord = 0;
-
+        //
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (!isattack)
