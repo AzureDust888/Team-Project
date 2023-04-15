@@ -80,7 +80,7 @@
         <Border Width="1200"
                 Height="200"
                 Background="MediumAquamarine" Canvas.Left="360"
-                Canvas.Top="880"
+                Canvas.Top="890"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 CornerRadius="400,400,0,0">
@@ -91,6 +91,7 @@
                              Maximum="{Binding MaxHp}"
                              Height="50"
                              Width="600"
+                             Margin="300,30"
                              >
                     <ProgressBar.Style>
                         <Style TargetType="{x:Type ProgressBar}">
