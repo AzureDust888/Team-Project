@@ -14,8 +14,7 @@
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
         MouseLeftButtonUp="Window_MouseLeftButtonUp"
         Background="SandyBrown"
-        KeyDown="Window_KeyDown"
-        KeyUp="Window_KeyUp">
+        KeyUp="Window_KeyUp" KeyDown="Window_KeyDown">
     <Window.Resources>
 
     </Window.Resources>
