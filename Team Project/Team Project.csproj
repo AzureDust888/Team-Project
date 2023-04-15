@@ -24,11 +24,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Remove="Dictionary1.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="NEST" Version="7.17.5" />
     <PackageReference Include="System.Management" Version="7.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Dictionary1.xaml" />
     <Resource Include="Resources\ddd.jpg" />
     <Resource Include="Resources\dragon.png" />
     <Resource Include="Resources\ground1.PNG" />

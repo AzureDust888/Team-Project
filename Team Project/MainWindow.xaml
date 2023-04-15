@@ -16,6 +16,9 @@
         Background="SandyBrown"
         KeyDown="Window_KeyDown"
         KeyUp="Window_KeyUp">
+    <Window.Resources>
+        
+    </Window.Resources>
     <Canvas x:Name="MainCanvas" Background="Transparent">
         <Border x:Name="Map_border">
             <Canvas x:Name="Map_canvas" Height="{Binding ElementName=BT, Path=ActualHeight}" Width="{Binding ElementName=BT, Path=ActualWidth}"

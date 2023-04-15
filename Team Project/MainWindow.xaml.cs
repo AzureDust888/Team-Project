@@ -84,6 +84,7 @@ namespace Team_Project
 
                 ProgressBar hp = new ProgressBar()
                 {
+
                     BorderThickness = new Thickness(0),
                     Foreground = new SolidColorBrush(Color.FromArgb(200, 108, 167, 28)),
                     Maximum = Hp,
@@ -91,8 +92,9 @@ namespace Team_Project
                     Width = 100,
                     Height = 20,
                     Margin = new Thickness(0, 0, 0, 0),
-                    Background = Brushes.Transparent,
+                    Style = (Style)FindResource("Enemy_Hp_ProgressBar"),
                 };
+                
                 ProgressBar mp = new ProgressBar()
                 {
                     BorderThickness = new Thickness(0),
@@ -102,7 +104,7 @@ namespace Team_Project
                     Width = 100,
                     Height = 20,
                     Margin = new Thickness(0, 20, 0, 0),
-                    Background = Brushes.Transparent,
+                    Style = (Style)FindResource("Enemy_Hp_ProgressBar"),
                 };
                 Label hplabel = new Label()
                 {
