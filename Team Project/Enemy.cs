@@ -215,38 +215,39 @@ namespace Team_Project
 
                         if (Math.Abs(border.Margin.Left - MainWindow.weapon.Margin.Left) <= 120 && Math.Abs(border.Margin.Top - MainWindow.weapon.Margin.Top) <= 120 && isc)
                         {
-
                             //border.Background = Brushes.Red;
-                            Hp -= 40;
-                            hp.Value = Hp;
-                            hplabel.Content = Hp.ToString();
-                            if (Hp <= 0 && ift)
+                            if (MainWindow.weapon.IsEnabled == true)
                             {
-                                BitmapImage img = new BitmapImage(new Uri(dir.FullName + "\\Resources\\cerberus.png"));
+                                Hp -= 40;
+                                if (Hp < 0) Hp = 0;
+                                hp.Value = Hp;
+                                hplabel.Content = Hp.ToString();
 
-
-                                //кусок картинки
-                                Int32Rect cropRect = new Int32Rect(1020, 1010, 100, 50);
-                                CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
-
-                                border.Background = new ImageBrush(croppedBitmap);
-                                storyboard.Stop();
-                                storyboard2.Stop();
-                                storyboard3.Stop();
-                                storyboard4.Stop();
-                                storyboard5.Stop();
-
-                                await Task.Delay(1000);
-                                ((MainWindow)System.Windows.Application.Current.MainWindow).canvas_enemy.Children.Remove(border);
-
-                                EnemyClass newen = new EnemyClass(100, 750, "SUPER Cerberus");
-                                ((MainWindow)System.Windows.Application.Current.MainWindow).canvas_enemy.Children.Add(newen.border);
-                                ift = false;
                             }
-
-
                         }
+                        if (Hp <= 0 && ift)
+                        {
+                            BitmapImage img = new BitmapImage(new Uri(dir.FullName + "\\Resources\\cerberus.png"));
 
+
+                            //кусок картинки
+                            Int32Rect cropRect = new Int32Rect(1020, 1010, 100, 50);
+                            CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
+
+                            border.Background = new ImageBrush(croppedBitmap);
+                            storyboard.Stop();
+                            storyboard2.Stop();
+                            storyboard3.Stop();
+                            storyboard4.Stop();
+                            storyboard5.Stop();
+
+                            await Task.Delay(1000);
+                            ((MainWindow)System.Windows.Application.Current.MainWindow).canvas_enemy.Children.Remove(border);
+
+                            EnemyClass newen = new EnemyClass(100, 750, "SUPER Cerberus");
+                            ((MainWindow)System.Windows.Application.Current.MainWindow).canvas_enemy.Children.Add(newen.border);
+                            ift = false;
+                        }
                         if (Math.Abs(border.Margin.Left - MainWindow.player.Player_Back_Border.Margin.Left) <= 120 && Math.Abs(border.Margin.Top - MainWindow.player.Player_Back_Border.Margin.Top) <= 10 && isc) // Mob attack
                         {
                             //MessageBox.Show("Hit");
@@ -254,7 +255,7 @@ namespace Team_Project
 
 
                     }));
-                    Thread.Sleep(500);
+                    Thread.Sleep(200);
                 }
             });
 
