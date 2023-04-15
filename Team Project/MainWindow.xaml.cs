@@ -360,11 +360,19 @@ namespace Team_Project
             double y = (player.PLayer_Front_Border.Margin.Top + 50) - p.Y;
             TimerX = x;
             TImerY = y;
+
             int maxSpeed = 140;
             if (x > maxSpeed) x = maxSpeed;
             else if (x < -maxSpeed) x = -maxSpeed;
             if (y > maxSpeed) y = maxSpeed;
             else if (y < -maxSpeed) y = -maxSpeed;
+
+            double sumXY = Math.Abs(x) + Math.Abs(y);
+            double maxSpeed; 
+            if(sumXY > 400) maxSpeed = sumXY / 333;
+            else maxSpeed = sumXY / 222;
+
+            lab.Content = $"x: {x} y: {y}";
             timer.Stop();
             storyboard.Stop();
             ThicknessAnimation thicknessAnimation;
@@ -400,6 +408,7 @@ namespace Team_Project
                     thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top + y, 0.6); ;
                 }
                 
+                thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top + y, maxSpeed);
             }
 
 
@@ -428,6 +437,7 @@ namespace Team_Project
             }
             else
             {
+
                 if (!canmoveleft && x > 0)
                 {
                     thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left, player.Player_Back_Border.Margin.Top - y, 0.6);
@@ -443,6 +453,9 @@ namespace Team_Project
                     canmoveleft = true;
                 }
                     
+
+                thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left - x, player.Player_Back_Border.Margin.Top - y, maxSpeed);
+
             }
            
             var r = new Storyboard();
@@ -504,15 +517,13 @@ namespace Team_Project
         }
         void Map_addObjects()
         {
-
             ObservableCollection<BitmapImage> imgs = new ObservableCollection<BitmapImage>();
-            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\grass.png")));
-            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree.png")));
-            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree2.png")));
-            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree3.png")));
-            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree4.png")));
-            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree5.png")));
-            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree6.png")));
+            string[] files = Directory.GetFiles(dir.FullName + "\\Resources\\", "*.png");
+            foreach (string file in files)
+            {
+                BitmapImage img = new BitmapImage(new Uri(file));
+                imgs.Add(img);
+            }
 
 
             int[,] map = new int[rows, cols]
@@ -543,46 +554,16 @@ namespace Team_Project
             {
                 for (int col = 0; col < cols; col++)
                 {
-                    switch (map[col, row])
+                    if (map[col, row] >= 8)
                     {
-                        case 1:
-                            {
-                                Image image = new Image();
-                                image.Source = imgs[6];
-                                image.Width = cellWidth;
-                                image.Height = cellHeight;
-                                Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
-                                Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
+                        Image image = new Image();
+                        image.Source = imgs[map[col, row]];
+                        image.Width = cellWidth;
+                        image.Height = cellHeight;
+                        Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
+                        Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
 
-                                MapItems_canvas.Children.Add(image);
-
-                            }
-
-                            break;
-                        case 2:
-                            {
-                                Image image = new Image();
-                                image.Source = imgs[1];
-                                image.Width = cellWidth;
-                                image.Height = cellHeight;
-                                Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
-                                Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
-
-                                MapItems_canvas.Children.Add(image);
-                            }
-                            break;
-                        case 3:
-                            {
-                                Image image = new Image();
-                                image.Source = imgs[0];
-                                image.Width = cellWidth;
-                                image.Height = cellHeight;
-                                Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
-                                Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
-
-                                MapItems_canvas.Children.Add(image);
-                            }
-                            break;
+                        MapItems_canvas.Children.Add(image);
                     }
                 }
             }
