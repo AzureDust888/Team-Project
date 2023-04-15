@@ -1,4 +1,4 @@
-﻿
+
 using Elasticsearch.Net;
 using Nest;
 using System;
@@ -49,6 +49,8 @@ namespace Team_Project
             dirname = dir.FullName;
             TestMap();
             Map_addObjects();
+
+            
         }
         public DirectoryInfo? dir = new DirectoryInfo(Directory.GetCurrentDirectory());
 
@@ -366,7 +368,6 @@ namespace Team_Project
             weapon.Background = new ImageBrush(img2);
 
             PlayerHp.DataContext = player;
-
 
         }
 
@@ -736,8 +737,9 @@ namespace Team_Project
                                 image.Height = cellHeight;
                                 Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
                                 Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
-                                
-                                Map_canvas.Children.Add(image);
+
+                                MapItems_canvas.Children.Add(image);
+
                             }
 
                             break;
@@ -750,7 +752,7 @@ namespace Team_Project
                                 Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
                                 Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
 
-                                Map_canvas.Children.Add(image);
+                                MapItems_canvas.Children.Add(image);
                             }
                             break;
                         case 3:
@@ -762,7 +764,7 @@ namespace Team_Project
                                 Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
                                 Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
 
-                                Map_canvas.Children.Add(image);
+                                MapItems_canvas.Children.Add(image);
                             }
                             break;
                     }
@@ -781,6 +783,41 @@ namespace Team_Project
                     p.Kill();
             }
         }
+
+        async void Collision_objects()
+        {
+            
+            await Task.Factory.StartNew(() =>
+            {         
+                while (true)
+                {
+                Dispatcher.Invoke(() =>
+                {
+                    foreach (var child in MapItems_canvas.Children)
+                    {
+                        Image s = new Image();
+                        if (child is Image)
+                        {
+                            s = child as Image;
+                            lab.Content = (Canvas.GetLeft(s).ToString() + " , " + b.Margin.Left.ToString());
+                            /*if (Math.Abs(s.Margin.Left - MainWindow.b.Margin.Left) <= 120 && Math.Abs(s.Margin.Top - MainWindow.b.Margin.Top) <= 10) */
+                            if (Math.Abs(Canvas.GetLeft(s) - MainWindow.b.Margin.Left) <= 120 && Math.Abs(Canvas.GetTop(s) - MainWindow.b.Margin.Top) <= 10)
+                            {
+                                MessageBox.Show("Hit");
+                                
+                            }
+                        }
+                        
+                    }                
+                });
+                    Thread.Sleep(1000);
+                }
+            });
+        }
+
+
+
+
 
     }
 }
