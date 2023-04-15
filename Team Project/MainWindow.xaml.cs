@@ -75,7 +75,7 @@ namespace Team_Project
             //NIghtBorder.Background = new SolidColorBrush(Color.FromArgb(100,0,0,0));
             //NIghtBorder2.BorderBrush = new SolidColorBrush(Color.FromArgb(200, 0, 0, 0));
             canvas_enemy.Children.Add(player.Player_Back_Border);
-            MainCanvas.Children.Add(player.PLayer_Front_Border);
+            Player_Canvas.Children.Add(player.PLayer_Front_Border);
             for (int i = 0; i < 10; i++)
             {
                 EnemyClass en = new EnemyClass(100, 100, $"Cerberus");
