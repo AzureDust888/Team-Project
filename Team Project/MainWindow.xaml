@@ -69,11 +69,14 @@
                 
                         >
         </Border>-->
-        
 
+        <Canvas x:Name="MapItems_canvas" Height="{Binding ElementName=BT, Path=ActualHeight}" Width="{Binding ElementName=BT, Path=ActualWidth}"
+                    Margin="{Binding ElementName=BT,Path=Margin}">
+        </Canvas>
         <Border x:Name="Menu_border" Background="Black" Width="400" Height="400" Canvas.Left="760" Canvas.Top="340" Visibility="Hidden">
             <Grid>
                 <Button Content="Exit" Click="Exit" Width="100" Height="40" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="White" FontSize="20" />
+                <Label x:Name="lab" Height="200" Width="100" Foreground="White" ></Label>
             </Grid>
         </Border>
        
