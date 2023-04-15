@@ -56,6 +56,7 @@ namespace Team_Project
 
         public static string dirname;
 
+
         public static Border weapon = new Border();
         public static Player player = new Player("alex", 175, 100, 1, 0);
         private async void Window_Loaded(object sender, RoutedEventArgs e)
