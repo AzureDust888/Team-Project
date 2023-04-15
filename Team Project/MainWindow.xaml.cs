@@ -95,7 +95,7 @@ namespace Team_Project
             PlayerMp.DataContext = player;
         }
 
-
+        //
         double x_cord = 0;
         double y_cord = 0;
 
