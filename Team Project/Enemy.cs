@@ -244,8 +244,6 @@ namespace Team_Project
                             await Task.Delay(1000);
                             ((MainWindow)System.Windows.Application.Current.MainWindow).canvas_enemy.Children.Remove(border);
 
-                            EnemyClass newen = new EnemyClass(100, 750, "SUPER Cerberus");
-                            ((MainWindow)System.Windows.Application.Current.MainWindow).canvas_enemy.Children.Add(newen.border);
                             ift = false;
                         }
                         if (Math.Abs(border.Margin.Left - MainWindow.player.Player_Back_Border.Margin.Left) <= 120 && Math.Abs(border.Margin.Top - MainWindow.player.Player_Back_Border.Margin.Top) <= 10 && isc) // Mob attack
