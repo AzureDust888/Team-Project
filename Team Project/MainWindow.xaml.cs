@@ -76,7 +76,7 @@ namespace Team_Project
             bool isc = true;
             ThicknessAnimation thicknessAnimation;
             Point cord = new Point();
-            public EnemyClass(double hptmp, double mptmp,string nametmp)
+            public EnemyClass(double hptmp, double mptmp, string nametmp)
             {
                 Name = nametmp;
                 Name += "    lvl " + Lvl.ToString();
@@ -99,7 +99,7 @@ namespace Team_Project
                     Margin = new Thickness(0, 0, 0, 0),
                     Style = (Style)FindResource("Enemy_Hp_ProgressBar"),
                 };
-                
+
                 ProgressBar mp = new ProgressBar()
                 {
                     BorderThickness = new Thickness(0),
@@ -178,12 +178,12 @@ namespace Team_Project
                     while (ift)
                     {
 
-                        Dispatcher.Invoke( new Action(async () =>
+                        Dispatcher.Invoke(new Action(async () =>
                         {
 
-                        
 
-                                if (Math.Abs(border.Margin.Left - MainWindow.player.Player_Back_Border.Margin.Left) <= 250 && Math.Abs(border.Margin.Top - MainWindow.player.Player_Back_Border.Margin.Top) <= 250 && isc)
+
+                            if (Math.Abs(border.Margin.Left - MainWindow.player.Player_Back_Border.Margin.Left) <= 250 && Math.Abs(border.Margin.Top - MainWindow.player.Player_Back_Border.Margin.Top) <= 250 && isc)
                             {
                                 storyboard.Pause();
                                 double tmpLeft = 0;
@@ -205,8 +205,136 @@ namespace Team_Project
 
                                 //border.Background = Brushes.Yellow;
 
+                                Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
+                                storyboard2.Children.Add(thicknessAnimation);
+                                storyboard2.Begin(border);
+                                isrunning = true;
+                            }
+                            else
+                            {
+                                if (isrunning)
+                                {
+
+                                    thicknessAnimation = new ThicknessAnimation
+                                    {
+
+                                        From = new Thickness(border.Margin.Left, border.Margin.Top, 0, 0),
+                                        To = new Thickness(cord.X, cord.Y, 0, 0),
+
+                                        Duration = TimeSpan.FromSeconds(2)
+
+                                    };
+
+                                    Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
+                                    storyboard4.Children.Add(thicknessAnimation);
+                                    storyboard4.Begin(border);
+                                    //border.Background = Brushes.Black;
+                                    isrunning = false;
+                                    isc = false;
+                                }
+
+
+
+
+                            }
+                            if (Math.Abs(border.Margin.Left - cord.X) >= 500 || Math.Abs(border.Margin.Top - cord.Y) >= 500)
+                            {
+                                thicknessAnimation = new ThicknessAnimation
+                                {
+
+                                    From = new Thickness(border.Margin.Left, border.Margin.Top, 0, 0),
+                                    To = new Thickness(cord.X, cord.Y, 0, 0),
+
+                                    Duration = TimeSpan.FromSeconds(2)
+
+                                };
+
+                                Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
+                                storyboard5.Children.Add(thicknessAnimation);
+                                storyboard5.Begin(border);
+                                //border.Background = Brushes.Black;
+                                isc = false;
+                            }
+
+                            if (Math.Abs(border.Margin.Left - MainWindow.weapon.Margin.Left) <= 120 && Math.Abs(border.Margin.Top - MainWindow.weapon.Margin.Top) <= 120 && isc)
+                            {
+                                //border.Background = Brushes.Red;
+                                if (MainWindow.weapon.IsEnabled == true)
+                                {
+                                    Hp -= 40;
+                                    if (Hp < 0) Hp = 0;
+                                    hp.Value = Hp;
+                                    hplabel.Content = Hp.ToString();
+
+                                }
+                            }
+                            if (Hp <= 0 && ift)
+                            {
+                                BitmapImage img = new BitmapImage(new Uri(dir.FullName + "\\Resources\\cerberus.png"));
+
+
+                                //кусок картинки
+                                Int32Rect cropRect = new Int32Rect(1020, 1010, 100, 50);
+                                CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
+
+                                border.Background = new ImageBrush(croppedBitmap);
+                                storyboard.Stop();
+                                storyboard2.Stop();
+                                storyboard3.Stop();
+                                storyboard4.Stop();
+                                storyboard5.Stop();
+
+                                await Task.Delay(1000);
+                                ((MainWindow)System.Windows.Application.Current.MainWindow).canvas_enemy.Children.Remove(border);
+
+                                EnemyClass newen = new EnemyClass(100, 750, "SUPER Cerberus");
+                                ((MainWindow)System.Windows.Application.Current.MainWindow).canvas_enemy.Children.Add(newen.border);
+                                ift = false;
+                            }
+                            if (Math.Abs(border.Margin.Left - MainWindow.player.Player_Back_Border.Margin.Left) <= 120 && Math.Abs(border.Margin.Top - MainWindow.player.Player_Back_Border.Margin.Top) <= 10 && isc) // Mob attack
+                            {
+                                //MessageBox.Show("Hit");
+                            }
+
+
+                        }));
+                        Thread.Sleep(200);
+                    }
+                });
+
+            }
+
+            private void Storyboard_Completed(object? sender, EventArgs e)
+            {
+                isc = true;
+                thicknessAnimation = new ThicknessAnimation
+                {
+
+                    From = new Thickness(cord.X, cord.Y, 0, 0),
+                    To = new Thickness(cord.X + 200, cord.Y + 200, 0, 0),
+
+                    Duration = TimeSpan.FromSeconds(2),
+
+                    AutoReverse = true,
+
+                    RepeatBehavior = RepeatBehavior.Forever
+
+                };
+
+                Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
+                storyboard3.Children.Add(thicknessAnimation);
+                storyboard3.Begin(border);
+            }
+
+            public void stop_s()
+            {
+                storyboard.Stop();
+            }
+        }
+
+
         public static Border weapon = new Border();
-        public static Player player = new Player("alex", 175, 100, 1, 0);
+        public static Player player = new Player("alex", 100, 100, 1, 0);
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
@@ -241,7 +369,7 @@ namespace Team_Project
             weapon.Background = new ImageBrush(img2);
 
             PlayerHp.DataContext = player;
-            PlayerMp.DataContext = player;
+
         }
 
 
@@ -255,7 +383,6 @@ namespace Team_Project
                 weapon.IsEnabled = true;
                 canvas_enemy.Children.Add(weapon);
                 weapon.Margin = player.Player_Back_Border.Margin;
-
 
                 RotateTransform rotateTransform = new RotateTransform();
 
@@ -275,14 +402,14 @@ namespace Team_Project
 
                 Storyboard.SetTargetProperty(rotationAnimation, new PropertyPath("(UIElement.RenderTransform).(RotateTransform.Angle)"));
                 Storyboard.SetTarget(storyboard, weapon);
-                storyboard.Completed += delegate 
+                storyboard.Completed += delegate
                 {
-                    timer.Stop(); 
+                    timer.Stop();
                     isattack = false;
                     weapon.IsEnabled = false;
                     canvas_enemy.Children.Remove(weapon);
                 };
-                storyboard.Begin();               
+                storyboard.Begin();
                 timer.Start();
                 isattack = true;
 
@@ -665,6 +792,11 @@ namespace Team_Project
                     p.Kill();
             }
         }
+
+
+
+
+
 
     }
 }
