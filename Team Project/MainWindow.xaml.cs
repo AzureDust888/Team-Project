@@ -50,7 +50,7 @@ namespace Team_Project
             TestMap();
             Map_addObjects();
 
-
+            Mini_map();
         }
         public DirectoryInfo? dir = new DirectoryInfo(Directory.GetCurrentDirectory());
 
@@ -387,17 +387,19 @@ namespace Team_Project
             Title = Math.Round(player.Player_Back_Border.Margin.Left).ToString() + " " + Math.Round(player.Player_Back_Border.Margin.Top).ToString();
         }
 
+        BitmapImage img0 = new BitmapImage();
+        BitmapImage img1 = new BitmapImage();
         int cellWidth = 256; // ширина ячейки сетки
         int cellHeight = 256; // высота ячейки сетки
         const int rows = 20; // количество строк
         const int cols = 20; // количество столбцов
+        
+        
         async void TestMap()
         {
-            BitmapImage img0 = new BitmapImage();
             img0.BeginInit();
             img0.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\ground2.png"));
             img0.EndInit();
-            BitmapImage img1 = new BitmapImage();
             img1.BeginInit();
             img1.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\ground5.png"));
             img1.EndInit();
@@ -413,12 +415,27 @@ namespace Team_Project
                     Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
                     Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
 
-                    Map_canvas.Children.Add(image);
+                    Map_canvas.Children.Add(image);             
                 }
             }
 
         }
-
+        void Mini_map()
+        {
+            for (int row = 0; row < rows; row++)
+            {
+                for (int col = 0; col < cols; col++)
+                {
+                    Image image2 = new Image();
+                    image2.Source = img0;
+                    image2.Width = cellWidth / 15;
+                    image2.Height = cellHeight / 15;
+                    Canvas.SetLeft(image2, col * cellWidth / 20);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
+                    Canvas.SetTop(image2, row * cellHeight / 20);
+                    MiniMap_canvas.Children.Add(image2);
+                }
+            }
+        }
         void Map_addObjects()
         {
 
