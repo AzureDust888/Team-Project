@@ -14,9 +14,9 @@ namespace Team_Project
     {
         public Border Player_Back_Border = new Border()
         {
-            Width = 100,
-            Height = 100,
-            Background = Brushes.Transparent,
+            Width = 120,
+            Height = 180,
+            Background = Brushes.Yellow,
             Margin = new Thickness(2510, 2265, 0, 0),
         };
         public Border PLayer_Front_Border = new Border()
@@ -35,23 +35,27 @@ namespace Team_Project
 
         public Player()
         {
-            BitmapImage img = new BitmapImage(new Uri(MainWindow.dirname + "\\Resources\\player_topchik.png"));
-            Int32Rect cropRect = new Int32Rect(0, 0, 120, 180);
-            CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
-            PLayer_Front_Border.Background = new ImageBrush(croppedBitmap);
+            //BitmapImage img = new BitmapImage(new Uri(MainWindow.dirname + "\\Resources\\player_topchik.png"));
+            //Int32Rect cropRect = new Int32Rect(0, 0, 120, 180);
+            //CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
+            //PLayer_Front_Border.Background = new ImageBrush(croppedBitmap);
+            //PLayer_Front_Border.Background = Brushes.Black;
+            PLayer_Front_Border.Background = Brushes.Black;
+            PLayer_Front_Border.Opacity = 0.5;
         }
         public Player(string name, double hp, double mp, int lvl, double exp)
         {
-            BitmapImage img = new BitmapImage(new Uri(MainWindow.dirname + "\\Resources\\player_topchik.png"));
-            Int32Rect cropRect = new Int32Rect(0, 0, 120, 180);
-            CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
-            PLayer_Front_Border.Background = new ImageBrush(croppedBitmap);
+            //BitmapImage img = new BitmapImage(new Uri(MainWindow.dirname + "\\Resources\\player_topchik.png"));
+            //Int32Rect cropRect = new Int32Rect(0, 0, 120, 180);
+            //CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
+            //PLayer_Front_Border.Background = new ImageBrush(croppedBitmap);
             Name = name;
             Hp = hp;
             Mp = mp;
             Lvl = lvl;
             Exp = exp;
-
+            PLayer_Front_Border.Background = Brushes.Black;
+            PLayer_Front_Border.Opacity = 0.5;
         }
     }
 
