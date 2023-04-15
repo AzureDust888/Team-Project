@@ -38,25 +38,37 @@ namespace Team_Project
         Storyboard storyboards = new Storyboard();
         Storyboard storyboard = new Storyboard();
         public static MainWindow mn = new MainWindow();
+        public static Player player;
+        public static string dirname = "";
+        public DirectoryInfo? dir;
         public MainWindow()
         {
 
             this.DataContext = this;
+           
+           
             InitializeComponent();
+            dir = new DirectoryInfo(Directory.GetCurrentDirectory());
             dir = dir.Parent?.Parent?.Parent;
-            mn = this;
             dirname = dir.FullName;
+
+            player = new Player("p1", 100, 100, 1, 0);
+            PlayerHp.DataContext = player;
+            mn = this;
+           
             TestMap();
             Map_addObjects();
         }
-        public DirectoryInfo? dir = new DirectoryInfo(Directory.GetCurrentDirectory());
+        
 
-        public static string dirname;
+       
         public class EnemyClass : MainWindow
         {
             public string Name { get; set; }
             public double Hp { get; set; }
+            public double MaxHp { get; set; }
             public double Mp { get; set; }
+            public double MaxMp { get; set; }
             public int Lvl { get; set; }
             public double Exp { get; set; }
 
@@ -328,7 +340,7 @@ namespace Team_Project
 
         
         public static Border weapon = new Border();
-        public static Player player = new Player();
+       
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             
@@ -612,6 +624,7 @@ namespace Team_Project
             }
 
 
+            
             Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
             storyboard.Children.Add(thicknessAnimation);
             storyboard.Begin(BT);
