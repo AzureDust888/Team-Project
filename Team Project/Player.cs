@@ -29,6 +29,7 @@ namespace Team_Project
         public double Hp { get; set; }
         public double MaxHp { get; set; } = 200;
         public double Mp { get; set; }
+        public double MaxMp { get; set; } = 200;
         public int Lvl { get; set; }
         public double Exp { get; set; }
 

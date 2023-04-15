@@ -83,7 +83,7 @@
 
         <Border Width="1200"
                 Height="200"
-                Background="MediumAquamarine" Canvas.Left="360"
+                Background="Transparent" Canvas.Left="360"
                 Canvas.Top="890"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
@@ -93,16 +93,35 @@
                     >
                 <ProgressBar x:Name="PlayerHp" Value="{Binding Hp}" 
                              Maximum="{Binding MaxHp}"
-                             Height="50"
+                             Height="25"
                              Width="600"
                              Margin="300,30"
+                             BorderThickness="0"
+                             Foreground="OrangeRed"
+                             BorderBrush="OrangeRed"
+                             Background="Transparent"
+                             Style="{StaticResource Enemy_Hp_ProgressBar}"
                              >
-                    <ProgressBar.Style>
-                        <Style TargetType="{x:Type ProgressBar}">
-                            
-                        </Style>
-                    </ProgressBar.Style>
                 </ProgressBar>
+                <ProgressBar x:Name="PlayerMp" Value="{Binding Mp}" 
+                             Maximum="{Binding MaxMp}"
+                             Height="25"
+                             Width="600"
+                             Margin="300,60"
+                             BorderThickness="0"
+                             Foreground="#0022EE"
+                             BorderBrush="#0022EE"
+                             Background="Transparent"
+                             Style="{StaticResource Enemy_Hp_ProgressBar}">
+                    
+                </ProgressBar>
+                <Border x:Name="SpellBorder"
+                        Width="900"
+                        Margin="150,100"
+                        Height="80"
+                        Background="Gray">
+                    
+                </Border>
             </Canvas>
         </Border>
     </Canvas>
