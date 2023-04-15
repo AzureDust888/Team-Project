@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\cerberusInvert.png" />
     <None Remove="Resources\ddd.jpg" />
     <None Remove="Resources\dragon.png" />
     <None Remove="Resources\ground1.PNG" />
@@ -34,6 +35,7 @@
 
   <ItemGroup>
     <Resource Include="Dictionary1.xaml" />
+    <Resource Include="Resources\cerberusInvert.png" />
     <Resource Include="Resources\ddd.jpg" />
     <Resource Include="Resources\dragon.png" />
     <Resource Include="Resources\ground1.PNG" />
