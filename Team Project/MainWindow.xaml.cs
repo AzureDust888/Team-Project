@@ -405,7 +405,8 @@ namespace Team_Project
             Storyboard.SetTarget(storyboard, weapon);
             storyboard.Completed += (sender, e) => { isattack = false; };
             storyboard.Begin();
-
+            storyboard.Completed += delegate { timer.Stop(); };
+            timer.Start();
             weapon.Visibility = Visibility.Visible;
 
             p = Mouse.GetPosition(this);
@@ -444,6 +445,12 @@ namespace Team_Project
 
             isattack = true;
         }
+
+        private void Storyboard_Completed(object? sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         DispatcherTimer timer = new DispatcherTimer();
         int ux = 0;
         int uy = 0;
@@ -638,6 +645,7 @@ namespace Team_Project
             storyboard.Children.Add(thicknessAnimation);
             storyboard.Begin(BT);
 
+            storyboard.Completed += delegate { timer.Stop(); };
 
             if (b.Margin.Top <= 100)//2512, 2266
             {
