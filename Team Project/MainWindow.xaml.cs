@@ -24,6 +24,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using System.Xml.Linq;
 
 namespace Team_Project
@@ -327,6 +328,10 @@ namespace Team_Project
         public static Border weapon = new Border();
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            timer.Interval = TimeSpan.FromSeconds(0.08);
+            timer.Tick += Timer_Event_on_Tick;
+           
+            
             this.WindowState = WindowState.Maximized;
             weapon.Width = 60;
             weapon.Height = 120;
@@ -360,7 +365,6 @@ namespace Team_Project
 
             BitmapImage img = new BitmapImage(new Uri(dir.FullName + "\\Resources\\player_topchik.png"));
 
-            
             //кусок картинки
             Int32Rect cropRect = new Int32Rect(0, 0, 120, 180);
             CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
@@ -374,6 +378,7 @@ namespace Team_Project
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+          
             canvas_enemy.Children.Remove(weapon);
             canvas_enemy.Children.Add(weapon);
             weapon.Margin = b.Margin;
@@ -404,6 +409,9 @@ namespace Team_Project
             p = Mouse.GetPosition(this);
             double x = (Player.Margin.Left + 50) - p.X;
             double y = (Player.Margin.Top + 50) - p.Y;
+
+            TimerX = x;
+            TImerY = y;
             if (y > 100)
             {
                 y = 100;
@@ -433,6 +441,75 @@ namespace Team_Project
             //Left bottom x+ y-
 
             isattack = true;
+        }
+        DispatcherTimer timer = new DispatcherTimer();
+        int ux = 0;
+        int uy = 0;
+        double TimerX;
+        double TImerY;
+        private void Timer_Event_on_Tick(object? sender, EventArgs e)
+        {
+            //Left top x+ y+
+            //Right top x- y+
+            //Right bottom x- y-
+            //Left bottom x+ y-
+            this.Dispatcher.Invoke(() =>
+            {
+                try
+                {
+                    if (ux >= 820)
+                        ux = 0;
+
+                    if (TImerY > 100 && TimerX >= 100) //LT
+                    {
+                        uy = 600;
+                    }
+                    else if (TImerY > 100 && TimerX <= -100) //RT
+                    {
+                        uy = 985;
+                    }
+                    else if(TImerY < -100 && TimerX <= -100) //RB
+                    {
+                        uy = 1350;
+                    }
+                    else if (TImerY < -100 && TimerX >= 100) //LB
+                    {
+                        uy = 220;
+                    }
+                    else if((TimerX > -100 && TimerX < 100) && TImerY > 0)//U
+                    {
+                        uy = 785;
+                    }
+                    else if ((TimerX > -100 && TimerX < 100) && TImerY < 0)//D
+                    {
+                        uy = 0;
+                    }
+                    else if ((TImerY > -100 && TImerY < 100) && TimerX > 0)//L
+                    {
+                        uy = 405;
+                    }
+                    else if ((TImerY > -100 && TImerY < 100) && TimerX < 0) //R
+                    {
+                        uy = 1180;
+                    }
+
+                    BitmapImage img = new BitmapImage(new Uri(dir.FullName + "\\Resources\\player_topchik.png"));
+
+                    Int32Rect cropRect = new Int32Rect(ux, uy, 120, 180);
+
+                    CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
+
+                    Player.Background = new ImageBrush(croppedBitmap);
+
+                    ux += 137;
+                   
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + " " + ux + " " + uy);
+                }
+
+            });
         }
 
         ThicknessAnimation ThicknessAnimation(double toLeft, double toTop, double speed)
@@ -521,12 +598,14 @@ namespace Team_Project
             p = Mouse.GetPosition(this);
             double x = (Player.Margin.Left + 50) - p.X;
             double y = (Player.Margin.Top + 50) - p.Y;
+            TimerX = x;
+            TImerY = y;
             int maxSpeed = 130;
             if (x > maxSpeed) x = maxSpeed;
             else if (x < -maxSpeed) x = -maxSpeed;
             if (y > maxSpeed) y = maxSpeed;
             else if (y < -maxSpeed) y = -maxSpeed;
-
+            timer.Stop();
 
             storyboard.Stop();
             ThicknessAnimation thicknessAnimation;
@@ -583,9 +662,8 @@ namespace Team_Project
             Storyboard.SetTargetProperty(thicknessAnimation2, new PropertyPath(FrameworkElement.MarginProperty));
             r.Children.Add(thicknessAnimation2);
             r.Begin(b);
-
+            timer.Start();
             Title = Math.Round(b.Margin.Left).ToString() + " " + Math.Round(b.Margin.Top).ToString();
-
         }
 
         int cellWidth = 256; // ширина ячейки сетки
