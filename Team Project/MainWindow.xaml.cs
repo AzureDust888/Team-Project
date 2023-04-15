@@ -438,15 +438,13 @@ namespace Team_Project
         }
         void Map_addObjects()
         {
-
             ObservableCollection<BitmapImage> imgs = new ObservableCollection<BitmapImage>();
-            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\grass.png")));
-            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree.png")));
-            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree2.png")));
-            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree3.png")));
-            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree4.png")));
-            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree5.png")));
-            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree6.png")));
+            string[] files = Directory.GetFiles(dir.FullName + "\\Resources\\", "*.png");
+            foreach (string file in files)
+            {
+                BitmapImage img = new BitmapImage(new Uri(file));
+                imgs.Add(img);
+            }
 
 
             int[,] map = new int[rows, cols]
@@ -457,15 +455,15 @@ namespace Team_Project
                 {0,0,0,1,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0 },
                 {0,0,0,1,2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1 },
                 {0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2 },
-                {0,0,0,0,0,1,0,0,0,0,0,0,1,1,1,1,0,0,0,1 },
-                {0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,1 },
-                {0,0,0,0,0,0,2,0,0,0,1,0,0,0,0,0,0,0,0,2 },
-                {0,0,0,0,0,0,2,0,0,1,0,2,2,0,0,0,0,0,0,2 },
-                {0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,2 },
-                {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,2 },
-                {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,2 },
-                {0,0,0,0,0,0,1,0,0,3,0,0,0,0,0,0,1,0,0,0 },
-                {2,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0 },
+                {0,0,0,0,0,1,0,0,0,0,0,0,12,1,1,1,0,0,0,1 },
+                {0,0,0,0,0,0,1,0,0,0,0,11,0,0,0,0,0,0,0,1 },
+                {0,0,0,0,0,0,2,0,0,0,10,0,0,0,0,0,0,0,0,2 },
+                {0,0,0,0,0,0,2,0,0,9,0,2,2,0,0,0,0,0,0,2 },
+                {0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,2 },
+                {0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,2 },
+                {0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,1,0,2 },
+                {0,0,0,0,0,0,19,19,0,3,0,0,0,0,0,0,1,0,0,0 },
+                {2,0,0,0,0,0,19,0,0,0,0,0,1,1,1,1,0,0,0,0 },
                 {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0 },
                 {0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
                 {2,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
@@ -477,46 +475,16 @@ namespace Team_Project
             {
                 for (int col = 0; col < cols; col++)
                 {
-                    switch (map[col, row])
+                    if (map[col, row] >= 8)
                     {
-                        case 1:
-                            {
-                                Image image = new Image();
-                                image.Source = imgs[6];
-                                image.Width = cellWidth;
-                                image.Height = cellHeight;
-                                Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
-                                Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
+                        Image image = new Image();
+                        image.Source = imgs[map[col, row]];
+                        image.Width = cellWidth;
+                        image.Height = cellHeight;
+                        Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
+                        Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
 
-                                MapItems_canvas.Children.Add(image);
-
-                            }
-
-                            break;
-                        case 2:
-                            {
-                                Image image = new Image();
-                                image.Source = imgs[1];
-                                image.Width = cellWidth;
-                                image.Height = cellHeight;
-                                Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
-                                Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
-
-                                MapItems_canvas.Children.Add(image);
-                            }
-                            break;
-                        case 3:
-                            {
-                                Image image = new Image();
-                                image.Source = imgs[0];
-                                image.Width = cellWidth;
-                                image.Height = cellHeight;
-                                Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
-                                Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
-
-                                MapItems_canvas.Children.Add(image);
-                            }
-                            break;
+                        MapItems_canvas.Children.Add(image);
                     }
                 }
             }
