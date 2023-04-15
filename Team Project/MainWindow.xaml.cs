@@ -181,6 +181,8 @@ namespace Team_Project
                         Dispatcher.Invoke( new Action(async () =>
                         {
 
+                        
+
                                 if (Math.Abs(border.Margin.Left - MainWindow.player.Player_Back_Border.Margin.Left) <= 250 && Math.Abs(border.Margin.Top - MainWindow.player.Player_Back_Border.Margin.Top) <= 250 && isc)
                             {
                                 storyboard.Pause();
