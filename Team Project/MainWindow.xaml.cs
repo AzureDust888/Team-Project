@@ -161,7 +161,7 @@ namespace Team_Project
                     x = -100;
                 }
 
-                weapon.Margin = new Thickness(weapon.Margin.Left - x, weapon.Margin.Top - y, 0, 0);
+                weapon.Margin = new Thickness(weapon.Margin.Left - x, weapon.Margin.Top - y - 40, 0, 0);
 
 
 
