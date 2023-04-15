@@ -63,7 +63,7 @@ namespace Team_Project
         {
 
             timer.Interval = TimeSpan.FromSeconds(0.04);
-            timer.Tick += Timer_Event_on_Tick;
+            //timer.Tick += Timer_Event_on_Tick;
 
 
             this.WindowState = WindowState.Maximized;
@@ -94,8 +94,49 @@ namespace Team_Project
 
             PlayerHp.DataContext = player;
             PlayerMp.DataContext = player;
-        }
 
+            await Task.Factory.StartNew(() => {
+                while(true)
+                {
+                    
+                    this.Dispatcher.Invoke(() => {
+                        if (player.Player_Back_Border.Margin.Left <= T.Margin.Left + T.Width && canmoveleft && player.Player_Back_Border.Margin.Top + player.Player_Back_Border.Height
+                        >= T.Margin.Top && player.Player_Back_Border.Margin.Top + player.Player_Back_Border.Height <= T.Margin.Top + T.Height)
+                        {
+                            var dist = Math.Abs(T.Margin.Left + T.Width - player.Player_Back_Border.Margin.Left);
+                            //BT.Margin = new Thickness(BT.Margin.Left - dist, BT.Margin.Top, 0, 0);
+                            var t = ThicknessAnimation(BT.Margin.Left - dist, BT.Margin.Top, 0);
+                            Storyboard.SetTargetProperty(t, new PropertyPath(FrameworkElement.MarginProperty));
+                            storyboard.Children.Add(t);
+                            storyboard.Begin(BT);
+                            //lab.Content = true.ToString();
+                            //player.Player_Back_Border.Margin = new Thickness(T.Margin.Left + T.Width, player.Player_Back_Border.Margin.Top, 0, 0);
+                            var t2 = ThicknessAnimation2(T.Margin.Left + T.Width, player.Player_Back_Border.Margin.Top, 0);
+                            var r = new Storyboard();
+                            Storyboard.SetTargetProperty(t2, new PropertyPath(FrameworkElement.MarginProperty));
+                            r.Children.Add(t2);
+                            r.Begin(player.Player_Back_Border);
+                            canmoveleft = false;
+                        }
+                        else if(!canmoveleft && player.Player_Back_Border.Margin.Top + player.Player_Back_Border.Height
+                        < T.Margin.Top || player.Player_Back_Border.Margin.Top> T.Margin.Top + T.Height)
+                        {
+                            canmoveleft = true;
+                         
+                            
+                        }
+                        lab.Content = T.Margin + " " + player.Player_Back_Border.Margin + " \n" + canmoveleft;
+                    });
+
+                   
+                    Thread.Sleep(50);
+                }
+            });
+        }
+        bool canmoveleft = true;
+        bool canmoveright = true;
+        bool canmoveup = true;
+        bool canmovedown = true;
         //
         double x_cord = 0;
         double y_cord = 0;
@@ -319,13 +360,20 @@ namespace Team_Project
             double y = (player.PLayer_Front_Border.Margin.Top + 50) - p.Y;
             TimerX = x;
             TImerY = y;
-            int maxSpeed = 130;
+
+            int maxSpeed = 140;
             if (x > maxSpeed) x = maxSpeed;
             else if (x < -maxSpeed) x = -maxSpeed;
             if (y > maxSpeed) y = maxSpeed;
             else if (y < -maxSpeed) y = -maxSpeed;
-            timer.Stop();
 
+            double sumXY = Math.Abs(x) + Math.Abs(y);
+            double maxSpeed; 
+            if(sumXY > 400) maxSpeed = sumXY / 333;
+            else maxSpeed = sumXY / 222;
+
+            lab.Content = $"x: {x} y: {y}";
+            timer.Stop();
             storyboard.Stop();
             ThicknessAnimation thicknessAnimation;
             ThicknessAnimation thicknessAnimation2;
@@ -347,7 +395,20 @@ namespace Team_Project
             }
             else
             {
-                thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top + y, 0.6);
+                if(!canmoveleft/* && x > 0*/)
+                {
+                    thicknessAnimation = ThicknessAnimation(BT.Margin.Left, BT.Margin.Top + y, 0.6);
+                }
+                else if (canmoveleft)
+                {
+                    thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top + y, 0.6); ;
+                }
+                else
+                {
+                    thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top + y, 0.6); ;
+                }
+                
+                thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top + y, maxSpeed);
             }
 
 
@@ -376,10 +437,28 @@ namespace Team_Project
             }
             else
             {
-                thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left - x, player.Player_Back_Border.Margin.Top - y, 0.6);
-            }
-            var r = new Storyboard();
 
+                if (!canmoveleft && x > 0)
+                {
+                    thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left, player.Player_Back_Border.Margin.Top - y, 0.6);
+                }
+                else if(canmoveleft)
+                {
+                    thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left - x, player.Player_Back_Border.Margin.Top - y, 0.6);
+                    canmoveleft = true;
+                }
+                else
+                {
+                    thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left - x, player.Player_Back_Border.Margin.Top - y, 0.6);
+                    canmoveleft = true;
+                }
+                    
+
+                thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left - x, player.Player_Back_Border.Margin.Top - y, maxSpeed);
+
+            }
+           
+            var r = new Storyboard();
             Storyboard.SetTargetProperty(thicknessAnimation2, new PropertyPath(FrameworkElement.MarginProperty));
             r.Children.Add(thicknessAnimation2);
             r.Begin(player.Player_Back_Border);
@@ -438,15 +517,13 @@ namespace Team_Project
         }
         void Map_addObjects()
         {
-
             ObservableCollection<BitmapImage> imgs = new ObservableCollection<BitmapImage>();
-            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\grass.png")));
-            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree.png")));
-            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree2.png")));
-            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree3.png")));
-            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree4.png")));
-            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree5.png")));
-            imgs.Add(new BitmapImage(new Uri(dir.FullName + "\\Resources\\tree6.png")));
+            string[] files = Directory.GetFiles(dir.FullName + "\\Resources\\", "*.png");
+            foreach (string file in files)
+            {
+                BitmapImage img = new BitmapImage(new Uri(file));
+                imgs.Add(img);
+            }
 
 
             int[,] map = new int[rows, cols]
@@ -457,15 +534,15 @@ namespace Team_Project
                 {0,0,0,1,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0 },
                 {0,0,0,1,2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1 },
                 {0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2 },
-                {0,0,0,0,0,1,0,0,0,0,0,0,1,1,1,1,0,0,0,1 },
-                {0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,1 },
-                {0,0,0,0,0,0,2,0,0,0,1,0,0,0,0,0,0,0,0,2 },
-                {0,0,0,0,0,0,2,0,0,1,0,2,2,0,0,0,0,0,0,2 },
-                {0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,2 },
-                {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,2 },
-                {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,2 },
-                {0,0,0,0,0,0,1,0,0,3,0,0,0,0,0,0,1,0,0,0 },
-                {2,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0 },
+                {0,0,0,0,0,1,0,0,0,0,0,0,12,1,1,1,0,0,0,1 },
+                {0,0,0,0,0,0,1,0,0,0,0,11,0,0,0,0,0,0,0,1 },
+                {0,0,0,0,0,0,2,0,0,0,10,0,0,0,0,0,0,0,0,2 },
+                {0,0,0,0,0,0,2,0,0,9,0,2,2,0,0,0,0,0,0,2 },
+                {0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,2 },
+                {0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,2 },
+                {0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,1,0,2 },
+                {0,0,0,0,0,0,19,19,0,3,0,0,0,0,0,0,1,0,0,0 },
+                {2,0,0,0,0,0,19,0,0,0,0,0,1,1,1,1,0,0,0,0 },
                 {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0 },
                 {0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
                 {2,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
@@ -477,46 +554,16 @@ namespace Team_Project
             {
                 for (int col = 0; col < cols; col++)
                 {
-                    switch (map[col, row])
+                    if (map[col, row] >= 8)
                     {
-                        case 1:
-                            {
-                                Image image = new Image();
-                                image.Source = imgs[6];
-                                image.Width = cellWidth;
-                                image.Height = cellHeight;
-                                Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
-                                Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
+                        Image image = new Image();
+                        image.Source = imgs[map[col, row]];
+                        image.Width = cellWidth;
+                        image.Height = cellHeight;
+                        Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
+                        Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
 
-                                MapItems_canvas.Children.Add(image);
-
-                            }
-
-                            break;
-                        case 2:
-                            {
-                                Image image = new Image();
-                                image.Source = imgs[1];
-                                image.Width = cellWidth;
-                                image.Height = cellHeight;
-                                Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
-                                Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
-
-                                MapItems_canvas.Children.Add(image);
-                            }
-                            break;
-                        case 3:
-                            {
-                                Image image = new Image();
-                                image.Source = imgs[0];
-                                image.Width = cellWidth;
-                                image.Height = cellHeight;
-                                Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
-                                Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
-
-                                MapItems_canvas.Children.Add(image);
-                            }
-                            break;
+                        MapItems_canvas.Children.Add(image);
                     }
                 }
             }
