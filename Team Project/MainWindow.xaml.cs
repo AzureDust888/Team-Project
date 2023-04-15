@@ -1,4 +1,4 @@
-﻿
+
 using Elasticsearch.Net;
 using Nest;
 using System;
@@ -38,32 +38,23 @@ namespace Team_Project
         Storyboard storyboards = new Storyboard();
         Storyboard storyboard = new Storyboard();
         public static MainWindow mn = new MainWindow();
-        public static Player player;
-        public static string dirname = "";
-        public DirectoryInfo? dir;
         public MainWindow()
         {
 
             this.DataContext = this;
-           
-           
+            //PlayerHp.DataContext = player;
             InitializeComponent();
-            dir = new DirectoryInfo(Directory.GetCurrentDirectory());
             dir = dir.Parent?.Parent?.Parent;
-            dirname = dir.FullName;
-
-            player = new Player("p1", 100, 100, 1, 0);
-            PlayerHp.DataContext = player;
             mn = this;
-           
+            dirname = dir.FullName;
             TestMap();
             Map_addObjects();
 
             
         }
-        
+        public DirectoryInfo? dir = new DirectoryInfo(Directory.GetCurrentDirectory());
 
-       
+        public static string dirname;
         public class EnemyClass : MainWindow
         {
             public string Name { get; set; }
@@ -342,7 +333,7 @@ namespace Team_Project
 
         
         public static Border weapon = new Border();
-       
+        public static Player player = new Player("alex", 100, 100, 1, 0);
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             
@@ -375,6 +366,8 @@ namespace Team_Project
             img2.EndInit();
 
             weapon.Background = new ImageBrush(img2);
+
+            PlayerHp.DataContext = player;
 
         }
 
