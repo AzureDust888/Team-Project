@@ -361,11 +361,6 @@ namespace Team_Project
             TimerX = x;
             TImerY = y;
 
-            int maxSpeed = 140;
-            if (x > maxSpeed) x = maxSpeed;
-            else if (x < -maxSpeed) x = -maxSpeed;
-            if (y > maxSpeed) y = maxSpeed;
-            else if (y < -maxSpeed) y = -maxSpeed;
 
             double sumXY = Math.Abs(x) + Math.Abs(y);
             double maxSpeed; 
@@ -395,20 +390,18 @@ namespace Team_Project
             }
             else
             {
-                if(!canmoveleft/* && x > 0*/)
+                if (!canmoveleft/* && x > 0*/)
                 {
-                    thicknessAnimation = ThicknessAnimation(BT.Margin.Left, BT.Margin.Top + y, 0.6);
+                    thicknessAnimation = ThicknessAnimation(BT.Margin.Left, BT.Margin.Top + y, maxSpeed);
                 }
                 else if (canmoveleft)
                 {
-                    thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top + y, 0.6); ;
+                    thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top + y, maxSpeed); ;
                 }
                 else
                 {
-                    thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top + y, 0.6); ;
+                    thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top + y, maxSpeed); ;
                 }
-                
-                thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top + y, maxSpeed);
             }
 
 
@@ -440,21 +433,19 @@ namespace Team_Project
 
                 if (!canmoveleft && x > 0)
                 {
-                    thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left, player.Player_Back_Border.Margin.Top - y, 0.6);
+                    thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left, player.Player_Back_Border.Margin.Top - y, maxSpeed);
                 }
                 else if(canmoveleft)
                 {
-                    thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left - x, player.Player_Back_Border.Margin.Top - y, 0.6);
+                    thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left - x, player.Player_Back_Border.Margin.Top - y, maxSpeed);
                     canmoveleft = true;
                 }
                 else
                 {
-                    thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left - x, player.Player_Back_Border.Margin.Top - y, 0.6);
+                    thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left - x, player.Player_Back_Border.Margin.Top - y, maxSpeed);
                     canmoveleft = true;
                 }
-                    
-
-                thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left - x, player.Player_Back_Border.Margin.Top - y, maxSpeed);
+                
 
             }
            
