@@ -82,7 +82,7 @@
         </Border>
 
         <Canvas x:Name="MiniMap_canvas" Height="200" Width="200"
-                   Canvas.Left="1701" Canvas.Top="17" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                   Canvas.Left="1665" Canvas.Top="10" HorizontalAlignment="Left" VerticalAlignment="Center" />
 
         <Border Width="1200"
                 Height="200"

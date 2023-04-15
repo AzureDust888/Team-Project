@@ -23,6 +23,7 @@ namespace Team_Project
         public int Lvl { get; set; }
         public double Exp { get; set; }
         int ux = 0;
+        int ux2 = 0;
         int uy = 130;
         public Border border = new Border();
         Storyboard storyboard = new Storyboard();
@@ -41,26 +42,55 @@ namespace Team_Project
             timerAnimation.Tick += delegate {
                 this.Dispatcher.Invoke(() =>
                 {
-                    try
+                    if(border.Margin.Left < MainWindow.player.Player_Back_Border.Margin.Left)
                     {
-                        if(ux >= 1050)
-                            ux = 0;
+                        try
+                        {
+                            if (ux >= 1050)
+                                ux = 0;
 
-                        BitmapImage img = new BitmapImage(new Uri(dir.FullName + "\\Resources\\cerberus.png"));
 
-                        Int32Rect cropRect = new Int32Rect(ux, uy, 120, 100);
+                            BitmapImage img = new BitmapImage(new Uri(dir.FullName + "\\Resources\\cerberus.png"));
 
-                        CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
+                            Int32Rect cropRect = new Int32Rect(ux, uy, 120, 100);
 
-                        border.Background = new ImageBrush(croppedBitmap);
+                            CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
 
-                        ux += 159;
+                            border.Background = new ImageBrush(croppedBitmap);
 
+                            ux += 159;
+
+                        }
+                        catch (Exception ex)
+                        {
+                            //MessageBox.Show(ex.Message + " " + ux + " " + uy);
+                        }
                     }
-                    catch (Exception ex)
+                    else if(border.Margin.Left >= MainWindow.player.Player_Back_Border.Margin.Left)
                     {
-                        //MessageBox.Show(ex.Message + " " + ux + " " + uy);
+                        try
+                        {
+                            if (ux2 <= 0)
+                                ux2 = 1100;
+
+
+                            BitmapImage img = new BitmapImage(new Uri(dir.FullName + "\\Resources\\cerberusInvert.png"));
+
+                            Int32Rect cropRect = new Int32Rect(ux2, uy, 120, 100);
+
+                            CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
+
+                            border.Background = new ImageBrush(croppedBitmap);
+
+                            ux2 -= 159;
+
+                        }
+                        catch (Exception ex)
+                        {
+                            //MessageBox.Show(ex.Message + " " + ux2 + " " + uy);
+                        }
                     }
+                  
 
                 });
             };
