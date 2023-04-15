@@ -81,6 +81,9 @@
             </Grid>
         </Border>
 
+        <Canvas x:Name="MiniMap_canvas" Height="200" Width="200"
+                   Canvas.Left="1701" Canvas.Top="17" HorizontalAlignment="Left" VerticalAlignment="Center" />
+
         <Border Width="1200"
                 Height="200"
                 Background="Transparent" Canvas.Left="360"
