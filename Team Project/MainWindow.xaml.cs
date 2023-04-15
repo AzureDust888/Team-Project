@@ -784,36 +784,6 @@ namespace Team_Project
             }
         }
 
-        async void Collision_objects()
-        {
-            
-            await Task.Factory.StartNew(() =>
-            {         
-                while (true)
-                {
-                Dispatcher.Invoke(() =>
-                {
-                    foreach (var child in MapItems_canvas.Children)
-                    {
-                        Image s = new Image();
-                        if (child is Image)
-                        {
-                            s = child as Image;
-                            lab.Content = (Canvas.GetLeft(s).ToString() + " , " + b.Margin.Left.ToString());
-                            /*if (Math.Abs(s.Margin.Left - MainWindow.b.Margin.Left) <= 120 && Math.Abs(s.Margin.Top - MainWindow.b.Margin.Top) <= 10) */
-                            if (Math.Abs(Canvas.GetLeft(s) - MainWindow.b.Margin.Left) <= 120 && Math.Abs(Canvas.GetTop(s) - MainWindow.b.Margin.Top) <= 10)
-                            {
-                                MessageBox.Show("Hit");
-                                
-                            }
-                        }
-                        
-                    }                
-                });
-                    Thread.Sleep(1000);
-                }
-            });
-        }
 
 
 
