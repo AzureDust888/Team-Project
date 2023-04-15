@@ -183,6 +183,7 @@ namespace Team_Project
 
 
 
+
                             if (Math.Abs(border.Margin.Left - MainWindow.player.Player_Back_Border.Margin.Left) <= 250 && Math.Abs(border.Margin.Top - MainWindow.player.Player_Back_Border.Margin.Top) <= 250 && isc)
                             {
                                 storyboard.Pause();
@@ -331,6 +332,7 @@ namespace Team_Project
                 storyboard.Stop();
             }
         }
+
 
 
         public static Border weapon = new Border();
