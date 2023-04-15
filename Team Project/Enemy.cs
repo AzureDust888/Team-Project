@@ -9,6 +9,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace Team_Project
 {
@@ -21,20 +22,48 @@ namespace Team_Project
         public double MaxMp { get; set; }
         public int Lvl { get; set; }
         public double Exp { get; set; }
-
+        int ux = 0;
+        int uy = 130;
         public Border border = new Border();
         Storyboard storyboard = new Storyboard();
         Storyboard storyboard2 = new Storyboard();
         Storyboard storyboard3 = new Storyboard();
         Storyboard storyboard4 = new Storyboard();
         Storyboard storyboard5 = new Storyboard();
-
+        DispatcherTimer timerAnimation = new DispatcherTimer();
         bool isrunning = false;
         bool isc = true;
         ThicknessAnimation thicknessAnimation;
         Point cord = new Point();
         public EnemyClass(double hptmp, double mptmp, string nametmp)
         {
+            timerAnimation.Interval = TimeSpan.FromSeconds(0.04);
+            timerAnimation.Tick += delegate {
+                this.Dispatcher.Invoke(() =>
+                {
+                    try
+                    {
+                        if(ux >= 1050)
+                            ux = 0;
+
+                        BitmapImage img = new BitmapImage(new Uri(dir.FullName + "\\Resources\\cerberus.png"));
+
+                        Int32Rect cropRect = new Int32Rect(ux, uy, 120, 100);
+
+                        CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
+
+                        border.Background = new ImageBrush(croppedBitmap);
+
+                        ux += 159;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        //MessageBox.Show(ex.Message + " " + ux + " " + uy);
+                    }
+
+                });
+            };
             Name = nametmp;
             Name += "    lvl " + Lvl.ToString();
             Hp = hptmp;
@@ -103,10 +132,11 @@ namespace Team_Project
 
 
             //кусок картинки
-            Int32Rect cropRect = new Int32Rect(0, 0, 120, 120);
+            Int32Rect cropRect = new Int32Rect(0, 0, 100, 100);
             CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
 
             border.Background = new ImageBrush(croppedBitmap);
+
             cord.X = border.Margin.Left;
             cord.Y = border.Margin.Top;
             storyboard4.Completed += Storyboard_Completed;
@@ -235,13 +265,21 @@ namespace Team_Project
                             CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
 
                             border.Background = new ImageBrush(croppedBitmap);
-                            storyboard.Stop();
-                            storyboard2.Stop();
-                            storyboard3.Stop();
-                            storyboard4.Stop();
-                            storyboard5.Stop();
+                            thicknessAnimation = new ThicknessAnimation
+                            {
 
-                            await Task.Delay(1000);
+                                From = new Thickness(border.Margin.Left, border.Margin.Top, 0, 0),
+                                To = new Thickness(border.Margin.Left, border.Margin.Top, 0, 0),
+
+                                Duration = TimeSpan.FromSeconds(2)
+
+                            };
+
+                            Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
+                            storyboard5.Children.Add(thicknessAnimation);
+                            storyboard5.Begin(border);
+                            timerAnimation.Stop();
+                            await Task.Delay(2000);
                             ((MainWindow)System.Windows.Application.Current.MainWindow).canvas_enemy.Children.Remove(border);
 
                             ift = false;
@@ -256,7 +294,7 @@ namespace Team_Project
                     Thread.Sleep(200);
                 }
             });
-
+            timerAnimation.Start();
         }
 
         private void Storyboard_Completed(object? sender, EventArgs e)
