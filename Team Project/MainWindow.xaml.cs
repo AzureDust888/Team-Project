@@ -390,7 +390,7 @@ namespace Team_Project
             }
             else
             {
-                if (!canmoveleft/* && x > 0*/)
+                if (!canmoveleft && x > 0)
                 {
                     thicknessAnimation = ThicknessAnimation(BT.Margin.Left, BT.Margin.Top + y, maxSpeed);
                 }
