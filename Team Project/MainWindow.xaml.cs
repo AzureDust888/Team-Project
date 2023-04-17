@@ -102,41 +102,46 @@ namespace Team_Project
                     this.Dispatcher.Invoke(() => {
                         if (player.Player_Back_Border.Margin.Left <= T.Margin.Left + T.Width && player.Player_Back_Border.Margin.Left + player.Player_Back_Border.Width >= T.Margin.Left
                         && player.Player_Back_Border.Margin.Top + player.Player_Back_Border.Height
-                        >= T.Margin.Top && player.Player_Back_Border.Margin.Top + player.Player_Back_Border.Height <= T.Margin.Top + T.Height)
+                        >= T.Margin.Top && player.Player_Back_Border.Margin.Top <= T.Margin.Top + T.Height)
                         {
-                           /* if(player.Player_Back_Border.Margin.Left > T.Margin.Left && canmoveright && canmoveleft) //<<------
+
+                            /*if (player.Player_Back_Border.Margin.Left > T.Margin.Left && canmoveleft
+                            ) //<<------
                             {
                                 var dist = Math.Abs(T.Margin.Left + T.Width - player.Player_Back_Border.Margin.Left);
                                 var t = ThicknessAnimation(BT.Margin.Left - dist, BT.Margin.Top, 0);
                                 Storyboard.SetTargetProperty(t, new PropertyPath(FrameworkElement.MarginProperty));
                                 storyboard.Children.Add(t);
                                 storyboard.Begin(BT);
-                                
+
                                 var t2 = ThicknessAnimation2(T.Margin.Left + T.Width, player.Player_Back_Border.Margin.Top, 0);
                                 var r = new Storyboard();
                                 Storyboard.SetTargetProperty(t2, new PropertyPath(FrameworkElement.MarginProperty));
                                 r.Children.Add(t2);
                                 r.Begin(player.Player_Back_Border);
                                 canmoveleft = false;
-                                *//*MessageBox.Show("right: " + canmoveright + " left: " + canmoveleft, "if");*//*
+                                //lab.Content =("player.top: " +player.Player_Back_Border.Margin.Top.ToString() + " T.Top: " + T.Margin.Top + " pl.top+HEIgHT: " + (player.Player_Back_Border.Margin.Top + player.Player_Back_Border.Height).ToString());
+
+                                //lab.Content =(" left: " + canmoveleft +" right: " + canmoveright, "Left");
                             }
-                            else if(player.Player_Back_Border.Margin.Left < T.Margin.Left && canmoveright && canmoveleft) //---->>
+                            else if (player.Player_Back_Border.Margin.Left < T.Margin.Left && canmoveright) //---->>
                             {
                                 var dist = Math.Abs(T.Margin.Left - player.Player_Back_Border.Margin.Left - player.Player_Back_Border.Width);
                                 var t = ThicknessAnimation(BT.Margin.Left + dist, BT.Margin.Top, 0);
                                 Storyboard.SetTargetProperty(t, new PropertyPath(FrameworkElement.MarginProperty));
                                 storyboard.Children.Add(t);
                                 storyboard.Begin(BT);
-                                
+
                                 var t2 = ThicknessAnimation2(T.Margin.Left - player.Player_Back_Border.Width, player.Player_Back_Border.Margin.Top, 0);
                                 var r = new Storyboard();
                                 Storyboard.SetTargetProperty(t2, new PropertyPath(FrameworkElement.MarginProperty));
                                 r.Children.Add(t2);
                                 r.Begin(player.Player_Back_Border);
                                 canmoveright = false;
-                                *//*MessageBox.Show("right: " + canmoveright + " left: " + canmoveleft, "else if");*//*
-                            }*/
-                            if (player.Player_Back_Border.Margin.Top < T.Margin.Top + T.Height) //up
+                                //lab.Content =(" left: " + canmoveleft + " right: " + canmoveright, "Right");
+                            }
+                            else if (player.Player_Back_Border.Margin.Top < T.Margin.Top + T.Height && canmoveup
+                            ) //up
                             {
                                 var dist = Math.Abs(player.Player_Back_Border.Margin.Top - T.Margin.Top - T.Height);
                                 var t = ThicknessAnimation(BT.Margin.Left, BT.Margin.Top - dist, 0);
@@ -150,7 +155,24 @@ namespace Team_Project
                                 r.Children.Add(t2);
                                 r.Begin(player.Player_Back_Border);
                                 canmoveup = false;
-                                MessageBox.Show("right: " + canmoveright + " left: " + canmoveleft, "else if(down)");
+                                //lab.Content =(" left: " + canmoveleft + " right: " + canmoveright, "Up");
+                            }*/
+                            if (player.Player_Back_Border.Margin.Top + player.Player_Back_Border.Height > T.Margin.Top && canmovedown
+                            ) //up
+                            {
+                                var dist = Math.Abs(player.Player_Back_Border.Margin.Top +player.Player_Back_Border.Height- T.Margin.Top);
+                                var t = ThicknessAnimation(BT.Margin.Left, BT.Margin.Top + dist, 0);
+                                Storyboard.SetTargetProperty(t, new PropertyPath(FrameworkElement.MarginProperty));
+                                storyboard.Children.Add(t);
+                                storyboard.Begin(BT);
+
+                                var t2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left, T.Margin.Top - player.Player_Back_Border.Height, 0);
+                                var r = new Storyboard();
+                                Storyboard.SetTargetProperty(t2, new PropertyPath(FrameworkElement.MarginProperty));
+                                r.Children.Add(t2);
+                                r.Begin(player.Player_Back_Border);
+                                canmovedown = false;
+                                //lab.Content = (" left: " + canmoveleft + " right: " + canmoveright, "Down");
                             }
                         }
                         else /*if (player.Player_Back_Border.Margin.Top + player.Player_Back_Border.Height
@@ -167,7 +189,7 @@ namespace Team_Project
                     });
 
                    
-                    Thread.Sleep(500);
+                    Thread.Sleep(50);
                 }
             });
         }
@@ -405,7 +427,7 @@ namespace Team_Project
             if(sumXY > 400) maxSpeed = sumXY / 333;
             else maxSpeed = sumXY / 222;
 
-            lab.Content = $"x: {x} y: {y}";
+            //lab.Content = $"x: {x} y: {y}";
             timer.Stop();
             storyboard.Stop();
 
@@ -467,17 +489,17 @@ namespace Team_Project
                         thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left - x, player.Player_Back_Border.Margin.Top - y, maxSpeed);
                     }
                 }
-                /*else if (!canmovedown)
+                else if (!canmovedown)
                 {
-                    thicknessAnimation = ThicknessAnimation(BT.Margin.Left, BT.Margin.Top + y, maxSpeed);
-                    thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left, player.Player_Back_Border.Margin.Top - y, maxSpeed);
-                    if (canmoveleft && x > 0) //движ влево
+                    thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top, maxSpeed);
+                    thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left - x, player.Player_Back_Border.Margin.Top, maxSpeed);
+                    if (canmoveup && y > 0)
                     {
-                        canmoveup = true;
+                        canmovedown = true;
                         thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top + y, maxSpeed);
                         thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left - x, player.Player_Back_Border.Margin.Top - y, maxSpeed);
                     }
-                }*/
+                }
                 else //влево и вправо можно двигаться
                 {
                     thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top + y, maxSpeed);
@@ -572,7 +594,7 @@ namespace Team_Project
                 {0,0,0,0,0,0,1,0,0,0,0,11,0,0,0,0,0,0,0,1 },
                 {0,0,0,0,0,0,2,0,0,0,10,0,0,0,0,0,0,0,0,2 },
                 {0,0,0,0,0,0,2,0,0,9,0,2,2,0,0,0,0,0,0,2 },
-                {0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,2 },
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2 },
                 {0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,2 },
                 {0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,1,0,2 },
                 {0,0,0,0,0,0,19,19,0,3,0,0,0,0,0,0,1,0,0,0 },
