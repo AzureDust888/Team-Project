@@ -131,5 +131,18 @@
                 
             </Canvas>
         </Border>
+        <ProgressBar x:Name="XpBar" Value="{Binding Exp}" 
+                             Maximum="{Binding CurrentLvlExpCap}"
+                             Height="10"
+                             Width="1930"
+                             Margin="0,1080"
+                             BorderThickness="0"
+                             
+                             Foreground="Aqua"
+                             BorderBrush="Aqua"
+                             Background="Gray"
+                             Style="{StaticResource Enemy_Hp_ProgressBar}"
+                             >
+        </ProgressBar>
     </Canvas>
 </Window>
