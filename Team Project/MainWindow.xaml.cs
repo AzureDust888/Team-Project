@@ -57,7 +57,7 @@ namespace Team_Project
         public static string dirname;
 
         public static bool isdmgallowed = false;
-        public static Player player = new Player("alex", 175, 100, 1, 0, new Weapon("Novice Weapon", 20, "sword.png"));
+        public static Player player = new Player("alex", 175, 100, 1, 0, new Weapon("Novice Weapon", 12, "sword.png"));
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         { 
             timer.Interval = TimeSpan.FromSeconds(0.04);
@@ -74,13 +74,13 @@ namespace Team_Project
             Player_Canvas.Children.Add(player.PLayer_Front_Border);
             for (int i = 0; i < 10; i++)
             {
-                EnemyClass en = new EnemyClass(100, 100, $"Cerberus");
+                EnemyClass en = new EnemyClass(100, 100, $"Cerberus", 10, 15, 1);
                 canvas_enemy.Children.Add(en.border);
             }
 
             PlayerHp.DataContext = player;
             PlayerMp.DataContext = player;
-
+            XpBar.DataContext = player;
 
             await Task.Factory.StartNew(() => {
                 while(true)

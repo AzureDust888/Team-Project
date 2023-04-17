@@ -14,10 +14,8 @@ namespace Team_Project
     {
         public Border Player_Back_Border = new Border()
         {
-            Width = 120,
+            Width = 120, 
             Height = 160,
-            Background = Brushes.Yellow,
-            Opacity = 0.5,
             Margin = new Thickness(2510, 2265, 0, 0),
         };
         public Border PLayer_Front_Border = new Border()
@@ -33,7 +31,7 @@ namespace Team_Project
         public double MaxMp { get; set; } = 200;
         public int Lvl { get; set; }
         public double Exp { get; set; }
-
+        public double CurrentLvlExpCap { get; set; } = 1000;
         public Weapon weapon { get; set; } 
 
         public Player() { }
