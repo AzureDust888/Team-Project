@@ -34,13 +34,16 @@ namespace Team_Project
         Storyboard storyboard5 = new Storyboard();
         DispatcherTimer timerAnimation = new DispatcherTimer();
         bool isrunning = false;
+        bool isalive = true;
         bool isc = true;
         ThicknessAnimation thicknessAnimation;
         Point cord = new Point();
         bool isdmgavaible = true;
-        public EnemyClass(double hptmp, double mptmp, string nametmp)
+        public EnemyClass(double hptmp, double mptmp, string nametmp, double damage, double xp, int lvl)
         {
-            Dmg = 7;
+            Dmg = damage;
+            Exp = xp;
+            Lvl = lvl;
             timerAnimation.Interval = TimeSpan.FromSeconds(0.04);
             timerAnimation.Tick += delegate {
                 this.Dispatcher.Invoke(() =>
@@ -212,7 +215,7 @@ namespace Team_Project
                             else tmpLeft = MainWindow.player.Player_Back_Border.Margin.Left - 50;
 
                             double animationtime = 0.7;
-                            if(i % 4 == 0)
+                            if(i % 2 == 0)
                             {
                                 animationtime = 0.2;
                             }
@@ -262,7 +265,7 @@ namespace Team_Project
 
 
                         }
-                        if (Math.Abs(border.Margin.Left - cord.X) >= 500 || Math.Abs(border.Margin.Top - cord.Y) >= 500)
+                        if (Math.Abs(border.Margin.Left - cord.X) >= 800 || Math.Abs(border.Margin.Top - cord.Y) >= 800)
                         {
                             thicknessAnimation = new ThicknessAnimation
                             {
@@ -288,7 +291,7 @@ namespace Team_Project
                             //border.Background = Brushes.Red;
                             if (MainWindow.player.weapon.weapon_border.IsEnabled == true)
                             {
-                                Hp -= 40;
+                                Hp -= MainWindow.player.weapon.Damage;
                                 if (Hp < 0) Hp = 0;
                                 hp.Value = Hp;
                                 hplabel.Content = Hp.ToString();
@@ -301,8 +304,13 @@ namespace Team_Project
                         }
                         if (Hp <= 0 && ift)
                         {
+                            if(isalive)
+                            {
+                                player.Exp += Exp;
+                                ((MainWindow)System.Windows.Application.Current.MainWindow).XpBar.Value = player.Exp;
+                            }    
+                            isalive = false;
                             BitmapImage img = new BitmapImage(new Uri(dir.FullName + "\\Resources\\cerberus.png"));
-
 
                             //кусок картинки
                             Int32Rect cropRect = new Int32Rect(1020, 1010, 100, 50);
@@ -325,12 +333,13 @@ namespace Team_Project
                             timerAnimation.Stop();
                             await Task.Delay(2000);
                             ((MainWindow)System.Windows.Application.Current.MainWindow).canvas_enemy.Children.Remove(border);
-
+                           
                             ift = false;
+                           
                         }
                         if (Math.Abs(border.Margin.Left - MainWindow.player.Player_Back_Border.Margin.Left) <= 120 && Math.Abs(border.Margin.Top - MainWindow.player.Player_Back_Border.Margin.Top) <= 10 && isc) // Mob attack
                         {
-                            if(i%2 == 0)
+                            if(i%4 == 0 && isalive)
                             {
                                 MainWindow.player.Hp -= Dmg;
                                 if (MainWindow.player.Hp < 0) MainWindow.player.Hp = 0;
