@@ -140,7 +140,7 @@ namespace Team_Project
                                 canmoveright = false;
                                 //lab.Content =(" left: " + canmoveleft + " right: " + canmoveright, "Right");
                             }
-                            else if (player.Player_Back_Border.Margin.Top < T.Margin.Top + T.Height && canmoveup
+                            else*/ if (player.Player_Back_Border.Margin.Top > T.Margin.Top && canmoveup
                             ) //up
                             {
                                 var dist = Math.Abs(player.Player_Back_Border.Margin.Top - T.Margin.Top - T.Height);
@@ -155,10 +155,10 @@ namespace Team_Project
                                 r.Children.Add(t2);
                                 r.Begin(player.Player_Back_Border);
                                 canmoveup = false;
-                                //lab.Content =(" left: " + canmoveleft + " right: " + canmoveright, "Up");
-                            }*/
-                            if (player.Player_Back_Border.Margin.Top + player.Player_Back_Border.Height > T.Margin.Top && canmovedown
-                            ) //up
+                                MessageBox.Show(" down: " + canmovedown + " up: " + canmoveup, "Up");
+                            }
+                            else if(player.Player_Back_Border.Margin.Top < T.Margin.Top && canmovedown
+                            ) //down
                             {
                                 var dist = Math.Abs(player.Player_Back_Border.Margin.Top +player.Player_Back_Border.Height- T.Margin.Top);
                                 var t = ThicknessAnimation(BT.Margin.Left, BT.Margin.Top + dist, 0);
@@ -172,7 +172,7 @@ namespace Team_Project
                                 r.Children.Add(t2);
                                 r.Begin(player.Player_Back_Border);
                                 canmovedown = false;
-                                //lab.Content = (" left: " + canmoveleft + " right: " + canmoveright, "Down");
+                                MessageBox.Show(" down: " + canmovedown + " up: " + canmoveup, "Down");
                             }
                         }
                         else /*if (player.Player_Back_Border.Margin.Top + player.Player_Back_Border.Height
@@ -500,7 +500,7 @@ namespace Team_Project
                         thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left - x, player.Player_Back_Border.Margin.Top - y, maxSpeed);
                     }
                 }
-                else //влево и вправо можно двигаться
+                else //можно двигаться
                 {
                     thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top + y, maxSpeed);
                     thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left - x, player.Player_Back_Border.Margin.Top - y, maxSpeed);
