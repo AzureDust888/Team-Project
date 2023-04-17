@@ -110,7 +110,7 @@
                              Style="{StaticResource Enemy_Hp_ProgressBar}"
                              >
                 </ProgressBar>
-                <ProgressBar x:Name="PlayerMp" Value="{Binding Mp}" 
+                <ProgressBar x:Name="PlayerMp" Value="{Binding Mp, Mode=TwoWay}" 
                              Maximum="{Binding MaxMp}"
                              Height="25"
                              Width="600"
