@@ -22,7 +22,7 @@
     </Window.Resources>
 
     <Canvas x:Name="MainCanvas" Background="Transparent">
-        <Border x:Name="Map_border">
+        <Border  Canvas.Left="-1600" Canvas.Top="-1783" >
             <Canvas x:Name="Map_canvas" Height="{Binding ElementName=BT, Path=ActualHeight}" Width="{Binding ElementName=BT, Path=ActualWidth}"
                     Margin="{Binding ElementName=BT,Path=Margin}">
 
@@ -50,6 +50,37 @@
                            
                            >
                 </Image>
+                <Border Width="3980"
+                        Height="257"
+                        Background="Transparent"
+                         BorderBrush="Transparent"
+                        BorderThickness="0"
+                        x:Name="FUCKBORDERBOTTOM"
+                        Margin="20,3733"/>
+                <Border Width="229"
+                        Height="4000"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        x:Name="FUCKBORDERLEFT"
+                        Margin="0,0"
+                        />
+                <Border Width="238"
+                        Height="4000"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        x:Name="FUCKBORDERRIGHT"
+                        Margin="3752,0"/>
+                <Border Width="3980"
+                        Height="257"
+                        Background="Transparent"
+                         BorderBrush="Transparent"
+                        BorderThickness="0"
+                        x:Name="FUCKBORDERTOP"
+                        Margin="0,10"
+                        />
+                
             </Canvas>
         </Border>
 
@@ -81,6 +112,9 @@
         <Canvas x:Name="Player_Canvas" Height="{Binding ElementName=MainCanvas, Path=ActualHeight}" Width="{Binding ElementName=MainCanvas, Path=ActualWidth}"></Canvas>
         <Canvas x:Name="MapItems_canvas" Height="{Binding ElementName=BT, Path=ActualHeight}" Width="{Binding ElementName=BT, Path=ActualWidth}"
                     Margin="{Binding ElementName=BT,Path=Margin}">
+            <Border Width="200"
+                        Height="200"
+                        Background="Black" Canvas.Left="3800" Canvas.Top="3800"/>
         </Canvas>
         <Border x:Name="Menu_border" Background="Black" Width="400" Height="400" Canvas.Left="760" Canvas.Top="340" Visibility="Hidden">
             <Grid>
@@ -140,7 +174,7 @@
                         Height="80"
                         Background="Gray">
                 </Border>
-                
+
             </Canvas>
         </Border>
         <ProgressBar x:Name="XpBar" Value="{Binding Exp}" 
@@ -161,6 +195,6 @@
                 Height="400"
                 Margin="1510,20"
                 Background="Gray"
-                Opacity="0.6"></Border>
+                Opacity="0.8"></Border>
     </Canvas>
 </Window>
