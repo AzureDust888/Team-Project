@@ -51,27 +51,27 @@ namespace Team_Project
             TestMap();
             Map_addObjects();
 
-            Mini_map();
+            //Mini_map(); 
         }
         public DirectoryInfo? dir = new DirectoryInfo(Directory.GetCurrentDirectory());
 
         public static string dirname;
         DispatcherTimer camp_fire_timer = new DispatcherTimer();
         public static bool isdmgallowed = false;
-        public static Player player = new Player("alex", 175, 100, 1, 0, new Weapon("Novice Weapon", 12, "sword.png"));
+        public static Player player = new Player("Azure", 175, 100, 1, 0, new Weapon("Novice Weapon", 12, "sword.png"));
         int cx = 0;
         int cy = 0;
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         { 
             timer.Interval = TimeSpan.FromSeconds(0.04);
             timer.Tick += Timer_Event_on_Tick;
-            camp_fire_timer.Interval = TimeSpan.FromSeconds(2.5);
+            camp_fire_timer.Interval = TimeSpan.FromSeconds(1);
             camp_fire_timer.Tick += delegate {
 
                 if(Math.Abs(SpawnCampFire.Margin.Left - MainWindow.player.Player_Back_Border.Margin.Left) <= 200 && Math.Abs(SpawnCampFire.Margin.Top - MainWindow.player.Player_Back_Border.Margin.Top) <= 200)
                 {
-                    player.Hp += 2.5;
-                    player.Mp += 2.5;
+                    player.Hp += 1;
+                    player.Mp += 1;
                     if(player.Hp > player.MaxHp)
                         player.Hp = player.MaxHp;
                     if (player.Mp > player.MaxMp)
@@ -119,7 +119,7 @@ namespace Team_Project
               
 
             });
-           
+            Minimap();
             //await Task.Factory.StartNew(() => {
             //    while(true)
             //    {
@@ -416,7 +416,29 @@ namespace Team_Project
             isattack = false;*/
         }
 
-
+        public async void Minimap()
+        {
+            Border miniplayerborder = new Border()
+            {
+                Width = 12,
+                Height = 16,
+                Background = Brushes.White,
+                Margin = new Thickness(251, 226.5, 0, 0),
+            };
+            MiniMapBorder.Child = miniplayerborder;
+            await Task.Factory.StartNew(() =>
+            {
+                while(true)
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        miniplayerborder.Margin = new Thickness(player.Player_Back_Border.Margin.Left / 10, player.Player_Back_Border.Margin.Top / 10, 0, 0);
+                    });
+                   
+                    Task.Delay(10);
+                }
+            });
+        }
 
         bool isattack = false;
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -583,22 +605,22 @@ namespace Team_Project
             }
 
         }
-        void Mini_map()
-        {
-            for (int row = 0; row < rows; row++)
-            {
-                for (int col = 0; col < cols; col++)
-                {
-                    Image image2 = new Image();
-                    image2.Source = img0;
-                    image2.Width = cellWidth / 15;
-                    image2.Height = cellHeight / 15;
-                    Canvas.SetLeft(image2, col * cellWidth / 20);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
-                    Canvas.SetTop(image2, row * cellHeight / 20);
-                    MiniMap_canvas.Children.Add(image2);
-                }
-            }
-        }
+        //void Mini_map()
+        //{
+        //    for (int row = 0; row < rows; row++)
+        //    {
+        //        for (int col = 0; col < cols; col++)
+        //        {
+        //            Image image2 = new Image();
+        //            image2.Source = img0;
+        //            image2.Width = cellWidth / 15;
+        //            image2.Height = cellHeight / 15;
+        //            Canvas.SetLeft(image2, col * cellWidth / 20);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
+        //            Canvas.SetTop(image2, row * cellHeight / 20);
+        //            MiniMap_canvas.Children.Add(image2);
+        //        }
+        //    }
+        //}
         void Map_addObjects()
         {
             ObservableCollection<BitmapImage> imgs = new ObservableCollection<BitmapImage>();

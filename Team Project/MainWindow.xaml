@@ -89,8 +89,8 @@
             </Grid>
         </Border>
 
-        <Canvas x:Name="MiniMap_canvas" Height="200" Width="200"
-                   Canvas.Left="1665" Canvas.Top="10" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <!--<Canvas x:Name="MiniMap_canvas" Height="200" Width="200"
+                   Canvas.Left="1665" Canvas.Top="10" HorizontalAlignment="Left" VerticalAlignment="Center" />-->
 
         <Border Width="1200"
                 Height="200"
@@ -156,5 +156,11 @@
                              Style="{StaticResource Enemy_Hp_ProgressBar}"
                              >
         </ProgressBar>
+
+        <Border x:Name="MiniMapBorder" Width="400"
+                Height="400"
+                Margin="1510,20"
+                Background="Gray"
+                Opacity="0.6"></Border>
     </Canvas>
 </Window>
