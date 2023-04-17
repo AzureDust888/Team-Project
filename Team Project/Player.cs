@@ -15,15 +15,16 @@ namespace Team_Project
         public Border Player_Back_Border = new Border()
         {
             Width = 120,
-            Height = 180,
-            Background = Brushes.Transparent,
+            Height = 160,
+            Background = Brushes.Yellow,
+            Opacity = 0.5,
             Margin = new Thickness(2510, 2265, 0, 0),
         };
         public Border PLayer_Front_Border = new Border()
         {
             Width = 120,
-            Height = 180,
-            Margin = new Thickness(910, 482, 0, 0),
+            Height = 160,
+            Margin = new Thickness(900, 482, 0, 0),
         };
         public string Name { get; set; }
         public double Hp { get; set; }
@@ -50,6 +51,7 @@ namespace Team_Project
             Lvl = lvl;
             Exp = exp;
             this.weapon = weapon;
+            
         }
     }
 
