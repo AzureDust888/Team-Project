@@ -22,6 +22,7 @@ namespace Team_Project
         public double MaxMp { get; set; }
         public int Lvl { get; set; }
         public double Exp { get; set; }
+        public double Dmg { get; set; }
         int ux = 0;
         int ux2 = 0;
         int uy = 130;
@@ -38,6 +39,7 @@ namespace Team_Project
         Point cord = new Point();
         public EnemyClass(double hptmp, double mptmp, string nametmp)
         {
+            Dmg = 7;
             timerAnimation.Interval = TimeSpan.FromSeconds(0.04);
             timerAnimation.Tick += delegate {
                 this.Dispatcher.Invoke(() =>
@@ -192,6 +194,7 @@ namespace Team_Project
             Task.Factory.StartNew(() =>
             {
                 bool ift = true;
+                int i = 0;
                 while (ift)
                 {
 
@@ -316,11 +319,20 @@ namespace Team_Project
                         }
                         if (Math.Abs(border.Margin.Left - MainWindow.player.Player_Back_Border.Margin.Left) <= 120 && Math.Abs(border.Margin.Top - MainWindow.player.Player_Back_Border.Margin.Top) <= 10 && isc) // Mob attack
                         {
-                            //MessageBox.Show("Hit");
+                            if(i%2 == 0)
+                            {
+                                MainWindow.player.Hp -= Dmg;
+                                if (MainWindow.player.Hp < 0) MainWindow.player.Hp = 0;
+                                ((MainWindow)System.Windows.Application.Current.MainWindow).PlayerHp.Value = MainWindow.player.Hp;
+                            }
+                            
+                            //MessageBox.Show("MainWindow.player.Hp " + MainWindow.player.Hp);
                         }
 
 
                     }));
+                    if (i >= 100) i = 0;
+                    i++;
                     Thread.Sleep(200);
                 }
             });
