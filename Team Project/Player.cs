@@ -14,9 +14,10 @@ namespace Team_Project
     {
         public Border Player_Back_Border = new Border()
         {
-            Width = 120, 
+            Width = 120,
             Height = 160,
             Margin = new Thickness(2510, 2265, 0, 0),
+            Background = Brushes.Yellow
         };
         public Border PLayer_Front_Border = new Border()
         {
