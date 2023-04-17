@@ -14,6 +14,7 @@
     <None Remove="Resources\ddd.jpg" />
     <None Remove="Resources\dragon.png" />
     <None Remove="Resources\ground1.PNG" />
+    <None Remove="Resources\ground123.PNG" />
     <None Remove="Resources\ground2.PNG" />
     <None Remove="Resources\ground3.PNG" />
     <None Remove="Resources\ground4.PNG" />
@@ -29,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\ground123.PNG" />
     <Resource Include="Resources\R.gif" />
   </ItemGroup>
 
