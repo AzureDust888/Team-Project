@@ -33,6 +33,8 @@ namespace Team_Project
         public int Lvl { get; set; }
         public double Exp { get; set; }
 
+
+
         public Player()
         {
             //BitmapImage img = new BitmapImage(new Uri(MainWindow.dirname + "\\Resources\\player_topchik.png"));
@@ -42,6 +44,7 @@ namespace Team_Project
             //PLayer_Front_Border.Background = Brushes.Black;
             PLayer_Front_Border.Background = Brushes.Black;
             PLayer_Front_Border.Opacity = 0.5;
+            
         }
         public Player(string name, double hp, double mp, int lvl, double exp)
         {
