@@ -56,19 +56,15 @@ namespace Team_Project
 
         public static string dirname;
 
-
-        public static Border weapon = new Border();
-        public static Player player = new Player("alex", 175, 100, 1, 0);
+        public static bool isdmgallowed = false;
+        public static Player player = new Player("alex", 175, 100, 1, 0, new Weapon("Novice Weapon", 20, "sword.png"));
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         { 
             timer.Interval = TimeSpan.FromSeconds(0.04);
-            //timer.Tick += Timer_Event_on_Tick;
+            timer.Tick += Timer_Event_on_Tick;
 
 
             this.WindowState = WindowState.Maximized;
-            weapon.Width = 60;
-            weapon.Height = 120;
-            weapon.Background = Brushes.Lime;
 
             //NIghtBorder.Visibility = Visibility.Hidden;
             //NIghtBorder2.Visibility = Visibility.Hidden;
@@ -81,15 +77,6 @@ namespace Team_Project
                 EnemyClass en = new EnemyClass(100, 100, $"Cerberus");
                 canvas_enemy.Children.Add(en.border);
             }
-
-
-            BitmapImage img2 = new BitmapImage();
-
-            img2.BeginInit();
-            img2.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\sword.png"));
-            img2.EndInit();
-
-            weapon.Background = new ImageBrush(img2);
 
             PlayerHp.DataContext = player;
             PlayerMp.DataContext = player;
@@ -208,16 +195,17 @@ namespace Team_Project
         {
             if (!isattack)
             {
-                weapon.IsEnabled = true;
-                canvas_enemy.Children.Add(weapon);
-                weapon.Margin = player.Player_Back_Border.Margin;
+                isdmgallowed = true;
+                player.weapon.weapon_border.IsEnabled = true;
+                canvas_enemy.Children.Add(player.weapon.weapon_border);
+                player.weapon.weapon_border.Margin = player.Player_Back_Border.Margin;
                 
                 RotateTransform rotateTransform = new RotateTransform();
 
-                rotateTransform.CenterX = weapon.Width / 2;
-                rotateTransform.CenterY = weapon.Height;
+                rotateTransform.CenterX = player.weapon.weapon_border.Width / 2;
+                rotateTransform.CenterY = player.weapon.weapon_border.Height;
 
-                weapon.RenderTransform = rotateTransform;
+                player.weapon.weapon_border.RenderTransform = rotateTransform;
 
                 DoubleAnimation rotationAnimation = new DoubleAnimation();
                 rotationAnimation.From = 0;
@@ -229,13 +217,13 @@ namespace Team_Project
                 storyboard.Children.Add(rotationAnimation);
 
                 Storyboard.SetTargetProperty(rotationAnimation, new PropertyPath("(UIElement.RenderTransform).(RotateTransform.Angle)"));
-                Storyboard.SetTarget(storyboard, weapon);
+                Storyboard.SetTarget(storyboard, player.weapon.weapon_border);
                 storyboard.Completed += delegate
                 {
                     timer.Stop();
                     isattack = false;
-                    weapon.IsEnabled = false;
-                    canvas_enemy.Children.Remove(weapon);
+                    player.weapon.weapon_border.IsEnabled = false;
+                    canvas_enemy.Children.Remove(player.weapon.weapon_border);
                 };
                 storyboard.Begin();
                 timer.Start();
@@ -265,7 +253,7 @@ namespace Team_Project
                     x = -100;
                 }
 
-                weapon.Margin = new Thickness(weapon.Margin.Left - x, weapon.Margin.Top - y - 40, 0, 0);
+                player.weapon.weapon_border.Margin = new Thickness(player.weapon.weapon_border.Margin.Left - x, player.weapon.weapon_border.Margin.Top - y - 40, 0, 0);
 
 
 

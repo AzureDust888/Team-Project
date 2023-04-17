@@ -16,7 +16,7 @@ namespace Team_Project
         {
             Width = 120,
             Height = 180,
-            Background = Brushes.Yellow,
+            Background = Brushes.Transparent,
             Margin = new Thickness(2510, 2265, 0, 0),
         };
         public Border PLayer_Front_Border = new Border()
@@ -33,32 +33,23 @@ namespace Team_Project
         public int Lvl { get; set; }
         public double Exp { get; set; }
 
+        public Weapon weapon { get; set; } 
 
-
-        public Player()
+        public Player() { }
+           
+        
+        public Player(string name, double hp, double mp, int lvl, double exp, Weapon weapon)
         {
-            //BitmapImage img = new BitmapImage(new Uri(MainWindow.dirname + "\\Resources\\player_topchik.png"));
-            //Int32Rect cropRect = new Int32Rect(0, 0, 120, 180);
-            //CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
-            //PLayer_Front_Border.Background = new ImageBrush(croppedBitmap);
-            //PLayer_Front_Border.Background = Brushes.Black;
-            PLayer_Front_Border.Background = Brushes.Black;
-            PLayer_Front_Border.Opacity = 0.5;
-            
-        }
-        public Player(string name, double hp, double mp, int lvl, double exp)
-        {
-            //BitmapImage img = new BitmapImage(new Uri(MainWindow.dirname + "\\Resources\\player_topchik.png"));
-            //Int32Rect cropRect = new Int32Rect(0, 0, 120, 180);
-            //CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
-            //PLayer_Front_Border.Background = new ImageBrush(croppedBitmap);
+            BitmapImage img = new BitmapImage(new Uri(MainWindow.dirname + "\\Resources\\player_topchik.png"));
+            Int32Rect cropRect = new Int32Rect(0, 0, 120, 180);
+            CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
+            PLayer_Front_Border.Background = new ImageBrush(croppedBitmap);
             Name = name;
             Hp = hp;
             Mp = mp;
             Lvl = lvl;
             Exp = exp;
-            PLayer_Front_Border.Background = Brushes.Black;
-            PLayer_Front_Border.Opacity = 0.5;
+            this.weapon = weapon;
         }
     }
 

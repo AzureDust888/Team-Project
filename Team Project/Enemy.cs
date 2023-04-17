@@ -37,6 +37,7 @@ namespace Team_Project
         bool isc = true;
         ThicknessAnimation thicknessAnimation;
         Point cord = new Point();
+        bool isdmgavaible = true;
         public EnemyClass(double hptmp, double mptmp, string nametmp)
         {
             Dmg = 7;
@@ -191,7 +192,7 @@ namespace Team_Project
             storyboard.Children.Add(thicknessAnimation);
             storyboard.Begin(border);
 
-            Task.Factory.StartNew(() =>
+            Task.Factory.StartNew(async () =>
             {
                 bool ift = true;
                 int i = 0;
@@ -203,21 +204,25 @@ namespace Team_Project
 
 
 
-                        if (Math.Abs(border.Margin.Left - MainWindow.player.Player_Back_Border.Margin.Left) <= 250 && Math.Abs(border.Margin.Top - MainWindow.player.Player_Back_Border.Margin.Top) <= 250 && isc)
+                        if (Math.Abs(border.Margin.Left - MainWindow.player.Player_Back_Border.Margin.Left) <= 300 && Math.Abs(border.Margin.Top - MainWindow.player.Player_Back_Border.Margin.Top) <= 300 && isc)
                         {
                             storyboard.Pause();
                             double tmpLeft = 0;
-                            double tmpTop = 0;
-                            if (border.Margin.Left > MainWindow.player.Player_Back_Border.Margin.Left) tmpLeft = MainWindow.player.Player_Back_Border.Margin.Left + 90;
-                            else tmpLeft = MainWindow.player.Player_Back_Border.Margin.Left - 90;
+                            if (border.Margin.Left > MainWindow.player.Player_Back_Border.Margin.Left) tmpLeft = MainWindow.player.Player_Back_Border.Margin.Left + 50;
+                            else tmpLeft = MainWindow.player.Player_Back_Border.Margin.Left - 50;
 
+                            double animationtime = 0.7;
+                            if(i % 4 == 0)
+                            {
+                                animationtime = 0.2;
+                            }
                             thicknessAnimation = new ThicknessAnimation
                             {
 
                                 From = new Thickness(border.Margin.Left, border.Margin.Top, 0, 0),
                                 To = new Thickness(tmpLeft, MainWindow.player.Player_Back_Border.Margin.Top, 0, 0),
 
-                                Duration = TimeSpan.FromSeconds(0.7),
+                                Duration = TimeSpan.FromSeconds(animationtime),
 
                                 AutoReverse = false
 
@@ -276,10 +281,12 @@ namespace Team_Project
                             isc = false;
                         }
 
-                        if (Math.Abs(border.Margin.Left - MainWindow.weapon.Margin.Left) <= 120 && Math.Abs(border.Margin.Top - MainWindow.weapon.Margin.Top) <= 120 && isc)
+                        if (Math.Abs(border.Margin.Left - MainWindow.player.weapon.weapon_border.Margin.Left) <= 120 && Math.Abs(border.Margin.Top - MainWindow.player.weapon.weapon_border.Margin.Top) <= 120 && isc && MainWindow.isdmgallowed)
                         {
+
+                            MainWindow.isdmgallowed = false;
                             //border.Background = Brushes.Red;
-                            if (MainWindow.weapon.IsEnabled == true)
+                            if (MainWindow.player.weapon.weapon_border.IsEnabled == true)
                             {
                                 Hp -= 40;
                                 if (Hp < 0) Hp = 0;
@@ -287,6 +294,10 @@ namespace Team_Project
                                 hplabel.Content = Hp.ToString();
 
                             }
+                        }
+                        else
+                        {
+                            isdmgavaible = true;
                         }
                         if (Hp <= 0 && ift)
                         {
@@ -333,7 +344,7 @@ namespace Team_Project
                     }));
                     if (i >= 100) i = 0;
                     i++;
-                    Thread.Sleep(200);
+                    await Task.Delay(50);
                 }
             });
             timerAnimation.Start();
