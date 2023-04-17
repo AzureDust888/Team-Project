@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\campfire.gif" />
     <None Remove="Resources\cerberusInvert.png" />
     <None Remove="Resources\ddd.jpg" />
     <None Remove="Resources\dragon.png" />
@@ -17,6 +18,7 @@
     <None Remove="Resources\ground3.PNG" />
     <None Remove="Resources\ground4.PNG" />
     <None Remove="Resources\ground5.PNG" />
+    <None Remove="Resources\R.gif" />
     <None Remove="Resources\tree.png" />
     <None Remove="Resources\tree2.png" />
     <None Remove="Resources\Weapon_34.png" />
@@ -27,12 +29,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\R.gif" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="NEST" Version="7.17.5" />
     <PackageReference Include="System.Management" Version="7.0.1" />
+    <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Dictionary1.xaml" />
+    <Resource Include="Resources\campfire.gif" />
     <Resource Include="Resources\cerberusInvert.png" />
     <Resource Include="Resources\ddd.jpg" />
     <Resource Include="Resources\dragon.png" />
