@@ -17,13 +17,18 @@ namespace Team_Project
             Width = 120,
             Height = 160,
             Margin = new Thickness(2510, 2265, 0, 0),
-            Background = Brushes.Yellow
+            BorderBrush = Brushes.White,
+            CornerRadius = new CornerRadius(500),
+            BorderThickness= new Thickness(2)           
         };
         public Border PLayer_Front_Border = new Border()
         {
             Width = 120,
             Height = 160,
             Margin = new Thickness(900, 482, 0, 0),
+            CornerRadius = new CornerRadius(500),
+            /*BorderBrush = Brushes.White,*/
+            BorderThickness = new Thickness(2)
         };
         public string Name { get; set; }
         public double Hp { get; set; }
@@ -49,8 +54,7 @@ namespace Team_Project
             Mp = mp;
             Lvl = lvl;
             Exp = exp;
-            this.weapon = weapon;
-            
+            this.weapon = weapon;            
         }
     }
 

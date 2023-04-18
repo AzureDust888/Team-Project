@@ -10,6 +10,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows;
 using System.Windows.Threading;
+using System.Reflection;
 
 namespace Team_Project
 {
@@ -39,24 +40,24 @@ namespace Team_Project
         ThicknessAnimation thicknessAnimation;
         Point cord = new Point();
         bool isdmgavaible = true;
-        public EnemyClass(double hptmp, double mptmp, string nametmp, double damage, double xp, int lvl)
+        
+        public EnemyClass(double hptmp, double mptmp, string nametmp, double damage, double xp, int lvl,double leftPos, double topPos)
         {
+            BitmapImage img = new BitmapImage(new Uri(MainWindow.dirname + "\\Resources\\cerberus.png"));
+            BitmapImage imgInvert = new BitmapImage(new Uri(MainWindow.dirname + "\\Resources\\cerberusInvert.png"));
+
             Dmg = damage;
             Exp = xp;
             Lvl = lvl;
             timerAnimation.Interval = TimeSpan.FromSeconds(0.04);
             timerAnimation.Tick += delegate {
-                this.Dispatcher.Invoke(() =>
-                {
+
                     if(border.Margin.Left < MainWindow.player.Player_Back_Border.Margin.Left)
                     {
                         try
                         {
                             if (ux >= 1050)
                                 ux = 0;
-
-
-                            BitmapImage img = new BitmapImage(new Uri(dir.FullName + "\\Resources\\cerberus.png"));
 
                             Int32Rect cropRect = new Int32Rect(ux, uy, 120, 100);
 
@@ -80,11 +81,11 @@ namespace Team_Project
                                 ux2 = 1100;
 
 
-                            BitmapImage img = new BitmapImage(new Uri(dir.FullName + "\\Resources\\cerberusInvert.png"));
+                           
 
                             Int32Rect cropRect = new Int32Rect(ux2, uy, 120, 100);
 
-                            CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
+                            CroppedBitmap croppedBitmap = new CroppedBitmap(imgInvert, cropRect);
 
                             border.Background = new ImageBrush(croppedBitmap);
 
@@ -95,11 +96,9 @@ namespace Team_Project
                         {
                             //MessageBox.Show(ex.Message + " " + ux2 + " " + uy);
                         }
-                    }
-                  
-
-                });
+                    }                 
             };
+
             Name = nametmp;
             Name += "    lvl " + Lvl.ToString();
             Hp = hptmp;
@@ -107,7 +106,7 @@ namespace Team_Project
             border.Width = 100;
             border.Height = 100;
             border.Background = Brushes.Black;
-            border.Margin = new Thickness(new Random().Next(3500), new Random().Next(3500), 0, 0);
+            border.Margin = new Thickness(leftPos, topPos, 0, 0);
 
             ProgressBar hp = new ProgressBar()
             {
@@ -164,8 +163,6 @@ namespace Team_Project
             ca.Children.Add(hp);
 
             border.Child = ca;
-            BitmapImage img = new BitmapImage(new Uri(dir.FullName + "\\Resources\\cerberus.png"));
-
 
             //кусок картинки
             Int32Rect cropRect = new Int32Rect(0, 0, 100, 100);
@@ -192,22 +189,22 @@ namespace Team_Project
             };
 
             Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
+            storyboard.Children.Clear();
             storyboard.Children.Add(thicknessAnimation);
             storyboard.Begin(border);
 
-            Task.Factory.StartNew(async () =>
+
+            Thread thread = new Thread(() =>
             {
                 bool ift = true;
                 int i = 0;
                 while (ift)
                 {
 
-                    Dispatcher.Invoke(new Action(async () =>
+                    Dispatcher.Invoke(async () =>
                     {
-
-
-
-                        if (Math.Abs(border.Margin.Left - MainWindow.player.Player_Back_Border.Margin.Left) <= 300 && Math.Abs(border.Margin.Top - MainWindow.player.Player_Back_Border.Margin.Top) <= 300 && isc)
+                        if (Math.Abs(border.Margin.Left - MainWindow.player.Player_Back_Border.Margin.Left) <= 300 
+                        && Math.Abs(border.Margin.Top - MainWindow.player.Player_Back_Border.Margin.Top) <= 300 && isc)
                         {
                             storyboard.Pause();
                             double tmpLeft = 0;
@@ -234,6 +231,7 @@ namespace Team_Project
                             //border.Background = Brushes.Yellow;
 
                             Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
+                            storyboard2.Children.Clear();
                             storyboard2.Children.Add(thicknessAnimation);
                             storyboard2.Begin(border);
                             isrunning = true;
@@ -254,16 +252,13 @@ namespace Team_Project
                                 };
 
                                 Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
+                                storyboard4.Children.Clear();
                                 storyboard4.Children.Add(thicknessAnimation);
                                 storyboard4.Begin(border);
-                                //border.Background = Brushes.Black;
+                                border.Background = Brushes.Black;
                                 isrunning = false;
                                 isc = false;
                             }
-
-
-
-
                         }
                         if (Math.Abs(border.Margin.Left - cord.X) >= 800 || Math.Abs(border.Margin.Top - cord.Y) >= 800)
                         {
@@ -278,6 +273,7 @@ namespace Team_Project
                             };
 
                             Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
+                            storyboard5.Children.Clear();
                             storyboard5.Children.Add(thicknessAnimation);
                             storyboard5.Begin(border);
                             //border.Background = Brushes.Black;
@@ -295,7 +291,6 @@ namespace Team_Project
                                 if (Hp < 0) Hp = 0;
                                 hp.Value = Hp;
                                 hplabel.Content = Hp.ToString();
-
                             }
                         }
                         else
@@ -310,16 +305,15 @@ namespace Team_Project
                                 ((MainWindow)System.Windows.Application.Current.MainWindow).XpBar.Value = player.Exp;
                             }    
                             isalive = false;
-                            BitmapImage img = new BitmapImage(new Uri(dir.FullName + "\\Resources\\cerberus.png"));
+                            border.IsEnabled = false;
+                            border.Focusable = false;
 
-                            //кусок картинки
                             Int32Rect cropRect = new Int32Rect(1020, 1010, 100, 50);
                             CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
 
                             border.Background = new ImageBrush(croppedBitmap);
                             thicknessAnimation = new ThicknessAnimation
                             {
-
                                 From = new Thickness(border.Margin.Left, border.Margin.Top, 0, 0),
                                 To = new Thickness(border.Margin.Left, border.Margin.Top, 0, 0),
 
@@ -328,14 +322,16 @@ namespace Team_Project
                             };
 
                             Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
+                            storyboard5.Children.Clear();
                             storyboard5.Children.Add(thicknessAnimation);
                             storyboard5.Begin(border);
                             timerAnimation.Stop();
+                            
                             await Task.Delay(2000);
                             ((MainWindow)System.Windows.Application.Current.MainWindow).canvas_enemy.Children.Remove(border);
                            
                             ift = false;
-                           
+                            return;
                         }
                         if (Math.Abs(border.Margin.Left - MainWindow.player.Player_Back_Border.Margin.Left) <= 120 && Math.Abs(border.Margin.Top - MainWindow.player.Player_Back_Border.Margin.Top) <= 10 && isc) // Mob attack
                         {
@@ -348,20 +344,23 @@ namespace Team_Project
                             
                             //MessageBox.Show("MainWindow.player.Hp " + MainWindow.player.Hp);
                         }
-
-
-                    }));
+                    });
                     if (i >= 100) i = 0;
                     i++;
-                    await Task.Delay(50);
+                    Thread.Sleep(50);
+                    /*await Task.Delay(50);*/
+                    
                 }
             });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
             timerAnimation.Start();
         }
 
         private void Storyboard_Completed(object? sender, EventArgs e)
         {
             isc = true;
+
             thicknessAnimation = new ThicknessAnimation
             {
 
@@ -377,6 +376,7 @@ namespace Team_Project
             };
 
             Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
+            storyboard3.Children.Clear();
             storyboard3.Children.Add(thicknessAnimation);
             storyboard3.Begin(border);
         }
