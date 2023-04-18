@@ -102,6 +102,8 @@ namespace Team_Project
             MpLabel.DataContext = player;
             HpLabel.DataContext = player;
             XpLabel.DataContext = player;
+
+
             await Task.Factory.StartNew(() =>
             {
                 try

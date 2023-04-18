@@ -36,10 +36,6 @@ namespace Team_Project
         public double CurrentLvlExpCap { get; set; } = 1000;
         public Weapon weapon { get; set; }
 
-        public string ExpProperty { get {
-                return this.Exp + "/" + Convert.ToString(this.Lvl * 100);
-            } }
-
         public Player() { }
            
         
