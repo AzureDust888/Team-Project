@@ -33,7 +33,11 @@ namespace Team_Project
         public double MaxMp { get; set; } = 200;
         public int Lvl { get; set; }
         public double Exp { get; set; }
+
         public double CurrentLvlExpCap { get; set; } = 1000;
+
+        public int GoldCoins { get; set; }
+
         public Weapon weapon { get; set; }
 
         public Player() { }

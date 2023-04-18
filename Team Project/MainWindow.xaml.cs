@@ -44,13 +44,19 @@ namespace Team_Project
 
             this.DataContext = this;
             //PlayerHp.DataContext = player;
+          
             InitializeComponent();
             dir = dir.Parent?.Parent?.Parent;
             mn = this;
             dirname = dir.FullName;
             TestMap();
             Map_addObjects();
-
+            PlayerHp.DataContext = player;
+            PlayerMp.DataContext = player;
+            XpBar.DataContext = player;
+            MpLabel.DataContext = player;
+            HpLabel.DataContext = player;
+            XpLabel.DataContext = player;
             //Mini_map(); 
         }
         public DirectoryInfo? dir = new DirectoryInfo(Directory.GetCurrentDirectory());
@@ -96,12 +102,7 @@ namespace Team_Project
                 canvas_enemy.Children.Add(en.border);
             }
             
-            PlayerHp.DataContext = player;
-            PlayerMp.DataContext = player;
-            XpBar.DataContext = player;
-            MpLabel.DataContext = player;
-            HpLabel.DataContext = player;
-            XpLabel.DataContext = player;
+            
 
 
             await Task.Factory.StartNew(() =>
