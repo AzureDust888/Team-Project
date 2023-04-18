@@ -42,4 +42,41 @@
         </Setter>
       
     </Style>
+
+    <Style x:Key="Launcher_Button_Style" TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}"
+                                CornerRadius="7"
+                                x:Name="Border"
+                                Background="{TemplateBinding Background}">
+                        <Canvas Width="{TemplateBinding Width}"
+                                    Height="{TemplateBinding Height}">
+                            <Label Content="{TemplateBinding Content}"
+                                       x:Name="PART_ContentHost"
+                                       Foreground="Aquamarine"
+                                           FontWeight="Thin"
+                                       Width="{TemplateBinding Width}"
+                                       Height="{TemplateBinding Height}"
+                                       VerticalContentAlignment="Center"
+                                       HorizontalContentAlignment="Center"
+                                       FontSize="25"
+                                       Margin="0,0">
+                            </Label>
+                        </Canvas>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="False">
+                            <Setter Property="Background" TargetName="Border" Value="#22272e"></Setter>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="Border" Value="#2d444b"></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
