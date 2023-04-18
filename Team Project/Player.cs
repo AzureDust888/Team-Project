@@ -32,7 +32,11 @@ namespace Team_Project
         public int Lvl { get; set; }
         public double Exp { get; set; }
         public double CurrentLvlExpCap { get; set; } = 1000;
-        public Weapon weapon { get; set; } 
+        public Weapon weapon { get; set; }
+
+        public string ExpProperty { get {
+                return this.Exp + "/" + Convert.ToString(this.Lvl * 100);
+            } }
 
         public Player() { }
            

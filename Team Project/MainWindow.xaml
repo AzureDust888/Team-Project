@@ -108,7 +108,7 @@
                     Margin="{Binding ElementName=BT,Path=Margin}"/>
         <Border x:Name="Menu_border"
                 CornerRadius="20"
-                Background="Gray" Width="400" Height="400" Canvas.Left="760" Canvas.Top="340" Visibility="Hidden">
+                Background="#22272e" Width="400" Height="400" Canvas.Left="760" Canvas.Top="340" Visibility="Hidden">
             <Canvas>
                 <StackPanel Orientation="Vertical">
                     <Button Content="Exit"
@@ -159,6 +159,16 @@
                        HorizontalContentAlignment="Left"
                        x:Name="MpLabel"
                        Margin="910,55"></Label>
+                <Label Foreground="Aqua" Content="{Binding Exp}"
+                       FontSize="18"
+                       Width="120"
+                       Height="30"
+                       FontWeight="Bold"
+                       HorizontalContentAlignment="Center"
+                       VerticalContentAlignment="Center"
+                       x:Name="XpLabel"
+                       Margin="1420,160">
+                </Label>
                 <Label Foreground="#0022EE" Content="Mp"
                        FontSize="18"
                        FontWeight="Bold"
@@ -191,7 +201,7 @@
                         Width="900"
                         Margin="150,100"
                         Height="80"
-                        Background="Gray">
+                        Background="#22272e">
                 </Border>
 
             </Canvas>
@@ -213,7 +223,17 @@
         <Border x:Name="MiniMapBorder" Width="400"
                 Height="400"
                 Margin="1510,20"
-                Background="Gray"
+                Background="#22272e"
                 Opacity="0.8"></Border>
+
+        <Border x:Name="ChatBorder" Width="400"
+                Height="300"
+                Margin="0,780"
+                Background="#22272e"
+                Opacity="0.3">
+            <Canvas x:Name="ChatCanvas">
+                
+            </Canvas>
+        </Border>
     </Canvas>
 </Window>
