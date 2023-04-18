@@ -502,7 +502,6 @@ namespace Team_Project
             TimerX = x;
             TImerY = y;
 
-            lab.Content = player.Player_Back_Border.Margin.Top + " " + y;
 
             double sumXY = Math.Abs(x) + Math.Abs(y);
             double maxSpeed; 
