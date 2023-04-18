@@ -51,7 +51,6 @@ namespace Team_Project
             BitmapImage groundImg8 = new BitmapImage(new Uri(dirname + "\\Textures\\File00000825.png")); //sand
             BitmapImage groundImg7 = new BitmapImage(new Uri(dirname + "\\Textures\\File00000740.png"));
             BitmapImage groundImg6 = new BitmapImage(new Uri(dirname + "\\Textures\\File00000639.png")); //snow
-            BitmapImage groundImg5 = new BitmapImage(new Uri(dirname + "\\Textures\\File00000516.png"));
             BitmapImage groundImg4 = new BitmapImage(new Uri(dirname + "\\Textures\\File00000516.png"));
             BitmapImage groundImg2 = new BitmapImage(new Uri(dirname + "\\Textures\\File00000454.png"));
             BitmapImage groundImg3 = new BitmapImage(new Uri(dirname + "\\Textures\\File00000495.png"));
