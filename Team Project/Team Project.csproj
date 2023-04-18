@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Avatar.png" />
     <None Remove="Resources\campfire.gif" />
     <None Remove="Resources\cerberusInvert.png" />
     <None Remove="Resources\ddd.jpg" />
@@ -30,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Avatar.png" />
     <Resource Include="Resources\ground123.PNG" />
     <Resource Include="Resources\R.gif" />
   </ItemGroup>

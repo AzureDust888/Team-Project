@@ -28,10 +28,12 @@
                          MouseLeftButtonUp="ImageAwesome_MouseLeftButtonUp">
         </fa:ImageAwesome>
 
-        <Image Width="500"
-               Height="600"
+        <Image Width="800"
+               Height="900"
                x:Name="SpawnCampFire"
-               Margin="0,0">
+               Margin="-155,-100"
+               Source="{x:Null}"
+               >
         </Image>
 
         <Border Width="300"
@@ -88,6 +90,29 @@
                         GotMouseCapture="Exit_Button_GotMouseCapture"
                         Style="{StaticResource Launcher_Button_Style}">
                 </Button>
+            </Canvas>
+        </Border>
+
+        <Border Width="50"
+                Height="50"
+                BorderThickness="2"
+                BorderBrush="#2d333b"
+                CornerRadius="100"
+                Margin="10"
+                x:Name="CurrentUserAvatarBorder">
+            <Border.Background>
+                <ImageBrush ImageSource="Resources\Avatar.png"></ImageBrush>
+            </Border.Background>
+            <Canvas x:Name="PlayerAccountCanvas" Width="225">
+                <Label Content="User Name"
+                       Width="150"
+                       Height="50"
+                       HorizontalContentAlignment="Left"
+                       VerticalContentAlignment="Center"
+                       Foreground="Aquamarine"
+                       FontSize="20"
+                       x:Name="CurrentUserNameLabel"
+                       Margin="55,-2.5"></Label>
             </Canvas>
         </Border>
     </Canvas>
