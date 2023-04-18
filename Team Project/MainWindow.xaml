@@ -143,6 +143,22 @@
                        FontSize="18"
                        FontWeight="Bold"
                        Margin="260,23"></Label>
+                <Label Foreground="OrangeRed" Content="{Binding Hp}"
+                       FontSize="18"
+                       Width="90"
+                       Height="30"
+                       FontWeight="Bold"
+                       HorizontalContentAlignment="Left"
+                       x:Name="HpLabel"
+                       Margin="910,25"></Label>
+                <Label Foreground="#0022EE" Content="{Binding Mp}"
+                       FontSize="18"
+                       Width="90"
+                       Height="30"
+                       FontWeight="Bold"
+                       HorizontalContentAlignment="Left"
+                       x:Name="MpLabel"
+                       Margin="910,55"></Label>
                 <Label Foreground="#0022EE" Content="Mp"
                        FontSize="18"
                        FontWeight="Bold"
