@@ -201,7 +201,8 @@
                         Width="900"
                         Margin="150,100"
                         Height="80"
-                        Background="#22272e">
+                        Background="#22272e"
+                        CornerRadius="7">
                 </Border>
 
             </Canvas>
