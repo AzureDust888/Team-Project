@@ -64,7 +64,7 @@ namespace Team_Project
                     MessageBox.Show(ex.Message);
                 }
 
-
+                Task.Delay(1000);
             });
         }
 
