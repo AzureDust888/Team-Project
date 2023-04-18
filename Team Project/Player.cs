@@ -17,7 +17,6 @@ namespace Team_Project
             Width = 120,
             Height = 160,
             Margin = new Thickness(2510, 2265, 0, 0),
-            Background = Brushes.Yellow
         };
         public Border PLayer_Front_Border = new Border()
         {
