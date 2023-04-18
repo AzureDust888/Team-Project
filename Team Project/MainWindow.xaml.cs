@@ -101,7 +101,7 @@ namespace Team_Project
             XpBar.DataContext = player;
             MpLabel.DataContext = player;
             HpLabel.DataContext = player;
-
+            XpLabel.DataContext = player;
             await Task.Factory.StartNew(() =>
             {
                 try
@@ -699,5 +699,6 @@ namespace Team_Project
             }
         }
 
+       
     }
 }
