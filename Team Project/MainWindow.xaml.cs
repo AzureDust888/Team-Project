@@ -99,7 +99,8 @@ namespace Team_Project
             PlayerHp.DataContext = player;
             PlayerMp.DataContext = player;
             XpBar.DataContext = player;
-
+            MpLabel.DataContext = player;
+            HpLabel.DataContext = player;
 
             await Task.Factory.StartNew(() =>
             {
