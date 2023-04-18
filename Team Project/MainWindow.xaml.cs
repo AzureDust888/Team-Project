@@ -152,6 +152,8 @@ namespace Team_Project
             });
             borderBottom.Start();
 
+            //MessageBox.Show(player.Player_Back_Border.Margin + "||" + player.PLayer_Front_Border.Margin + "||" + BT.Margin);
+
         }
 
         public void Collision(Border bt)
@@ -585,7 +587,7 @@ namespace Team_Project
         }
 
         BitmapImage img0 = new BitmapImage();
-        BitmapImage img1 = new BitmapImage();
+        BitmapImage img1 = new BitmapImage();   
         int cellWidth = 256; // ширина ячейки сетки
         int cellHeight = 256; // высота ячейки сетки
         const int rows = 20; // количество строк
@@ -690,7 +692,7 @@ namespace Team_Project
 
         private void Exit(object sender, RoutedEventArgs e)
         {
-
+            //MessageBox.Show(player.Player_Back_Border.Margin + "||" + player.PLayer_Front_Border.Margin + "||" + BT.Margin);
             var pr = Process.GetProcesses();
             foreach (var p in pr)
             {
