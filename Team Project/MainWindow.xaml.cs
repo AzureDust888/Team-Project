@@ -1,4 +1,5 @@
 
+
 using Elasticsearch.Net;
 using Nest;
 using System;
@@ -45,7 +46,7 @@ namespace Team_Project
 
             this.DataContext = this;
             //PlayerHp.DataContext = player;
-          
+
             InitializeComponent();
             dir = dir.Parent?.Parent?.Parent;
             mn = this;
@@ -69,17 +70,18 @@ namespace Team_Project
         int cx = 0;
         int cy = 0;
         private async void Window_Loaded(object sender, RoutedEventArgs e)
-        { 
+        {
             timer.Interval = TimeSpan.FromSeconds(0.04);
             timer.Tick += Timer_Event_on_Tick;
             camp_fire_timer.Interval = TimeSpan.FromSeconds(1);
-            camp_fire_timer.Tick += delegate {
+            camp_fire_timer.Tick += delegate
+            {
 
-                if(Math.Abs(SpawnCampFire.Margin.Left - MainWindow.player.Player_Back_Border.Margin.Left) <= 200 && Math.Abs(SpawnCampFire.Margin.Top - MainWindow.player.Player_Back_Border.Margin.Top) <= 200)
+                if (Math.Abs(SpawnCampFire.Margin.Left - MainWindow.player.Player_Back_Border.Margin.Left) <= 200 && Math.Abs(SpawnCampFire.Margin.Top - MainWindow.player.Player_Back_Border.Margin.Top) <= 200)
                 {
                     player.Hp += 1;
                     player.Mp += 1;
-                    if(player.Hp > player.MaxHp)
+                    if (player.Hp > player.MaxHp)
                         player.Hp = player.MaxHp;
                     if (player.Mp > player.MaxMp)
                         player.Mp = player.MaxMp;
@@ -108,7 +110,7 @@ namespace Team_Project
                 }
             }
 
-            camp_fire_timer.Start();    
+            camp_fire_timer.Start();
             this.WindowState = WindowState.Maximized;
             //NIghtBorder.Visibility = Visibility.Hidden;
             //NIghtBorder2.Visibility = Visibility.Hidden;
@@ -139,18 +141,18 @@ namespace Team_Project
                         image.EndInit();
                         ImageBehavior.SetAnimatedSource(SpawnCampFire, image);
                     });
-                  
+
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
-              
+
 
             });
 
 
-         
+
 
 
             Thread borderLeft = new Thread(() =>
@@ -323,7 +325,7 @@ namespace Team_Project
                 player.weapon.weapon_border.IsEnabled = true;
                 canvas_enemy.Children.Add(player.weapon.weapon_border);
                 player.weapon.weapon_border.Margin = player.Player_Back_Border.Margin;
-                
+
                 RotateTransform rotateTransform = new RotateTransform();
 
                 rotateTransform.CenterX = player.weapon.weapon_border.Width / 2;
@@ -514,13 +516,13 @@ namespace Team_Project
             MiniMapBorder.Child = miniplayerborder;
             await Task.Factory.StartNew(() =>
             {
-                while(true)
+                while (true)
                 {
                     this.Dispatcher.Invoke(() =>
                     {
                         miniplayerborder.Margin = new Thickness(player.Player_Back_Border.Margin.Left / 10, player.Player_Back_Border.Margin.Top / 10, 0, 0);
                     });
-                   
+
                     Task.Delay(10);
                 }
             });
@@ -559,8 +561,8 @@ namespace Team_Project
 
 
             double sumXY = Math.Abs(x) + Math.Abs(y);
-            double maxSpeed; 
-            if(sumXY > 400) maxSpeed = sumXY / 333;
+            double maxSpeed;
+            if (sumXY > 400) maxSpeed = sumXY / 333;
             else maxSpeed = sumXY / 222;
 
             timer.Stop();
@@ -568,8 +570,8 @@ namespace Team_Project
 
             ThicknessAnimation thicknessAnimation;
             ThicknessAnimation thicknessAnimation2;
-            
-            if(true)
+
+            if (true)
             {
                 if (!canmoveleft)
                 {
@@ -581,7 +583,7 @@ namespace Team_Project
                         thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top + y, maxSpeed);
                         thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left - x, player.Player_Back_Border.Margin.Top - y, maxSpeed);
                     }
-                        
+
                 }
                 else if (!canmoveright)
                 {
@@ -621,14 +623,14 @@ namespace Team_Project
                     thicknessAnimation = ThicknessAnimation(BT.Margin.Left + x, BT.Margin.Top + y, maxSpeed);
                     thicknessAnimation2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left - x, player.Player_Back_Border.Margin.Top - y, maxSpeed);
                 }
-               
+
             }
 
             Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
             storyboard.Children.Add(thicknessAnimation);
             storyboard.Begin(BT);
             storyboard.Completed += delegate { timer.Stop(); };
-   
+
             var r = new Storyboard();
             Storyboard.SetTargetProperty(thicknessAnimation2, new PropertyPath(FrameworkElement.MarginProperty));
             r.Children.Add(thicknessAnimation2);
@@ -639,13 +641,13 @@ namespace Team_Project
         }
 
         BitmapImage img0 = new BitmapImage();
-        BitmapImage img1 = new BitmapImage();   
+        BitmapImage img1 = new BitmapImage();
         int cellWidth = 256; // ширина ячейки сетки
         int cellHeight = 256; // высота ячейки сетки
         const int rows = 20; // количество строк
         const int cols = 20; // количество столбцов
-        
-        
+
+
         async void TestMap()
         {
             img0.BeginInit();
@@ -666,7 +668,7 @@ namespace Team_Project
                     Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
                     Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
 
-                    Map_canvas.Children.Add(image);             
+                    Map_canvas.Children.Add(image);
                 }
             }
 
@@ -753,6 +755,6 @@ namespace Team_Project
             }
         }
 
-       
+
     }
 }
