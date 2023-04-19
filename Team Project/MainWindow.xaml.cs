@@ -117,7 +117,7 @@ namespace Team_Project
                 }
             };
 
-            
+            //TEST GIT
             camp_fire_timer.Start();
             this.WindowState = WindowState.Maximized;
             //NIghtBorder.Visibility = Visibility.Hidden;
