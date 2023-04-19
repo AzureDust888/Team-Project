@@ -13,7 +13,7 @@
                                 Width="{TemplateBinding Width}"
                                 Height="{TemplateBinding Height}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
-                                Background="#22272e"
+                                Background="Gray"
                                 >
                         </Border>
                         <Border x:Name="PART_Track"

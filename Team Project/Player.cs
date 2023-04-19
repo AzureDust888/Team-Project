@@ -19,12 +19,18 @@ namespace Team_Project
             Width = 120,
             Height = 160,
             Margin = new Thickness(2510, 2265, 0, 0),
+            //BorderBrush = Brushes.White,
+            CornerRadius = new CornerRadius(500),
+            BorderThickness= new Thickness(2)           
         };
         public Border PLayer_Front_Border = new Border()
         {
             Width = 120,
             Height = 160,
             Margin = new Thickness(900, 482, 0, 0),
+            CornerRadius = new CornerRadius(500),
+            /*BorderBrush = Brushes.White,*/
+            BorderThickness = new Thickness(2)
         };
         public string Name { get; set; }
         public double Hp { get; set; }
@@ -33,12 +39,8 @@ namespace Team_Project
         public double MaxMp { get; set; } = 200;
         public int Lvl { get; set; }
         public double Exp { get; set; }
-
         public double CurrentLvlExpCap { get; set; } = 1000;
-
-        public int GoldCoins { get; set; }
-
-        public Weapon weapon { get; set; }
+        public Weapon weapon { get; set; } 
 
         public Player() { }
            
@@ -54,77 +56,7 @@ namespace Team_Project
             Mp = mp;
             Lvl = lvl;
             Exp = exp;
-            this.weapon = weapon;
-
-            //Thread t = new Thread(() =>
-            //    {
-            //        while (true)
-            //        {
-            //            if(this.Hp <= 0)
-            //            {
-            //                try
-            //                {
-            //                    Dispatcher.Invoke(() =>
-            //                    {
-
-            //                        Storyboard s = new Storyboard();
-                                
-            //                        var thicknessAnimation = new ThicknessAnimation
-            //                        {
-                                        
-            //                            From = new Thickness(((MainWindow)System.Windows.Application.Current.MainWindow).BT.Margin.Left, ((MainWindow)System.Windows.Application.Current.MainWindow).BT.Margin.Top, 0, 0),
-            //                            To = new Thickness(0, 0, 0, 0),
-
-            //                            Duration = TimeSpan.FromSeconds(0),
-
-            //                        };
-
-
-            //                        Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
-            //                        s.Children.Add(thicknessAnimation);
-            //                        s.Begin(((MainWindow)System.Windows.Application.Current.MainWindow).BT);
-
-            //                        thicknessAnimation = new ThicknessAnimation
-            //                        {
-
-            //                            From = new Thickness(Player_Back_Border.Margin.Left, Player_Back_Border.Margin.Top, 0, 0),
-            //                            To = new Thickness(2510, 2265, 0, 0),
-
-            //                            Duration = TimeSpan.FromSeconds(0),
-
-            //                        };
-
-            //                        Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
-            //                        s.Children.Add(thicknessAnimation);
-            //                        s.Begin(Player_Back_Border);
-
-            //                        thicknessAnimation = new ThicknessAnimation
-            //                        {
-
-            //                            From = new Thickness(PLayer_Front_Border.Margin.Left, PLayer_Front_Border.Margin.Top, 0, 0),
-            //                            To = new Thickness(900, 482, 0, 0),
-
-            //                            Duration = TimeSpan.FromSeconds(0),
-
-            //                        };
-
-            //                        Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
-            //                        s.Children.Add(thicknessAnimation);
-            //                        s.Begin(PLayer_Front_Border);
-
-
-            //                        Hp = 100;
-
-            //                    });
-            //                }
-            //                catch(Exception ex) { MessageBox.Show(ex.Message); }
-
-            //            }
-            //            Thread.Sleep(100);
-            //        }
-            //});
-            //t.Start();
-            
+            this.weapon = weapon;            
         }
     }
 
