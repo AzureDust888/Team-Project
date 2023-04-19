@@ -539,6 +539,14 @@ namespace Team_Project
                 if (Menu_border.Visibility == Visibility.Visible) Menu_border.Visibility = Visibility.Hidden;
                 else Menu_border.Visibility = Visibility.Visible;
             }
+
+            if(e.Key == Key.I)
+            {
+                if(InventoryBorder.IsVisible)
+                    InventoryBorder.Visibility = Visibility.Hidden;
+                else
+                    InventoryBorder.Visibility = Visibility.Visible;
+            }
         }
 
         private void Window_KeyUp(object sender, KeyEventArgs e)
