@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Azure\\Source\\Repos\\Team-Project\\Team Project\\Team Project.csproj": {}
+    "C:\\Users\\Azure\\Source\\Repos\\Team-Project2\\Team Project\\Team Project.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Azure\\Source\\Repos\\Team-Project\\Team Project\\Team Project.csproj": {
+    "C:\\Users\\Azure\\Source\\Repos\\Team-Project2\\Team Project\\Team Project.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Azure\\Source\\Repos\\Team-Project\\Team Project\\Team Project.csproj",
+        "projectUniqueName": "C:\\Users\\Azure\\Source\\Repos\\Team-Project2\\Team Project\\Team Project.csproj",
         "projectName": "Team Project",
-        "projectPath": "C:\\Users\\Azure\\Source\\Repos\\Team-Project\\Team Project\\Team Project.csproj",
+        "projectPath": "C:\\Users\\Azure\\Source\\Repos\\Team-Project2\\Team Project\\Team Project.csproj",
         "packagesPath": "C:\\Users\\Azure\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Azure\\Source\\Repos\\Team-Project\\Team Project\\obj\\",
+        "outputPath": "C:\\Users\\Azure\\Source\\Repos\\Team-Project2\\Team Project\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
