@@ -102,7 +102,7 @@ namespace Team_Project
                 canvas_enemy.Children.Add(en.border);
             }
             
-            
+            //
 
 
             await Task.Factory.StartNew(() =>
