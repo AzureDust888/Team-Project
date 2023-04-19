@@ -60,7 +60,7 @@ namespace Team_Project
                 for (int col = 0; col < 30; col++)
                 {
                     Image image = new Image();
-                    if (row <= 7 || col <= 7 || col>=23 || row >= 23)
+                    if (row <= 8 || col <= 8 || col>=23 || row >= 23)
                     {
                         image.Source = groundImg3;
                     }
@@ -105,19 +105,29 @@ namespace Team_Project
                 Image image = new Image();
                 image.Width = TreeImg5.Width;
                 image.Height = TreeImg5.Height;
-                image.Source = TreeImg5;
-                image.Margin = new Thickness(new Random().NextDouble() * 4000-2000, new Random().NextDouble() * 4000 - 2000, 0, 0);
+                if (i % 2 == 0)
+                    image.Source = TreeImg5;
+                else
+                    image.Source = TreeImg;
+                image.Margin = new Thickness(new Random().NextDouble() * 4000 - 2000, new Random().NextDouble() * 4000 - 2000, 0, 0);
                 tmpCanvas.Children.Add(image);
-                /*if(i < 30)
-                {*/
-                    Image image2 = new Image();
-                    image2.Width = GrassImg.Width * 0.6;
-                    image2.Height = GrassImg.Height * 0.6;
-                    image2.Source = GrassImg;
-                    image2.Margin = new Thickness(i * image2.Width * 0.8 - (wid * 2), hei * 0.85, 0, 0);
 
-                    tmpCanvas.Children.Add(image2);
-                /*}*/
+                Image image2 = new Image();
+                image2.Width = GrassImg.Width * 0.6;
+                image2.Height = GrassImg.Height * 0.6;
+                image2.Source = GrassImg;
+                image2.Margin = new Thickness(i * image2.Width * 0.8 - (wid * 2), hei * 0.85, 0, 0);
+
+                tmpCanvas.Children.Add(image2);
+
+                /*Image image3 = new Image();
+                image3.Width = TreeImg3.Width * 0.6;
+                image3.Height = TreeImg3.Height * 0.6;
+                image3.Source = TreeImg3;
+                *//*image3.RenderTransform = new RotateTransform(90);*//*
+                image3.Margin = new Thickness(wid * -1 * new Random().Next(12,16)/10, i * image3.Height * 0.45 - (hei * 2), 0, 0);
+
+                tmpCanvas.Children.Add(image3);*/
             }
 
             tmpBorder.Child = tmpCanvas;
@@ -148,7 +158,7 @@ namespace Team_Project
                 }               
                 
                 border.BorderThickness = new Thickness(1);
-                border.BorderBrush = Brushes.White;
+                //border.BorderBrush = Brushes.White;
                 //border.CornerRadius = new CornerRadius(500);
                 border.Margin = new Thickness(1700 + new Random().Next(-1500,1500), 1800 + new Random().Next(-1500, 1500), 0, 0);
 

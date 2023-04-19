@@ -17,7 +17,7 @@ namespace Team_Project
             Width = 120,
             Height = 160,
             Margin = new Thickness(2510, 2265, 0, 0),
-            BorderBrush = Brushes.White,
+            //BorderBrush = Brushes.White,
             CornerRadius = new CornerRadius(500),
             BorderThickness= new Thickness(2)           
         };
