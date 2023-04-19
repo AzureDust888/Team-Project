@@ -50,8 +50,7 @@ namespace Team_Project
             dir = dir.Parent?.Parent?.Parent;
             mn = this;
             dirname = dir.FullName;
-            TestMap();
-            Map_addObjects();
+
             PlayerHp.DataContext = player;
             PlayerMp.DataContext = player;
             XpBar.DataContext = player;

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "R2PsQgGTjHNldyFR9p/fmZlh4pUygHSmgwUMDn99inn/fujlQc5rzOWDAXhJEi+BYEZXSIyC59k7Vwx/27XY3w==",
+  "dgSpecHash": "68zQV2riH+hUJv0A46wLBoQ882f8BItN82OLQGp0HvSi/YAZe297j0ZQgsRdbybxc8QhFd7z0qaRNI16ghXK9A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Azure\\source\\repos\\Team Project\\Team Project\\Team Project.csproj",
+  "projectFilePath": "C:\\Users\\Azure\\Source\\Repos\\Team-Project\\Team Project\\Team Project.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Azure\\.nuget\\packages\\elasticsearch.net\\7.17.5\\elasticsearch.net.7.17.5.nupkg.sha512",
     "C:\\Users\\Azure\\.nuget\\packages\\fontawesome.wpf\\4.7.0.9\\fontawesome.wpf.4.7.0.9.nupkg.sha512",

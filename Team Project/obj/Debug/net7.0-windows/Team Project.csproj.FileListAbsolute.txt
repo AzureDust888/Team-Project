@@ -29,3 +29,34 @@ C:\Users\Azure\source\repos\Team Project\Team Project\bin\Debug\net7.0-windows\W
 C:\Users\Azure\source\repos\Team Project\Team Project\obj\Debug\net7.0-windows\Launcher.g.cs
 C:\Users\Azure\source\repos\Team Project\Team Project\obj\Debug\net7.0-windows\Launcher.baml
 C:\Users\Azure\source\repos\Team Project\Team Project\bin\Debug\net7.0-windows\FontAwesome.WPF.dll
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\bin\Debug\net7.0-windows\Team Project.exe
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\bin\Debug\net7.0-windows\Team Project.deps.json
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\bin\Debug\net7.0-windows\Team Project.runtimeconfig.json
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\bin\Debug\net7.0-windows\Team Project.dll
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\bin\Debug\net7.0-windows\Team Project.pdb
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\bin\Debug\net7.0-windows\Elasticsearch.Net.dll
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\bin\Debug\net7.0-windows\FontAwesome.WPF.dll
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\bin\Debug\net7.0-windows\Nest.dll
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\bin\Debug\net7.0-windows\System.Management.dll
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\bin\Debug\net7.0-windows\WpfAnimatedGif.dll
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\bin\Debug\net7.0-windows\runtimes\win\lib\net7.0\System.Management.dll
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\obj\Debug\net7.0-windows\Team Project.csproj.AssemblyReference.cache
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\obj\Debug\net7.0-windows\Launcher.g.cs
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\obj\Debug\net7.0-windows\MainWindow.g.cs
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\obj\Debug\net7.0-windows\App.g.cs
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\obj\Debug\net7.0-windows\Team Project_MarkupCompile.cache
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\obj\Debug\net7.0-windows\Team Project_MarkupCompile.lref
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\obj\Debug\net7.0-windows\App.baml
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\obj\Debug\net7.0-windows\Launcher.baml
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\obj\Debug\net7.0-windows\MainWindow.baml
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\obj\Debug\net7.0-windows\Team Project.g.resources
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\obj\Debug\net7.0-windows\Team Project.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\obj\Debug\net7.0-windows\Team Project.AssemblyInfoInputs.cache
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\obj\Debug\net7.0-windows\Team Project.AssemblyInfo.cs
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\obj\Debug\net7.0-windows\Team Project.csproj.CoreCompileInputs.cache
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\obj\Debug\net7.0-windows\Team Project.csproj.CopyComplete
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\obj\Debug\net7.0-windows\Team Project.dll
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\obj\Debug\net7.0-windows\refint\Team Project.dll
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\obj\Debug\net7.0-windows\Team Project.pdb
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\obj\Debug\net7.0-windows\Team Project.genruntimeconfig.cache
+C:\Users\Azure\Source\Repos\Team-Project\Team Project\obj\Debug\net7.0-windows\ref\Team Project.dll
