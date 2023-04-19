@@ -24,6 +24,17 @@
     <None Remove="Resources\tree.png" />
     <None Remove="Resources\tree2.png" />
     <None Remove="Resources\Weapon_34.png" />
+    <None Remove="Textures\File00000450.png" />
+    <None Remove="Textures\File00000454.png" />
+    <None Remove="Textures\File00000495.png" />
+    <None Remove="Textures\File00000516.png" />
+    <None Remove="Textures\File00000639.png" />
+    <None Remove="Textures\File00000683.png" />
+    <None Remove="Textures\File00000740.png" />
+    <None Remove="Textures\File00000815.png" />
+    <None Remove="Textures\File00000825.png" />
+    <None Remove="Textures\File00000893.png" />
+    <None Remove="Textures\File00000939.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -57,6 +68,17 @@
     <Resource Include="Resources\tree.png" />
     <Resource Include="Resources\tree2.png" />
     <Resource Include="Resources\Weapon_34.png" />
+    <Resource Include="Textures\File00000450.png" />
+    <Resource Include="Textures\File00000454.png" />
+    <Resource Include="Textures\File00000495.png" />
+    <Resource Include="Textures\File00000516.png" />
+    <Resource Include="Textures\File00000639.png" />
+    <Resource Include="Textures\File00000683.png" />
+    <Resource Include="Textures\File00000740.png" />
+    <Resource Include="Textures\File00000815.png" />
+    <Resource Include="Textures\File00000825.png" />
+    <Resource Include="Textures\File00000893.png" />
+    <Resource Include="Textures\File00000939.png" />
   </ItemGroup>
 
 </Project>

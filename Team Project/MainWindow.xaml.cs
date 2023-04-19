@@ -35,6 +35,7 @@ namespace Team_Project
     /// </summary>
     public partial class MainWindow : Window
     {
+        Map map;
         Point p = new Point();
         Storyboard storyboards = new Storyboard();
         Storyboard storyboard = new Storyboard();
@@ -86,9 +87,28 @@ namespace Team_Project
                     PlayerMp.Value = player.Mp;
                 }
             };
+            map = new Map(BT.Width / 2, BT.Height / 2);
+            Map_canvas.Children.Add(map.Map_new());
+            MapItems_canvas.Children.Add(map.Map_Trees());
+            foreach (var house in map.Map_Houses())
+            {
+                canvas_enemy.Children.Add(house);
+            }
+            Minimap();
+            foreach (var obj in canvas_enemy.Children)
+            {
+                if (obj is Border)
+                {
+                    Thread t = new Thread(() =>
+                    {
+                        Collision(obj as Border);
+                    });
+                    t.SetApartmentState(ApartmentState.STA);
+                    t.Start();
+                }
+            }
 
-            
-            camp_fire_timer.Start();
+            camp_fire_timer.Start();    
             this.WindowState = WindowState.Maximized;
             //NIghtBorder.Visibility = Visibility.Hidden;
             //NIghtBorder2.Visibility = Visibility.Hidden;
@@ -98,11 +118,13 @@ namespace Team_Project
             Player_Canvas.Children.Add(player.PLayer_Front_Border);
             for (int i = 0; i < 10; i++)
             {
-                EnemyClass en = new EnemyClass(100, 100, $"Cerberus", 10, 15, 1);
+                var lvl = new Random().Next(1, 10);
+                EnemyClass en = new EnemyClass(100, 100, $"Cerberus", lvl + 10, lvl * 2 + 15, lvl,
+                new Random().Next(500, Convert.ToInt32(BT.Width - 500)), new Random().Next(500, Convert.ToInt32(BT.Height - 500)));
+
                 canvas_enemy.Children.Add(en.border);
             }
-            
-            
+
 
 
             await Task.Factory.StartNew(() =>
@@ -126,7 +148,9 @@ namespace Team_Project
               
 
             });
-            Minimap();
+
+
+         
 
 
             Thread borderLeft = new Thread(() =>
@@ -161,101 +185,126 @@ namespace Team_Project
 
         public void Collision(Border bt)
         {
-           
-                while (true)
+
+            while (true)
+            {
+
+                this.Dispatcher.Invoke(() =>
                 {
+                    var btLeft = bt.Margin.Left + (player.Player_Back_Border.Width * 0.5);
+                    var btTop = bt.Margin.Top + (player.Player_Back_Border.Height * 0.5);
+                    var btWid = bt.Width - (player.Player_Back_Border.Width);
+                    var btHei = bt.Height - (player.Player_Back_Border.Height);
 
-                    this.Dispatcher.Invoke(() =>
+                    //proverka na razmer Border'a
+                    if (btWid <= 0)
                     {
-                        if (player.Player_Back_Border.Margin.Left <= bt.Margin.Left + bt.Width && player.Player_Back_Border.Margin.Left + player.Player_Back_Border.Width >= bt.Margin.Left
-                        && player.Player_Back_Border.Margin.Top + player.Player_Back_Border.Height
-                        >= bt.Margin.Top && player.Player_Back_Border.Margin.Top <= bt.Margin.Top + bt.Height)
+                        btWid = bt.Width;
+                        btLeft = bt.Margin.Left;
+                    }
+                    if (btHei <= 0)
+                    {
+                        btHei = bt.Height;
+                        btTop = bt.Margin.Top;
+                    }
+
+                    Rect rectbt = new Rect(btLeft, btTop, btWid, btHei);
+                    Rect rectPlayer = new Rect(player.Player_Back_Border.Margin.Left, player.Player_Back_Border.Margin.Top, player.Player_Back_Border.Width, player.Player_Back_Border.Height);
+
+                    /*if (player.Player_Back_Border.Margin.Left <= bt.Margin.Left + bt.Width && player.Player_Back_Border.Margin.Left + player.Player_Back_Border.Width >= bt.Margin.Left
+                    && player.Player_Back_Border.Margin.Top + player.Player_Back_Border.Height
+                    >= bt.Margin.Top && player.Player_Back_Border.Margin.Top <= bt.Margin.Top + bt.Height)*/
+                    if (rectPlayer.IntersectsWith(rectbt))
+                    {
+
+                        if (player.Player_Back_Border.Margin.Left > btLeft && canmoveleft && player.Player_Back_Border.Margin.Top > btTop && player.Player_Back_Border.Margin.Top + player.Player_Back_Border.Height < btTop + btHei
+                        ) //<<------
                         {
 
-                            if (player.Player_Back_Border.Margin.Left > bt.Margin.Left && canmoveleft && player.Player_Back_Border.Margin.Top > bt.Margin.Top && player.Player_Back_Border.Margin.Top + player.Player_Back_Border.Height < bt.Margin.Top + bt.Height
-                            ) //<<------
-                            {
+                            var dist = Math.Abs(btLeft + btWid - player.Player_Back_Border.Margin.Left);
+                            var t = ThicknessAnimation(BT.Margin.Left - dist, BT.Margin.Top, 0);
+                            Storyboard.SetTargetProperty(t, new PropertyPath(FrameworkElement.MarginProperty));
+                            storyboard.Children.Clear();
+                            storyboard.Children.Add(t);
+                            storyboard.Begin(BT);
 
-                                var dist = Math.Abs(bt.Margin.Left + bt.Width - player.Player_Back_Border.Margin.Left);
-                                var t = ThicknessAnimation(BT.Margin.Left - dist, BT.Margin.Top, 0);
-                                Storyboard.SetTargetProperty(t, new PropertyPath(FrameworkElement.MarginProperty));
-                                storyboard.Children.Add(t);
-                                storyboard.Begin(BT);
-
-                                var t2 = ThicknessAnimation2(bt.Margin.Left + bt.Width, player.Player_Back_Border.Margin.Top, 0);
-                                var r = new Storyboard();
-                                Storyboard.SetTargetProperty(t2, new PropertyPath(FrameworkElement.MarginProperty));
-                                r.Children.Add(t2);
-                                r.Begin(player.Player_Back_Border);
-                                canmoveleft = false;
-                            }
-                            else if (player.Player_Back_Border.Margin.Left < bt.Margin.Left && canmoveright && player.Player_Back_Border.Margin.Top >= bt.Margin.Top && player.Player_Back_Border.Margin.Top + player.Player_Back_Border.Height < bt.Margin.Top + bt.Height) //---->>
-                            {
-
-                                var dist = Math.Abs(bt.Margin.Left - player.Player_Back_Border.Margin.Left - player.Player_Back_Border.Width);
-                                var t = ThicknessAnimation(BT.Margin.Left + dist, BT.Margin.Top, 0);
-                                Storyboard.SetTargetProperty(t, new PropertyPath(FrameworkElement.MarginProperty));
-                                storyboard.Children.Add(t);
-                                storyboard.Begin(BT);
-
-                                var t2 = ThicknessAnimation2(bt.Margin.Left - player.Player_Back_Border.Width, player.Player_Back_Border.Margin.Top, 0);
-                                var r = new Storyboard();
-                                Storyboard.SetTargetProperty(t2, new PropertyPath(FrameworkElement.MarginProperty));
-                                r.Children.Add(t2);
-                                r.Begin(player.Player_Back_Border);
-                                canmoveright = false;
-                                //lab.Content =(" left: " + canmoveleft + " right: " + canmoveright, "Right");
-
-
-                            }
-                            else if (player.Player_Back_Border.Margin.Top > bt.Margin.Top && canmoveup && player.Player_Back_Border.Margin.Left > bt.Margin.Left && player.Player_Back_Border.Margin.Left + player.Player_Back_Border.Width < bt.Margin.Left + bt.Width
-                            ) //up
-                            {
-                                var dist = Math.Abs(player.Player_Back_Border.Margin.Top - bt.Margin.Top - bt.Height);
-                                var t = ThicknessAnimation(BT.Margin.Left, BT.Margin.Top - dist, 0);
-                                Storyboard.SetTargetProperty(t, new PropertyPath(FrameworkElement.MarginProperty));
-                                storyboard.Children.Add(t);
-                                storyboard.Begin(BT);
-
-                                var t2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left, bt.Margin.Top + bt.Height, 0);
-                                var r = new Storyboard();
-                                Storyboard.SetTargetProperty(t2, new PropertyPath(FrameworkElement.MarginProperty));
-                                r.Children.Add(t2);
-                                r.Begin(player.Player_Back_Border);
-                                canmoveup = false;
-                                //MessageBox.Show(" down: " + canmovedown + " up: " + canmoveup, "Up");
-                            }
-                            else if (player.Player_Back_Border.Margin.Top < bt.Margin.Top && canmovedown && player.Player_Back_Border.Margin.Left > bt.Margin.Left && player.Player_Back_Border.Margin.Left + player.Player_Back_Border.Width < bt.Margin.Left + bt.Width
-                            ) //down
-                            {
-                                var dist = Math.Abs(player.Player_Back_Border.Margin.Top + player.Player_Back_Border.Height - bt.Margin.Top);
-                                var t = ThicknessAnimation(BT.Margin.Left, BT.Margin.Top + dist, 0);
-                                Storyboard.SetTargetProperty(t, new PropertyPath(FrameworkElement.MarginProperty));
-                                storyboard.Children.Add(t);
-                                storyboard.Begin(BT);
-
-                                var t2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left, bt.Margin.Top - player.Player_Back_Border.Height, 0);
-                                var r = new Storyboard();
-                                Storyboard.SetTargetProperty(t2, new PropertyPath(FrameworkElement.MarginProperty));
-                                r.Children.Add(t2);
-                                r.Begin(player.Player_Back_Border);
-                                canmovedown = false;
-                                //MessageBox.Show(" down: " + canmovedown + " up: " + canmoveup, "Down");
-                            }
-
+                            var t2 = ThicknessAnimation2(btLeft + btWid, player.Player_Back_Border.Margin.Top, 0);
+                            var r = new Storyboard();
+                            Storyboard.SetTargetProperty(t2, new PropertyPath(FrameworkElement.MarginProperty));
+                            r.Children.Add(t2);
+                            r.Begin(player.Player_Back_Border);
+                            canmoveleft = false;
                         }
-                        else
+                        else if (player.Player_Back_Border.Margin.Left < btLeft && canmoveright && player.Player_Back_Border.Margin.Top >= btTop && player.Player_Back_Border.Margin.Top + player.Player_Back_Border.Height < btTop + btHei) //---->>
                         {
-                            canmoveleft = true;
-                            canmoveright = true;
-                            canmovedown = true;
-                            canmoveup = true;
-                            //MessageBox.Show("right: " + canmoveright + " left: " + canmoveleft, "else");
+
+                            var dist = Math.Abs(btLeft - player.Player_Back_Border.Margin.Left - player.Player_Back_Border.Width);
+                            var t = ThicknessAnimation(BT.Margin.Left + dist, BT.Margin.Top, 0);
+                            Storyboard.SetTargetProperty(t, new PropertyPath(FrameworkElement.MarginProperty));
+                            storyboard.Children.Clear();
+                            storyboard.Children.Add(t);
+                            storyboard.Begin(BT);
+
+                            var t2 = ThicknessAnimation2(btLeft - player.Player_Back_Border.Width, player.Player_Back_Border.Margin.Top, 0);
+                            var r = new Storyboard();
+                            Storyboard.SetTargetProperty(t2, new PropertyPath(FrameworkElement.MarginProperty));
+                            r.Children.Add(t2);
+                            r.Begin(player.Player_Back_Border);
+                            canmoveright = false;
+                            //lab.Content =(" left: " + canmoveleft + " right: " + canmoveright, "Right");
+
+
                         }
-                        //lab.Content = T.Margin + " " + player.Player_Back_Border.Margin + " \n" + canmoveleft;
-                        //lab.Content = $"left: {canmoveleft} right: {canmoveright}";
-                    });
-                    Thread.Sleep(50);
+                        else if (player.Player_Back_Border.Margin.Top > btTop && canmoveup && player.Player_Back_Border.Margin.Left > btLeft && player.Player_Back_Border.Margin.Left + player.Player_Back_Border.Width < btLeft + btWid
+                        ) //up
+                        {
+                            var dist = Math.Abs(player.Player_Back_Border.Margin.Top - btTop - btHei);
+                            var t = ThicknessAnimation(BT.Margin.Left, BT.Margin.Top - dist, 0);
+                            Storyboard.SetTargetProperty(t, new PropertyPath(FrameworkElement.MarginProperty));
+                            storyboard.Children.Clear();
+                            storyboard.Children.Add(t);
+                            storyboard.Begin(BT);
+
+                            var t2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left, btTop + btHei, 0);
+                            var r = new Storyboard();
+                            Storyboard.SetTargetProperty(t2, new PropertyPath(FrameworkElement.MarginProperty));
+                            r.Children.Add(t2);
+                            r.Begin(player.Player_Back_Border);
+                            canmoveup = false;
+                            //MessageBox.Show(" down: " + canmovedown + " up: " + canmoveup, "Up");
+                        }
+                        else if (player.Player_Back_Border.Margin.Top < btTop && canmovedown && player.Player_Back_Border.Margin.Left > btLeft && player.Player_Back_Border.Margin.Left + player.Player_Back_Border.Width < btLeft + btWid
+                        ) //down
+                        {
+                            var dist = Math.Abs(player.Player_Back_Border.Margin.Top + player.Player_Back_Border.Height - btTop);
+                            var t = ThicknessAnimation(BT.Margin.Left, BT.Margin.Top + dist, 0);
+                            Storyboard.SetTargetProperty(t, new PropertyPath(FrameworkElement.MarginProperty));
+                            storyboard.Children.Clear();
+                            storyboard.Children.Add(t);
+                            storyboard.Begin(BT);
+
+                            var t2 = ThicknessAnimation2(player.Player_Back_Border.Margin.Left, btTop - player.Player_Back_Border.Height, 0);
+                            var r = new Storyboard();
+                            Storyboard.SetTargetProperty(t2, new PropertyPath(FrameworkElement.MarginProperty));
+                            r.Children.Add(t2);
+                            r.Begin(player.Player_Back_Border);
+                            canmovedown = false;
+                            //MessageBox.Show(" down: " + canmovedown + " up: " + canmoveup, "Down");
+                        }
+
+                    }
+                    else
+                    {
+                        canmoveleft = true;
+                        canmoveright = true;
+                        canmovedown = true;
+                        canmoveup = true;
+                        //MessageBox.Show("right: " + canmoveright + " left: " + canmoveleft, "else");
+                    }
+                    //lab.Content = T.Margin + " " + player.Player_Back_Border.Margin + " \n" + canmoveleft;
+                    //lab.Content = $"left: {canmoveleft} right: {canmoveright}";
+                });
+                Thread.Sleep(50);
             }
         }
         bool canmoveleft = true;
