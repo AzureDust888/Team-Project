@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Avatar.png" />
     <None Remove="Resources\campfire.gif" />
     <None Remove="Resources\cerberusInvert.png" />
     <None Remove="Resources\ddd.jpg" />
@@ -31,20 +30,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Avatar.png" />
     <Resource Include="Resources\ground123.PNG" />
     <Resource Include="Resources\R.gif" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
     <PackageReference Include="NEST" Version="7.17.5" />
     <PackageReference Include="System.Management" Version="7.0.1" />
     <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="StylesDictionary.xaml" />
+    <Resource Include="Dictionary1.xaml" />
     <Resource Include="Resources\campfire.gif" />
     <Resource Include="Resources\cerberusInvert.png" />
     <Resource Include="Resources\ddd.jpg" />
