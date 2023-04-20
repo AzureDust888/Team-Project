@@ -15,7 +15,7 @@ namespace Team_Project
 {
     internal class Map
     {
-        string dirname = MainWindow.dirname;
+        string dirname = Dir.GetPathX();
 
         public double wid { get; set; }
         public double hei { get; set; }
@@ -109,16 +109,24 @@ namespace Team_Project
                     image.Source = TreeImg5;
                 else
                     image.Source = TreeImg;
-                image.Margin = new Thickness(new Random().NextDouble() * 4000 - 2000, new Random().NextDouble() * 4000 - 2000, 0, 0);
+
+                ret: image.Margin = new Thickness(new Random().Next(200, 3800), new Random().Next(200, 3800), 0, 0);
+
+                if (image.Margin.Left <= MainWindow.player.Player_Back_Border.Margin.Left + 520 && image.Margin.Left >= MainWindow.player.Player_Back_Border.Margin.Left - 520 && image.Margin.Top >= MainWindow.player.Player_Back_Border.Margin.Top - 520 && image.Margin.Top <= MainWindow.player.Player_Back_Border.Margin.Top + 520)
+                {
+                    goto ret;
+                }
+
+                //MessageBox.Show(image.Margin.ToString());
                 tmpCanvas.Children.Add(image);
 
-                Image image2 = new Image();
-                image2.Width = GrassImg.Width * 0.6;
-                image2.Height = GrassImg.Height * 0.6;
-                image2.Source = GrassImg;
-                image2.Margin = new Thickness(i * image2.Width * 0.8 - (wid * 2), hei * 0.85, 0, 0);
+                //Image image2 = new Image();
+                //image2.Width = GrassImg.Width * 0.6;
+                //image2.Height = GrassImg.Height * 0.6;
+                //image2.Source = GrassImg;
+                //image2.Margin = new Thickness(i * image2.Width * 0.8 - (wid * 2), hei * 0.85, 0, 0);
 
-                tmpCanvas.Children.Add(image2);
+                //tmpCanvas.Children.Add(image2);
 
                 /*Image image3 = new Image();
                 image3.Width = TreeImg3.Width * 0.6;
@@ -134,39 +142,39 @@ namespace Team_Project
             return tmpBorder;
         }
 
-        public List<Border> Map_Houses()
-        {
-            List<Border> borderList = new List<Border>();
+        //public List<Border> Map_Houses()
+        //{
+        //    List<Border> borderList = new List<Border>();
 
-            BitmapImage HouseImg = new BitmapImage(new Uri(dirname + "\\Resources\\house.png"));
-            BitmapImage HouseImg2 = new BitmapImage(new Uri(dirname + "\\Resources\\house2.png"));
+        //    BitmapImage HouseImg = new BitmapImage(new Uri(dirname + "\\Resources\\house.png"));
+        //    BitmapImage HouseImg2 = new BitmapImage(new Uri(dirname + "\\Resources\\house2.png"));
 
 
-            for (int i = 0; i < 4; i++)
-            {
-                Border border = new Border();
-                border.Width = HouseImg.Width;
-                border.Height = HouseImg.Height;
+        //    for (int i = 0; i < 4; i++)
+        //    {
+        //        Border border = new Border();
+        //        border.Width = HouseImg.Width;
+        //        border.Height = HouseImg.Height;
 
-                if (i % 2 == 0)
-                {
-                    border.Background = new ImageBrush(HouseImg2);
-                }
-                else
-                {
-                    border.Background = new ImageBrush(HouseImg);
-                }
+        //        if (i % 2 == 0)
+        //        {
+        //            border.Background = new ImageBrush(HouseImg2);
+        //        }
+        //        else
+        //        {
+        //            border.Background = new ImageBrush(HouseImg);
+        //        }
 
-                border.BorderThickness = new Thickness(1);
-                //border.BorderBrush = Brushes.White;
-                //border.CornerRadius = new CornerRadius(500);
-                border.Margin = new Thickness(1700 + new Random().Next(-1500, 1500), 1800 + new Random().Next(-1500, 1500), 0, 0);
+        //        border.BorderThickness = new Thickness(1);
+        //        //border.BorderBrush = Brushes.White;
+        //        //border.CornerRadius = new CornerRadius(500);
+        //        border.Margin = new Thickness(1700 + new Random().Next(-1500, 1500), 1800 + new Random().Next(-1500, 1500), 0, 0);
 
-                borderList.Add(border);
-            }
+        //        borderList.Add(border);
+        //    }
 
-            return borderList;
-        }
+        //    return borderList;
+        //}
 
 
     }

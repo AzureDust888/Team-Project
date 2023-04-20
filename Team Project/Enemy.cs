@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows;
 using System.Windows.Threading;
 using System.Reflection;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Team_Project
 {
@@ -23,12 +24,13 @@ namespace Team_Project
         public double MaxMp { get; set; }
         public int Lvl { get; set; }
         public double Exp { get; set; }
-        public double Dmg { get; set; }
+        public double Dmg { get; set; }  
+        public string ResourceName { get; set; }
         int ux = 0;
         int ux2 = 0;
         int uy = 130;
         public Border border = new Border();
-        Storyboard storyboard = new Storyboard();
+        
         Storyboard storyboard2 = new Storyboard();
         Storyboard storyboard3 = new Storyboard();
         Storyboard storyboard4 = new Storyboard();
@@ -43,8 +45,11 @@ namespace Team_Project
 
         public EnemyClass(double hptmp, double mptmp, string nametmp, double damage, double xp, int lvl, double leftPos, double topPos)
         {
-            BitmapImage img = new BitmapImage(new Uri(MainWindow.dirname + "\\Resources\\cerberus.png"));
-            BitmapImage imgInvert = new BitmapImage(new Uri(MainWindow.dirname + "\\Resources\\cerberusInvert.png"));
+            BitmapImage img = new BitmapImage(new Uri(Dir.GetPathX() + "\\Resources\\cerberus.png"));
+            BitmapImage imgInvert = new BitmapImage(new Uri(Dir.GetPathX() + "\\Resources\\cerberusInvert.png"));
+
+            if (nametmp == "Cerberus")
+                ResourceName = "Cerberus Hide";
 
             Dmg = damage;
             Exp = xp;
@@ -100,17 +105,19 @@ namespace Team_Project
             };
 
             Name = nametmp;
-            Name += "    lvl " + Lvl.ToString();
+            
             Hp = hptmp;
             Mp = mptmp;
             border.Width = 100;
             border.Height = 100;
             border.Background = Brushes.Black;
-            border.Margin = new Thickness(leftPos, topPos, 0, 0);
-
+            ret: border.Margin = new Thickness(new Random().Next(200,3800), new Random().Next(200, 3800), 0, 0);
+            if (border.Margin.Left <= MainWindow.player.Player_Back_Border.Margin.Left + 520 && border.Margin.Left >= MainWindow.player.Player_Back_Border.Margin.Left - 520 && border.Margin.Top >= MainWindow.player.Player_Back_Border.Margin.Top - 520 && border.Margin.Top <= MainWindow.player.Player_Back_Border.Margin.Top + 520)
+            {
+                goto ret;
+            }
             ProgressBar hp = new ProgressBar()
             {
-
                 BorderThickness = new Thickness(0),
                 Foreground = new SolidColorBrush(Color.FromArgb(200, 108, 167, 28)),
                 Maximum = Hp,
@@ -148,7 +155,7 @@ namespace Team_Project
             };
             Label namelabel = new Label()
             {
-                Content = Name,
+                Content = Name + " lvl " + Lvl.ToString(),
                 FontWeight = FontWeights.Bold,
                 Foreground = Brushes.Gold,
                 Margin = new Thickness(0, -30, 0, 0),
@@ -187,7 +194,7 @@ namespace Team_Project
                 RepeatBehavior = RepeatBehavior.Forever
 
             };
-
+            Storyboard storyboard = new Storyboard();
             Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
             storyboard.Children.Clear();
             storyboard.Children.Add(thicknessAnimation);
@@ -279,7 +286,24 @@ namespace Team_Project
                             //border.Background = Brushes.Black;
                             isc = false;
                         }
+                        if (Math.Abs(border.Margin.Left - MainWindow.b.Margin.Left) <= 120 && Math.Abs(border.Margin.Top - MainWindow.b.Margin.Top) <= 120 && isc && MainWindow.isfb)
+                        {
+                            isfb = false;
+                                Hp -= 40;
+                                if (isalive)
+                                {
+                                    ((MainWindow)System.Windows.Application.Current.MainWindow).LogTxT.Text += "[" + DateTime.Now.ToShortTimeString() + "] " + MainWindow.player.Name + " did " + 40 + " dmg to a " + this.Name + "\n";
+                                    ((MainWindow)System.Windows.Application.Current.MainWindow).LogTxT.ScrollToEnd();
+                                }
 
+                                if (Hp < 0) Hp = 0;
+                                hp.Value = Hp;
+                                hplabel.Content = Hp.ToString();
+                        }
+                        else
+                        {
+                            isfb = true;
+                        }
                         if (Math.Abs(border.Margin.Left - MainWindow.player.weapon.weapon_border.Margin.Left) <= 120 && Math.Abs(border.Margin.Top - MainWindow.player.weapon.weapon_border.Margin.Top) <= 120 && isc && MainWindow.isdmgallowed)
                         {
 
@@ -287,7 +311,14 @@ namespace Team_Project
                             //border.Background = Brushes.Red;
                             if (MainWindow.player.weapon.weapon_border.IsEnabled == true)
                             {
+
                                 Hp -= MainWindow.player.weapon.Damage;
+                                if (isalive)
+                                {
+                                    ((MainWindow)System.Windows.Application.Current.MainWindow).LogTxT.Text += "[" + DateTime.Now.ToShortTimeString() + "] " + MainWindow.player.Name + " did " + MainWindow.player.weapon.Damage + " dmg to a " + this.Name + "\n";
+                                    ((MainWindow)System.Windows.Application.Current.MainWindow).LogTxT.ScrollToEnd();
+                                }
+                                
                                 if (Hp < 0) Hp = 0;
                                 hp.Value = Hp;
                                 hplabel.Content = Hp.ToString();
@@ -299,10 +330,16 @@ namespace Team_Project
                         }
                         if (Hp <= 0 && ift)
                         {
+
                             if (isalive)
                             {
                                 player.Exp += Exp;
                                 ((MainWindow)System.Windows.Application.Current.MainWindow).XpBar.Value = player.Exp;
+                                ((MainWindow)System.Windows.Application.Current.MainWindow).LogTxT.Text += "["+DateTime.Now.ToShortTimeString()+"] " + MainWindow.player.Name + " killed " + this.Name + "\n";
+                                ((MainWindow)System.Windows.Application.Current.MainWindow).LogTxT.Text += "[" + DateTime.Now.ToShortTimeString() + "] " + MainWindow.player.Name + " gain  " + this.Exp + "xp\n";
+                                ((MainWindow)System.Windows.Application.Current.MainWindow).LogTxT.ScrollToEnd();
+                                ((MainWindow)System.Windows.Application.Current.MainWindow).XpLabel.Content = MainWindow.player;
+
                             }
                             isalive = false;
                             border.IsEnabled = false;
@@ -338,8 +375,47 @@ namespace Team_Project
                             if (i % 4 == 0 && isalive)
                             {
                                 MainWindow.player.Hp -= Dmg;
-                                if (MainWindow.player.Hp < 0) MainWindow.player.Hp = 0;
+                                if (MainWindow.player.Hp <= 0) {
+                                    MainWindow.player.Hp = 0;
+
+
+                                    var xethicknessAnimation = new ThicknessAnimation
+                                    {
+                                        From = new Thickness(((MainWindow)System.Windows.Application.Current.MainWindow).BT.Margin.Left, ((MainWindow)System.Windows.Application.Current.MainWindow).BT.Margin.Top, 0, 0),
+                                        To = new Thickness(0, 0, 0, 0),
+
+                                        Duration = TimeSpan.FromSeconds(0)
+
+                                    };
+                                    var xr = new Storyboard();
+                                     
+                                    Storyboard.SetTargetProperty(xethicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
+                                    xr.Children.Add(xethicknessAnimation);
+                                    
+                                    xr.Begin(((MainWindow)System.Windows.Application.Current.MainWindow).BT);
+
+                                    var ethicknessAnimation = new ThicknessAnimation
+                                    {
+                                        From = new Thickness(MainWindow.player.Player_Back_Border.Margin.Left, MainWindow.player.Player_Back_Border.Margin.Top, 0, 0),
+                                        To = new Thickness(2510, 2265, 0, 0),
+
+                                        Duration = TimeSpan.FromSeconds(0)
+
+                                    };
+                                    var r = new Storyboard();
+                                    Storyboard.SetTargetProperty(ethicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
+                                    r.Children.Add(ethicknessAnimation);
+                                    r.Begin(MainWindow.player.Player_Back_Border);
+                                    ((MainWindow)System.Windows.Application.Current.MainWindow).LogTxT.Text += "[" + DateTime.Now.ToShortTimeString() + "] " + this.Name + " killed " + MainWindow.player.Name + "\n";
+                                    ((MainWindow)System.Windows.Application.Current.MainWindow).LogTxT.ScrollToEnd();
+
+                                    MainWindow.player.Hp = 10; MainWindow.player.Mp = 10;
+                                    ((MainWindow)System.Windows.Application.Current.MainWindow).PlayerHp.Value = MainWindow.player.Hp;
+                                    ((MainWindow)System.Windows.Application.Current.MainWindow).PlayerMp.Value = MainWindow.player.Mp;
+                                }
                                 ((MainWindow)System.Windows.Application.Current.MainWindow).PlayerHp.Value = MainWindow.player.Hp;
+                                ((MainWindow)System.Windows.Application.Current.MainWindow).LogTxT.Text += "[" + DateTime.Now.ToShortTimeString() + "] " + this.Name + " did " + this.Dmg + " to " + MainWindow.player.Name + "\n";
+                                ((MainWindow)System.Windows.Application.Current.MainWindow).LogTxT.ScrollToEnd();
                             }
 
                             //MessageBox.Show("MainWindow.player.Hp " + MainWindow.player.Hp);
@@ -381,9 +457,6 @@ namespace Team_Project
             storyboard3.Begin(border);
         }
 
-        public void stop_s()
-        {
-            storyboard.Stop();
-        }
+        
     }
 }

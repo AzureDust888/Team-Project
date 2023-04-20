@@ -18,14 +18,13 @@
         KeyUp="Window_KeyUp" KeyDown="Window_KeyDown"
         >
     <Window.Resources>
-
+       
     </Window.Resources>
 
     <Canvas x:Name="MainCanvas" Background="Transparent">
         <Border  Canvas.Left="-1600" Canvas.Top="-1783" >
             <Canvas x:Name="Map_canvas" Height="{Binding ElementName=BT, Path=ActualHeight}" Width="{Binding ElementName=BT, Path=ActualWidth}"
                     Margin="{Binding ElementName=BT,Path=Margin}">
-
             </Canvas>
         </Border>
         <Border Width="4000"
@@ -44,6 +43,8 @@
                            
                            >
                 </Image>
+
+               
                 <Border Width="3980"
                         Height="257"
                         Background="Transparent"
@@ -120,11 +121,12 @@
             <Canvas Width="1200"
                     Height="200"
                     >
+               
                 <Label Foreground="OrangeRed" Content="Hp"
                        FontSize="18"
                        FontWeight="Bold"
                        Margin="260,23"></Label>
-                <Label Foreground="OrangeRed" Content="{Binding Hp}"
+                <Label Foreground="OrangeRed" Content="{Binding Value}"
                        FontSize="18"
                        Width="90"
                        Height="30"
@@ -132,7 +134,7 @@
                        HorizontalContentAlignment="Left"
                        x:Name="HpLabel"
                        Margin="910,25"></Label>
-                <Label Foreground="#0022EE" Content="{Binding Mp}"
+                <Label Foreground="#0022EE" Content="{Binding Value}"
                        FontSize="18"
                        Width="90"
                        Height="30"
@@ -185,6 +187,72 @@
                         Background="#22272e"
                         CornerRadius="7">
                 </Border>
+                <Border x:Name="Spell1" Height="70" Width="70"
+                        CornerRadius="100"
+                        BorderBrush="MediumAquamarine"
+                        BorderThickness="5"
+                        Background="Transparent"
+                        Margin="180,105">
+                    <Label Content="Q" Foreground="White"
+                           FontSize="40"
+                           Margin="10,-5"></Label>
+                </Border>
+                <Border x:Name="Spell2" Height="70" Width="70"
+                        CornerRadius="100"
+                        BorderBrush="MediumAquamarine"
+                        BorderThickness="5"
+                        Margin="280,105">
+                    <Label Content="W" Foreground="White"
+                           FontSize="40"
+                           Margin="7,-5"></Label>
+                </Border>
+                <Border x:Name="Spell3" Height="70" Width="70"
+                        CornerRadius="100"
+                        BorderBrush="MediumAquamarine"
+                        BorderThickness="5"
+                        Margin="380,105">
+                    <Label Content="E" Foreground="White"
+                           FontSize="40"
+                           Margin="14,-5"></Label>
+                </Border>
+                <Border x:Name="Spell4" Height="70" Width="70"
+                        CornerRadius="100"
+                        BorderBrush="MediumAquamarine"
+                        BorderThickness="5"
+                        Margin="480,105">
+                    <Label Content="R" Foreground="White"
+                           FontSize="40"
+                           Margin="13,-5"></Label>
+                </Border>
+                <Border x:Name="Spell5" Height="70" Width="70"
+                        CornerRadius="100"
+                        BorderBrush="MediumAquamarine"
+                        BorderThickness="5"
+                        Margin="580,105">
+                    <Label Content="D" Foreground="White"
+                           FontSize="40"
+                           Margin="11,-5"></Label>
+                </Border>
+
+                <Border x:Name="FoodSlot" Height="70" Width="70"
+                        CornerRadius="100"
+                        BorderBrush="MediumAquamarine"
+                        BorderThickness="5"
+                        Margin="870,105">
+                    <Label Content="1" Foreground="White"
+                           FontSize="40"
+                           Margin="13,-5"></Label>
+                </Border>
+                <Border x:Name="PoitionSlot" Height="70" Width="70"
+                        CornerRadius="100"
+                        BorderBrush="MediumAquamarine"
+                        BorderThickness="5"
+                        Margin="970,105">
+                    <Label Content="2" Foreground="White"
+                           FontSize="40"
+                           Margin="13,-5"></Label>
+                </Border>
+
 
             </Canvas>
         </Border>
@@ -206,24 +274,44 @@
                 Height="400"
                 Margin="1510,20"
                 Background="#22272e"
-                Opacity="0.8"></Border>
+                Opacity="0.8">
+            <Canvas Width="400"
+                    Height="400"
+                    x:Name="MiniMapBorder_Canvas"></Canvas>
+        </Border>
 
         <Border x:Name="ChatBorder" Width="400"
                 Height="300"
                 Margin="0,780"
                 Background="#22272e"
-                Opacity="0.3">
+                Opacity="0.3"
+                BorderThickness="0">
             <Canvas x:Name="ChatCanvas">
-                
+               
             </Canvas>
         </Border>
+        <TextBox  Width="390"
+                  Margin="10,780"
+                  Height="300"
+                  FontSize="14"
+                  Background="Transparent"
+                  BorderThickness="0"
+                  x:Name="LogTxT"
+                  Focusable="False"
+                  TextWrapping="Wrap"
+                  VerticalContentAlignment="Bottom"
+                  Foreground="Aquamarine"
+                  Opacity="1.0"
+                  MouseEnter="LogTxT_MouseEnter"
+                  MouseLeave="LogTxT_MouseLeave"
+                 ></TextBox>       
 
         <Border x:Name="InventoryBorder"
                 Width="900"
-                Height="700"
+                Height="800"
                 CornerRadius="17"
                 Background="#22272e"
-                Margin="510,140"
+                Margin="510,80"
                 Visibility="Hidden"
                 >
             <Canvas x:Name="InventCanvas"
@@ -232,9 +320,124 @@
                     >
                 <Label Content="Inventory" FontSize="40"
                        Foreground="White"
-                       Margin="10"></Label>
-                <ListBox x:Name="Items">
-                    
+                       Margin="60,0"></Label>
+                <ListBox x:Name="Items"
+                         Width="900"
+                         Height="635"
+                         Margin="0,65"
+                         Style="{StaticResource InventoryTemplate}"
+                         ItemTemplate="{StaticResource ResourceKey=Invent_Item}"
+                         Background="Transparent"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Visible"
+                         ScrollViewer.CanContentScroll="True"
+                         BorderThickness="0"
+                         >
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                        <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Margin="{TemplateBinding Margin}">
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup Name="CommonStates">
+                                                    <VisualStateGroup.Transitions>
+                                                        <VisualTransition GeneratedDuration="0:0:0.2" To="Normal">
+                                                            <VisualTransition.GeneratedEasingFunction>
+                                                                <CircleEase EasingMode="EaseOut"/>
+                                                            </VisualTransition.GeneratedEasingFunction>
+                                                        </VisualTransition>
+                                                    </VisualStateGroup.Transitions>
+                                                    <VisualState Name="Normal"/>
+                                                    <VisualState Name="MouseOver" />
+                                                    <VisualState Name="Disabled"/>
+                                                </VisualStateGroup>
+                                                <VisualStateGroup Name="SelectionStates">
+                                                    <VisualStateGroup.Transitions>
+                                                        <VisualTransition GeneratedDuration="0:0:0.2"/>
+                                                    </VisualStateGroup.Transitions>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
+                                            <Grid>
+                                                <ContentPresenter Margin="4,0,0,0"/>
+                                            </Grid>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Opacity" Value=".56" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                           
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.Resources>
+                        <Style TargetType="ScrollBar">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ScrollBar}">
+                                        <Grid x:Name="GridRoot" Width="12" Background="{x:Null}">
+                                            <Track x:Name="PART_Track" Grid.Row="0" IsDirectionReversed="true" Focusable="False">
+                                                <Track.Thumb>
+                                                    <Thumb x:Name="Thumb" Background="{TemplateBinding Foreground}" 
+                                               Style="{DynamicResource ScrollThumbs}"/>
+                                                </Track.Thumb>
+                                                <Track.IncreaseRepeatButton>
+                                                    <RepeatButton x:Name="PageUp" Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="False"/>
+                                                </Track.IncreaseRepeatButton>
+                                                <Track.DecreaseRepeatButton>
+                                                    <RepeatButton x:Name="PageDown" Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="False"/>
+                                                </Track.DecreaseRepeatButton>
+                                            </Track>
+                                        </Grid>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger SourceName="Thumb" Property="IsMouseOver" Value="true">
+                                                <Setter Value="DarkCyan" 
+                                            TargetName="Thumb" Property="Background"/>
+
+                                            </Trigger>
+                                            <Trigger SourceName="Thumb" Property="IsMouseOver" Value="False">
+                                                <Setter Value="DarkCyan" 
+                                            TargetName="Thumb" Property="Background"/>
+                                            </Trigger>
+
+                                            <Trigger SourceName="Thumb" Property="IsDragging" Value="true">
+                                                <Setter Value="Cyan" TargetName="Thumb" Property="Background"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsEnabled" Value="false">
+                                                <Setter TargetName="Thumb" Property="Visibility" Value="Collapsed"/>
+                                            </Trigger>
+                                            <Trigger Property="Orientation" Value="Horizontal">
+                                                <Setter TargetName="GridRoot" Property="LayoutTransform">
+                                                    <Setter.Value>
+                                                        <RotateTransform Angle="-90"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter TargetName="PART_Track" Property="LayoutTransform">
+                                                    <Setter.Value>
+                                                        <RotateTransform Angle="-90"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="Width" Value="Auto"/>
+                                                <Setter Property="Height" Value="12"/>
+                                                <Setter TargetName="Thumb" Property="Tag" Value="Horizontal"/>
+                                                <Setter TargetName="PageDown" Property="Command" Value="ScrollBar.PageLeftCommand"/>
+                                                <Setter TargetName="PageUp" Property="Command" Value="ScrollBar.PageRightCommand"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.Resources>
                 </ListBox>
                 
             </Canvas>
@@ -242,18 +445,17 @@
 
         <Border x:Name="Menu_border"
                 CornerRadius="20"
-                Background="#22272e" Width="400" Height="400" Canvas.Left="760" Canvas.Top="340" Visibility="Hidden">
+                Background="#2d333b" Width="400" Height="400" Canvas.Left="760" Canvas.Top="340" Visibility="Hidden">
             <Canvas>
                 <StackPanel Orientation="Vertical">
                     <Button Content="Exit"
                             Click="Exit"
-                            Width="100"
+                            Width="200"
                             Height="40" 
-                            BorderBrush="{x:Null}"
-                            Background="{x:Null}"
-                            Foreground="White"
-                            FontSize="20"
-                            Margin="150,40"/>
+                            Margin="100,180"
+                            Background="#22272e"
+                            Foreground="Aquamarine"
+                            Style="{StaticResource Launcher_Button_Style}"/>
                 </StackPanel>
                 <!--<Label x:Name="lab" Height="50" Width="200" Foreground="White" ></Label>-->
 

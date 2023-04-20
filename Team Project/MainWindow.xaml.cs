@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Linq;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -27,6 +28,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Xml.Linq;
 using WpfAnimatedGif;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Team_Project
 {
@@ -37,8 +39,7 @@ namespace Team_Project
     {
         Map map;
         Point p = new Point();
-        Storyboard storyboards = new Storyboard();
-        Storyboard storyboard = new Storyboard();
+
         public static MainWindow mn = new MainWindow();
         public MainWindow()
         {
@@ -47,28 +48,87 @@ namespace Team_Project
             //PlayerHp.DataContext = player;
 
             InitializeComponent();
-            dir = dir.Parent?.Parent?.Parent;
+            
             mn = this;
-            dirname = dir.FullName;
-
-            PlayerHp.DataContext = player;
-            PlayerMp.DataContext = player;
-            XpBar.DataContext = player;
-            MpLabel.DataContext = player;
-            HpLabel.DataContext = player;
-            XpLabel.DataContext = player;
+            
+           
             //Mini_map(); 
         }
-        public DirectoryInfo? dir = new DirectoryInfo(Directory.GetCurrentDirectory());
-
-        public static string dirname;
+        
+        
         DispatcherTimer camp_fire_timer = new DispatcherTimer();
         public static bool isdmgallowed = false;
-        public static Player player = new Player("Azure", 175, 100, 1, 0, new Weapon("Novice Weapon", 12, "sword.png"));
+        public static Player player = new Player();
         int cx = 0;
         int cy = 0;
+        Shop shop = new Shop();
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            var xethicknessAnimation = new ThicknessAnimation
+            {
+                From = new Thickness(BT.Margin.Left, BT.Margin.Top, 0, 0),
+                To = new Thickness(current_user.BTBorderLeft, current_user.BTBorderTop, 0, 0),
+
+                Duration = TimeSpan.FromSeconds(0)
+
+            };
+            var xr = new Storyboard();
+
+            Storyboard.SetTargetProperty(xethicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
+            xr.Children.Add(xethicknessAnimation);
+
+            xr.Begin(BT);
+
+            var ethicknessAnimation = new ThicknessAnimation
+            {
+                From = new Thickness(player.Player_Back_Border.Margin.Left, player.Player_Back_Border.Margin.Top, 0, 0),
+                To = new Thickness(current_user.BackBorderLeft, current_user.BackBorderTop, 0, 0),
+
+                Duration = TimeSpan.FromSeconds(0)
+
+            };
+            var r = new Storyboard();
+            Storyboard.SetTargetProperty(ethicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
+            r.Children.Add(ethicknessAnimation);
+            r.Begin(player.Player_Back_Border);
+            this.Closed += delegate {
+                DataContext db = new DataContext(LinqClass.connectionstring);
+                var t = db.GetTable<User>().ToList();
+                for (int i = 0; i < t.Count; i++)
+                {
+                    if (t[i].UserName == current_user.UserName)
+                    {
+                        t[i].CurrentHp = player.Hp;
+                        t[i].CurrentMp = player.Mp;
+                        t[i].Lvl = player.Lvl;
+                        t[i].MaxHp = player.MaxHp;
+                        t[i].MaxMp = player.MaxMp;
+                        t[i].CurrentExp = player.Exp;
+                        t[i].BackBorderLeft = player.Player_Back_Border.Margin.Left;
+                        t[i].BackBorderTop = player.Player_Back_Border.Margin.Top;
+                        t[i].BTBorderLeft = BT.Margin.Left;
+                        t[i].BTBorderTop = BT.Margin.Top;
+                        db.SubmitChanges();
+                        break;
+                    }
+                }
+            };
+            canvas_enemy.Children.Add(shop.Shop_Border);
+            //MessageBox.Show(player.Player_Back_Border.Margin.ToString());
+            Items.ItemsSource = new ObservableCollection<Item>() { 
+                new Item(), new Item(),
+                  new Item(), new Item(),
+                    new Item(), new Item(),
+                      new Item(), new Item(),
+                        new Item(), new Item(),
+                          new Item(), new Item(),
+                            new Item(), new Item(),
+                              new Item(), new Item(),
+                                new Item(), new Item(),
+                                  new Item(), new Item(),
+                                    new Item(), new Item(),
+                                      new Item(), new Item(),
+            };
             timer.Interval = TimeSpan.FromSeconds(0.04);
             timer.Tick += Timer_Event_on_Tick;
             camp_fire_timer.Interval = TimeSpan.FromSeconds(1);
@@ -89,19 +149,17 @@ namespace Team_Project
             };
             map = new Map(BT.Width / 2, BT.Height / 2);
             Map_canvas.Children.Add(map.Map_new());
-            MapItems_canvas.Children.Add(map.Map_Trees());
-            foreach (var house in map.Map_Houses())
-            {
-                canvas_enemy.Children.Add(house);
-            }
+            Map_canvas.Children.Add(map.Map_Trees());
+            
             Minimap();
             foreach (var obj in canvas_enemy.Children)
             {
                 if (obj is Border)
                 {
-                    Thread t = new Thread(() =>
+                    Thread t = new Thread(async () =>
                     {
                         Collision(obj as Border);
+                        await Task.Delay(10);
                     });
                     t.SetApartmentState(ApartmentState.STA);
                     t.Start();
@@ -135,7 +193,7 @@ namespace Team_Project
                     {
                         var image = new BitmapImage();
                         image.BeginInit();
-                        image.UriSource = new Uri(dir.FullName + "\\Resources\\R.gif");
+                        image.UriSource = new Uri(Dir.GetPathX() + "\\Resources\\R.gif");
                         image.EndInit();
                         ImageBehavior.SetAnimatedSource(SpawnCampFire, image);
                     });
@@ -150,7 +208,12 @@ namespace Team_Project
             });
 
 
-
+            PlayerHp.DataContext = player;
+            PlayerMp.DataContext = player;
+            XpBar.DataContext = player;
+            MpLabel.DataContext = PlayerMp;
+            HpLabel.DataContext = PlayerHp;
+            XpLabel.DataContext = player;
 
 
             Thread borderLeft = new Thread(() =>
@@ -180,6 +243,8 @@ namespace Team_Project
             borderBottom.Start();
 
             //MessageBox.Show(player.Player_Back_Border.Margin + "||" + player.PLayer_Front_Border.Margin + "||" + BT.Margin);
+
+          
 
         }
 
@@ -220,7 +285,7 @@ namespace Team_Project
                         if (player.Player_Back_Border.Margin.Left > btLeft && canmoveleft && player.Player_Back_Border.Margin.Top > btTop && player.Player_Back_Border.Margin.Top + player.Player_Back_Border.Height < btTop + btHei
                         ) //<<------
                         {
-
+                            Storyboard storyboard = new Storyboard();
                             var dist = Math.Abs(btLeft + btWid - player.Player_Back_Border.Margin.Left);
                             var t = ThicknessAnimation(BT.Margin.Left - dist, BT.Margin.Top, 0);
                             Storyboard.SetTargetProperty(t, new PropertyPath(FrameworkElement.MarginProperty));
@@ -237,7 +302,7 @@ namespace Team_Project
                         }
                         else if (player.Player_Back_Border.Margin.Left < btLeft && canmoveright && player.Player_Back_Border.Margin.Top >= btTop && player.Player_Back_Border.Margin.Top + player.Player_Back_Border.Height < btTop + btHei) //---->>
                         {
-
+                            Storyboard storyboard = new Storyboard();
                             var dist = Math.Abs(btLeft - player.Player_Back_Border.Margin.Left - player.Player_Back_Border.Width);
                             var t = ThicknessAnimation(BT.Margin.Left + dist, BT.Margin.Top, 0);
                             Storyboard.SetTargetProperty(t, new PropertyPath(FrameworkElement.MarginProperty));
@@ -258,6 +323,7 @@ namespace Team_Project
                         else if (player.Player_Back_Border.Margin.Top > btTop && canmoveup && player.Player_Back_Border.Margin.Left > btLeft && player.Player_Back_Border.Margin.Left + player.Player_Back_Border.Width < btLeft + btWid
                         ) //up
                         {
+                            Storyboard storyboard = new Storyboard();
                             var dist = Math.Abs(player.Player_Back_Border.Margin.Top - btTop - btHei);
                             var t = ThicknessAnimation(BT.Margin.Left, BT.Margin.Top - dist, 0);
                             Storyboard.SetTargetProperty(t, new PropertyPath(FrameworkElement.MarginProperty));
@@ -276,6 +342,7 @@ namespace Team_Project
                         else if (player.Player_Back_Border.Margin.Top < btTop && canmovedown && player.Player_Back_Border.Margin.Left > btLeft && player.Player_Back_Border.Margin.Left + player.Player_Back_Border.Width < btLeft + btWid
                         ) //down
                         {
+                            Storyboard storyboard = new Storyboard();
                             var dist = Math.Abs(player.Player_Back_Border.Margin.Top + player.Player_Back_Border.Height - btTop);
                             var t = ThicknessAnimation(BT.Margin.Left, BT.Margin.Top + dist, 0);
                             Storyboard.SetTargetProperty(t, new PropertyPath(FrameworkElement.MarginProperty));
@@ -447,7 +514,7 @@ namespace Team_Project
                         uy = 1180;
                     }
 
-                    BitmapImage img = new BitmapImage(new Uri(dir.FullName + "\\Resources\\player_topchik.png"));
+                    BitmapImage img = new BitmapImage(new Uri(Dir.GetPathX() + "\\Resources\\player_topchik.png"));
 
                     Int32Rect cropRect = new Int32Rect(ux, uy, 120, 180);
 
@@ -501,7 +568,7 @@ namespace Team_Project
 
             isattack = false;*/
         }
-
+        public static bool isfb = true;
         public async void Minimap()
         {
             Border miniplayerborder = new Border()
@@ -511,33 +578,113 @@ namespace Team_Project
                 Background = Brushes.White,
                 Margin = new Thickness(251, 226.5, 0, 0),
             };
-            MiniMapBorder.Child = miniplayerborder;
-            await Task.Factory.StartNew(() =>
+            MiniMapBorder_Canvas.Children.Add(miniplayerborder);
+            await Task.Factory.StartNew(async () =>
             {
                 while (true)
                 {
+                    
                     this.Dispatcher.Invoke(() =>
                     {
+                        if (Math.Abs(shop.Shop_Border.Margin.Left + 150 - MainWindow.player.Player_Back_Border.Margin.Left) <= 300
+                        && Math.Abs(shop.Shop_Border.Margin.Top + 150 - MainWindow.player.Player_Back_Border.Margin.Top) <= 300)
+                        {
+                            
+
+                        }
+                        else
+                        {
+
+                        }
                         miniplayerborder.Margin = new Thickness(player.Player_Back_Border.Margin.Left / 10, player.Player_Back_Border.Margin.Top / 10, 0, 0);
                     });
 
-                    Task.Delay(10);
+                    await Task.Delay(10);
                 }
             });
         }
+        public static Border b = new Border()
+        {
+            Width = 50
+                ,
+            Height = 50,
+            CornerRadius = new CornerRadius(100),
+            Background = Brushes.Magenta,
+        };
 
+        
         bool isattack = false;
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Q && !isattack)
             {
+                p = Mouse.GetPosition(this);
+                double x = (player.PLayer_Front_Border.Margin.Left + 50) - p.X;
+                double y = (player.PLayer_Front_Border.Margin.Top + 50) - p.Y;
 
+                //if (y > 100)
+                //{
+                //    y = 100;
+                //}
+                //else if (y < -100)
+                //{
+                //    y = -100;
+                //}
+
+                //if (x > 100)
+                //{
+                //    x = 100;
+                //}
+                //else if (x < -100)
+                //{
+                //    x = -100;
+                //}
+                try
+                {
+                    
+                    if (player.Mp >= 20)
+                    {
+                        Spell1.Background = Brushes.Lime;
+                        canvas_enemy.Children.Add(b);
+                        player.Mp -= 20;
+                        PlayerHp.Value = player.Hp;
+                        PlayerMp.Value = player.Mp;
+
+                        var xethicknessAnimation = new ThicknessAnimation
+                        {
+                            From = new Thickness(player.Player_Back_Border.Margin.Left, player.Player_Back_Border.Margin.Top, 0, 0),
+                            To = new Thickness(player.Player_Back_Border.Margin.Left - x, player.Player_Back_Border.Margin.Top - y, 0, 0),
+
+                            Duration = TimeSpan.FromSeconds(0.3)
+
+                        };
+                        var xr = new Storyboard();
+                        xr.Completed += delegate { canvas_enemy.Children.Remove(b); isfb = true; };
+                        Storyboard.SetTargetProperty(xethicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
+                        xr.Children.Add(xethicknessAnimation);
+                       
+                        xr.Begin(b);
+                    }
+                    else
+                    {
+                        Spell1.Background = Brushes.Red;
+                    }
+                    
+                }
+                catch
+                {
+
+                }
+                
             }
 
             if (e.Key == Key.Escape)
             {
                 if (Menu_border.Visibility == Visibility.Visible) Menu_border.Visibility = Visibility.Hidden;
-                else Menu_border.Visibility = Visibility.Visible;
+                else if(!InventoryBorder.IsVisible) Menu_border.Visibility = Visibility.Visible;
+
+                if (InventoryBorder.IsVisible)
+                    InventoryBorder.Visibility = Visibility.Hidden;
             }
 
             if(e.Key == Key.I)
@@ -553,7 +700,7 @@ namespace Team_Project
         {
             if (e.Key == Key.Q)
             {
-
+                Spell1.Background = Brushes.Transparent;
             }
         }
 
@@ -572,7 +719,6 @@ namespace Team_Project
             else maxSpeed = sumXY / 222;
 
             timer.Stop();
-            storyboard.Stop();
 
             ThicknessAnimation thicknessAnimation;
             ThicknessAnimation thicknessAnimation2;
@@ -631,11 +777,13 @@ namespace Team_Project
                 }
 
             }
+            Storyboard storyboard = new Storyboard();
 
             Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(FrameworkElement.MarginProperty));
             storyboard.Children.Add(thicknessAnimation);
-            storyboard.Begin(BT);
             storyboard.Completed += delegate { timer.Stop(); };
+            storyboard.Begin(BT);
+            
 
             var r = new Storyboard();
             Storyboard.SetTargetProperty(thicknessAnimation2, new PropertyPath(FrameworkElement.MarginProperty));
@@ -654,105 +802,13 @@ namespace Team_Project
         const int cols = 20; // количество столбцов
 
 
-        async void TestMap()
-        {
-            img0.BeginInit();
-            img0.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\ground2.png"));
-            img0.EndInit();
-            img1.BeginInit();
-            img1.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(dir.FullName + "\\Resources\\ground5.png"));
-            img1.EndInit();
-
-            for (int row = 0; row < 40; row++)
-            {
-                for (int col = 0; col < 40; col++)
-                {
-                    Image image = new Image();
-                    image.Source = img0;
-                    image.Width = cellWidth;
-                    image.Height = cellHeight;
-                    Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
-                    Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
-
-                    Map_canvas.Children.Add(image);
-                }
-            }
-
-        }
-        //void Mini_map()
-        //{
-        //    for (int row = 0; row < rows; row++)
-        //    {
-        //        for (int col = 0; col < cols; col++)
-        //        {
-        //            Image image2 = new Image();
-        //            image2.Source = img0;
-        //            image2.Width = cellWidth / 15;
-        //            image2.Height = cellHeight / 15;
-        //            Canvas.SetLeft(image2, col * cellWidth / 20);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
-        //            Canvas.SetTop(image2, row * cellHeight / 20);
-        //            MiniMap_canvas.Children.Add(image2);
-        //        }
-        //    }
-        //}
-        void Map_addObjects()
-        {
-            ObservableCollection<BitmapImage> imgs = new ObservableCollection<BitmapImage>();
-            string[] files = Directory.GetFiles(dir.FullName + "\\Resources\\", "*.png");
-            foreach (string file in files)
-            {
-                BitmapImage img = new BitmapImage(new Uri(file));
-                imgs.Add(img);
-            }
-
-
-            int[,] map = new int[rows, cols]
-            {
-                {2,2,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,1,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0 },
-                {0,0,0,1,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,1,2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1 },
-                {0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2 },
-                {0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,1,0,0,0,1 },
-                {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1 },
-                {0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,2 },
-                {0,0,0,0,0,0,2,0,0,0,0,2,2,0,0,0,0,0,0,2 },
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2 },
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2 },
-                {0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,1,0,2 },
-                {0,0,0,0,0,0,19,19,0,3,0,0,0,0,0,0,1,0,0,0 },
-                {2,0,0,0,0,0,19,0,0,0,0,0,1,1,1,1,0,0,0,0 },
-                {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0 },
-                {0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {2,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-            };
-
-            for (int row = 0; row < rows; row++)
-            {
-                for (int col = 0; col < cols; col++)
-                {
-                    if (map[col, row] >= 8)
-                    {
-                        Image image = new Image();
-                        image.Source = imgs[map[col, row]];
-                        image.Width = cellWidth;
-                        image.Height = cellHeight;
-                        Canvas.SetLeft(image, col * cellWidth - BT.Width / 2);    //bt.width для отступа влево т.к. привязка к другим координатам, а они слишком уехали вправо
-                        Canvas.SetTop(image, row * cellHeight - BT.Height / 2);
-
-                        MapItems_canvas.Children.Add(image);
-                    }
-                }
-            }
-
-        }
+        public static User current_user = new User();
 
         private void Exit(object sender, RoutedEventArgs e)
         {
+
             //MessageBox.Show(player.Player_Back_Border.Margin + "||" + player.PLayer_Front_Border.Margin + "||" + BT.Margin);
+            this.Close();
             var pr = Process.GetProcesses();
             foreach (var p in pr)
             {
@@ -761,7 +817,39 @@ namespace Team_Project
             }
         }
 
+        private void LogTxT_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Storyboard storyboard = new Storyboard();
+            TimeSpan duration = TimeSpan.FromSeconds(0.5);
 
+            DoubleAnimation animation = new DoubleAnimation();
+
+            animation.From = ChatBorder.Opacity;
+            animation.To = 0.47;
+            animation.Duration = new Duration(duration);
+            // Configure the animation to target de property Opacity
+            Storyboard.SetTargetName(animation, ChatBorder.Name);
+            Storyboard.SetTargetProperty(animation, new PropertyPath(Control.OpacityProperty));
+            storyboard.Children.Add(animation);
+            storyboard.Begin(this);
+        }
+
+        private void LogTxT_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Storyboard storyboard = new Storyboard();
+            TimeSpan duration = TimeSpan.FromSeconds(0.5);
+
+            DoubleAnimation animation = new DoubleAnimation();
+
+            animation.From = ChatBorder.Opacity;
+            animation.To = 0.0;
+            animation.Duration = new Duration(duration);
+            // Configure the animation to target de property Opacity
+            Storyboard.SetTargetName(animation, ChatBorder.Name);
+            Storyboard.SetTargetProperty(animation, new PropertyPath(Control.OpacityProperty));
+            storyboard.Children.Add(animation);
+            storyboard.Begin(this);
+        }
     }
 }
 
