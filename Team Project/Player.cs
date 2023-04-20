@@ -43,9 +43,9 @@ namespace Team_Project
         public Player() { }
            
         
-        public Player(string name, double hp, double mp, int lvl, double exp, Weapon weapon)
+        public Player(string name, double hp, double mp, int lvl, double exp, Weapon weapon, double maxhp, double maxmp)
         {
-            BitmapImage img = new BitmapImage(new Uri(MainWindow.dirname + "\\Resources\\player_topchik.png"));
+            BitmapImage img = new BitmapImage(new Uri(Dir.GetPathX() + "\\Resources\\player_topchik.png"));
             Int32Rect cropRect = new Int32Rect(0, 0, 120, 180);
             CroppedBitmap croppedBitmap = new CroppedBitmap(img, cropRect);
             PLayer_Front_Border.Background = new ImageBrush(croppedBitmap);
@@ -55,6 +55,8 @@ namespace Team_Project
             Lvl = lvl;
             Exp = exp;
             this.weapon = weapon;
+            this.MaxHp = maxhp;
+            this.MaxMp = maxmp;
         }
     }
 

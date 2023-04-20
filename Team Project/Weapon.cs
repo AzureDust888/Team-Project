@@ -32,7 +32,7 @@ namespace Team_Project
             BitmapImage img2 = new BitmapImage();
 
             img2.BeginInit();
-            img2.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(MainWindow.dirname + "\\Resources\\" + imagefilename));
+            img2.StreamSource = new System.IO.MemoryStream(File.ReadAllBytes(Dir.GetPathX() + "\\Resources\\" + imagefilename));
             img2.EndInit();
 
             weapon_border.Background = new ImageBrush(img2);

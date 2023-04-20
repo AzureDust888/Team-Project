@@ -13,12 +13,12 @@
         Background="Transparent"
         AllowsTransparency="True"
         Loaded="Window_Loaded">
-    <Canvas>
+    <Canvas x:Name="MainCanvas">
         <Border x:Name="Launcher_Main_Border" CornerRadius="20"
                 Background="Black"
                 Height="600" Width="850"
                 MouseLeftButtonDown="Launcher_Main_Border_MouseLeftButtonDown">
-            
+
         </Border>
         <fa:ImageAwesome Icon="Close"
                          Foreground="#cdd9e5"
@@ -28,11 +28,11 @@
                          MouseLeftButtonUp="ImageAwesome_MouseLeftButtonUp">
         </fa:ImageAwesome>
 
-        <Image Width="800"
-               Height="900"
+        <Image Width="500"
+               Height="600"
                x:Name="SpawnCampFire"
-               Margin="-155,-100"
-               Source="{x:Null}"
+               Margin="0,-20"
+               gif:ImageBehavior.AnimatedSource="Resources/R.gif"
                >
         </Image>
 
@@ -58,16 +58,20 @@
                 <Button Height="50"
                         Width="250"
                         Margin="25,145"
-                        Content="---"
+                        Content="Github"
+                        x:Name="Github_Source_Code_Button"
                         Background="#22272e"
+                        GotMouseCapture="Github_Source_Code_Button_GotMouseCapture"
                         Style="{StaticResource Launcher_Button_Style}">
                 </Button>
 
                 <Button Height="50"
                         Width="250"
                         Margin="25,225"
-                        Content="---"
+                        Content="Tutorial"
                         Background="#22272e"
+                        x:Name="Tutorial_Button"
+                        GotMouseCapture="Tutorial_Button_GotMouseCapture"
                         Style="{StaticResource Launcher_Button_Style}">
                 </Button>
 
@@ -99,10 +103,8 @@
                 BorderBrush="#2d333b"
                 CornerRadius="100"
                 Margin="10"
+                MouseLeftButtonDown="CurrentUserAvatarBorder_MouseLeftButtonDown"
                 x:Name="CurrentUserAvatarBorder">
-            <Border.Background>
-                <ImageBrush ImageSource="Resources\Avatar.png"></ImageBrush>
-            </Border.Background>
             <Canvas x:Name="PlayerAccountCanvas" Width="225">
                 <Label Content="User Name"
                        Width="150"
@@ -115,5 +117,26 @@
                        Margin="55,-2.5"></Label>
             </Canvas>
         </Border>
+        <Border CornerRadius="20"
+                Background="Black"
+                Height="600" Width="850"
+                x:Name="Loading_Border"
+                MouseLeftButtonDown="Loading_Border_MouseLeftButtonDown" d:IsHidden="True">
+            <Canvas>
+                <fa:ImageAwesome Icon="Spinner" Foreground="Aquamarine"
+                             Width="200"
+                             Height="200"
+                             Spin="True"
+                             SpinDuration="2"
+                             x:Name="SpinnerLoad"
+                             Margin="325,200"
+                             ></fa:ImageAwesome>
+                <Label Content="Authorization..."
+                       FontSize="40"
+                       Foreground="Aquamarine" Canvas.Left="287" Canvas.Top="426"/>
+            </Canvas>
+
+        </Border>
+        
     </Canvas>
 </Window>
